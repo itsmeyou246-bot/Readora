@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magazine Details - READORA</title>
+    <link rel="stylesheet" th:href="@{/css/magazine-details.css}">
+</head>
+<body>
+    <th:block th:replace="~{fragments/chrome :: header}"></th:block>
+    <header class="header legacy-chrome-header">
+        <div class="header-inner">
+            <a th:href="@{/index}" class="logo">READORA</a>
+            <nav class="nav-links">
+                <a th:href="@{/index}">Discover</a>
+                <a th:href="@{/Book}">Books</a>
+                <a th:href="@{/newspapers}">Newspapers</a>
+                <a th:href="@{/magazines}">Magazines</a>
+                <a th:href="@{/read-nepal}">Read Nepal</a>
+                <a th:href="@{/library}">My Library</a>
+            </nav>
+            <div class="profile-icon">👤</div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            <a th:href="@{/magazines}" class="breadcrumb-link">← Back to Magazines</a>
+            <div class="details-layout">
+                <div class="details-left">
+                    <img id="magazineCover" src="magazine.jpg" alt="Magazine Cover" class="magazine-cover">
+                </div>
+                <div class="details-right">
+                    <h1 id="magazineTitle">Wired</h1>
+                    <p id="magazineIssue" class="issue">September 2026</p>
+                    <p id="magazinePublisher" class="publisher">Condé Nast</p>
+                    <div class="language-badges">
+                        <span id="categoryBadge" class="category-badge">Technology</span>
+                    </div>
+                    <p id="magazineDescription" class="description">
+                        The latest innovations in technology, design, and culture.
+                    </p>
+                    <div class="actions">
+                        <button id="readBtn" class="btn-primary">Read Issue</button>
+                        <button id="saveBtn" class="btn-secondary">Save</button>
+                        <button id="bookmarkBtn" class="btn-secondary">🔖 Bookmark</button>
+                    </div>
+                    <div class="info-section">
+                        <h3>In This Issue</h3>
+                        <ul id="highlights" class="highlights-list">
+                            <li>Feature story</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="related-section">
+                <h2>Other Issues</h2>
+                <div id="relatedGrid" class="related-grid"></div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer legacy-chrome-footer">
+        <div class="footer-inner">
+            <div class="footer-logo">READORA</div>
+            <div class="footer-links">
+                <a href="#">About</a>
+                <a href="#">Support</a>
+                <a href="#">Terms</a>
+                <a href="#">Privacy</a>
+            </div>
+            <div class="footer-copyright">© 2026 READORA. All rights reserved.</div>
+        </div>
+    </footer>
+    <th:block th:replace="~{fragments/chrome :: footer}"></th:block>
+
+    <div id="toast" class="toast"></div>
+
+    <script>
+        const magazinesDataFull = {
+            1: { id: 1, title: "Wired", issue: "September 2026", publisher: "Condé Nast", language: "English", category: "Technology", image: "wired.jpg", description: "The latest innovations in technology, design, and culture.", premium: true, highlights: ["AI Revolution", "Cybersecurity", "Startups"] },
+            2: { id: 2, title: "Vogue", issue: "Fall 2026", publisher: "Condé Nast", language: "English", category: "Fashion", image: "vogue.jpg", description: "Fashion, beauty, and lifestyle trends.", premium: false, highlights: ["Runway", "Style", "Beauty"] },
+            3: { id: 3, title: "National Geographic", issue: "August 2026", publisher: "National Geographic", language: "English", category: "Travel", image: "natgeo.jpg", description: "Explore the world through stunning photography and stories.", premium: true, highlights: ["Travel", "Nature", "Science"] }
+        };
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const magazine = JSON.parse(sessionStorage.getItem('selectedMagazine')) || magazinesDataFull[1];
+            document.getElementById('magazineTitle').textContent = magazine.title;
+            document.getElementById('magazineIssue').textContent = magazine.issue;
+            document.getElementById('magazinePublisher').textContent = magazine.publisher;
+            document.getElementById('categoryBadge').textContent = magazine.category;
+            document.getElementById('magazineCover').src = magazine.image;
+            document.getElementById('magazineDescription').textContent = magazine.description;
+            document.getElementById('highlights').innerHTML = magazine.highlights.map(h => `<li>${h}</li>`).join('');
+
+            const grid = document.getElementById('relatedGrid');
+            grid.innerHTML = Object.values(magazinesDataFull).filter(m => m.id !== magazine.id).map(mag => `
+                <div class="related-card" data-id="${mag.id}">
+                    <img src="${mag.image}" alt="${mag.title}">
+                    <h3>${mag.title}</h3>
+                    <p>${mag.issue}</p>
+                </div>
+            `).join('');
+
+            grid.querySelectorAll('.related-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    sessionStorage.setItem('selectedMagazine', JSON.stringify(magazinesDataFull[this.getAttribute('data-id')]));
+                    location.reload();
+                });
+            });
+
+            document.getElementById('readBtn').addEventListener('click', () => { sessionStorage.setItem('currentMagazine', JSON.stringify(magazine)); window.location.href = 'reader.html'; });
+            document.getElementById('saveBtn').addEventListener('click', () => { let saved = JSON.parse(localStorage.getItem('myLibrary') || '[]'); if (!saved.find(s => s.id === magazine.id)) { saved.push({...magazine, type: 'magazine'}); localStorage.setItem('myLibrary', JSON.stringify(saved)); } showToast('Saved'); });
+            document.getElementById('bookmarkBtn').addEventListener('click', function() { this.classList.toggle('bookmarked'); showToast(this.classList.contains('bookmarked') ? 'Bookmarked' : 'Bookmark removed'); });
+        });
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+    </script>
+</body>
+</html>

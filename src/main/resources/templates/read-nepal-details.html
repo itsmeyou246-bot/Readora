@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Read Nepal Details - READORA</title>
+    <link rel="stylesheet" th:href="@{/css/read-nepal-details.css}">
+</head>
+<body>
+    <th:block th:replace="~{fragments/chrome :: header}"></th:block>
+    <header class="header legacy-chrome-header">
+        <div class="header-inner">
+            <a th:href="@{/index}" class="logo">READORA</a>
+            <nav class="nav-links">
+                <a th:href="@{/index}">Discover</a>
+                <a th:href="@{/Book}">Books</a>
+                <a th:href="@{/newspapers}">Newspapers</a>
+                <a th:href="@{/magazines}">Magazines</a>
+                <a th:href="@{/read-nepal}">Read Nepal</a>
+                <a th:href="@{/library}">My Library</a>
+            </nav>
+            <div class="profile-icon">👤</div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            <a th:href="@{/read-nepal}" class="breadcrumb-link">← Back to Read Nepal</a>
+            
+            <div class="details-layout">
+                <div class="details-left">
+                    <img id="literatureCover" src="nepal1.jpg" alt="Literature Cover" class="literature-cover">
+                </div>
+                <div class="details-right">
+                    <h1 id="literatureTitle">Muna Madan</h1>
+                    <p id="nepaliTitle" class="nepali-text">मुना मदन</p>
+                    <p id="literatureAuthor" class="author">Laxmi Prasad Devkota</p>
+                    <div class="info-badges">
+                        <span id="categoryBadge" class="info-badge">Poetry</span>
+                        <span id="regionBadge" class="info-badge">Central Region</span>
+                    </div>
+                    <p id="literatureDescription" class="description">
+                        A classical Nepali epic poem depicting a love story with cultural and social significance.
+                    </p>
+                    <div class="actions">
+                        <button id="readBtn" class="btn-primary">Read Now</button>
+                        <button id="noteBtn" class="btn-secondary">📝 Add Note</button>
+                        <button id="bookmarkBtn" class="btn-secondary">🔖 Bookmark</button>
+                    </div>
+                    <div class="info-section">
+                        <h3>About This Work</h3>
+                        <p id="aboutText">This is an important work in Nepali literature.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="related-section">
+                <h2>More from Read Nepal</h2>
+                <div id="relatedGrid" class="related-grid"></div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer legacy-chrome-footer">
+        <div class="footer-inner">
+            <div class="footer-logo">READORA</div>
+            <div class="footer-links">
+                <a href="#">About</a>
+                <a href="#">Support</a>
+                <a href="#">Terms</a>
+                <a href="#">Privacy</a>
+            </div>
+            <div class="footer-copyright">© 2026 READORA. All rights reserved.</div>
+        </div>
+    </footer>
+    <th:block th:replace="~{fragments/chrome :: footer}"></th:block>
+
+    <div id="toast" class="toast"></div>
+
+    <script>
+        const nepalLiterature = {
+            1: { id: 1, title: "Chronicles of the Valley", nepaliTitle: "उपत्यकाको कथा", author: "Demo Author", category: "History", region: "Central", about: "Historical chronicles of the Kathmandu Valley.", image: "nepal1.jpg" },
+            2: { id: 2, title: "Muna Madan", nepaliTitle: "मुना मदन", author: "Laxmi Prasad Devkota", category: "Poetry", region: "Central", about: "A classical epic poem in Nepali literature.", image: "nepal2.jpg" },
+            3: { id: 3, title: "The Song of Nepal", nepaliTitle: "नेपालको गीत", author: "Pandit Amar Prasad Subedi", category: "Poetry", region: "Central", about: "Poetic verses celebrating Nepali culture.", image: "nepal3.jpg" }
+        };
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const literature = JSON.parse(sessionStorage.getItem('selectedReadNepal')) || nepalLiterature[2];
+            
+            document.getElementById('literatureTitle').textContent = literature.title;
+            document.getElementById('nepaliTitle').textContent = literature.nepaliTitle;
+            document.getElementById('literatureAuthor').textContent = literature.author;
+            document.getElementById('categoryBadge').textContent = literature.category;
+            document.getElementById('regionBadge').textContent = literature.region;
+            document.getElementById('literatureCover').src = literature.image;
+            document.getElementById('literatureDescription').textContent = literature.about;
+            document.getElementById('aboutText').textContent = literature.about;
+
+            const grid = document.getElementById('relatedGrid');
+            grid.innerHTML = Object.values(nepalLiterature).filter(l => l.id !== literature.id).map(lit => `
+                <div class="related-card" data-id="${lit.id}">
+                    <img src="${lit.image}" alt="${lit.title}">
+                    <h3>${lit.title}</h3>
+                    <p class="nepali">${lit.nepaliTitle}</p>
+                    <p class="author">${lit.author}</p>
+                </div>
+            `).join('');
+
+            grid.querySelectorAll('.related-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    sessionStorage.setItem('selectedReadNepal', JSON.stringify(nepalLiterature[this.getAttribute('data-id')]));
+                    location.reload();
+                });
+            });
+
+            document.getElementById('readBtn').addEventListener('click', () => { sessionStorage.setItem('currentNepalLiterature', JSON.stringify(literature)); window.location.href = 'reader.html'; });
+            document.getElementById('noteBtn').addEventListener('click', () => { showToast('Note added'); });
+            document.getElementById('bookmarkBtn').addEventListener('click', function() { this.classList.toggle('bookmarked'); showToast(this.classList.contains('bookmarked') ? 'Bookmarked' : 'Bookmark removed'); });
+        });
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Reader - READORA</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/book-reader.css}">
+</head>
+<body th:attr="data-book-id=${bookId}">
+<header class="reader-topbar">
+    <a href="/library" class="library-link">← Library</a>
+    <div class="reader-title">
+        <strong id="bookTitle">Loading book...</strong>
+        <span id="chapterLabel">Preparing your page</span>
+    </div>
+    <div class="reader-actions">
+        <button id="bookmarkButton" type="button" aria-label="Bookmark page"><i class="fa-regular fa-bookmark"></i></button>
+        <button id="menuButton" type="button" aria-label="Reader menu"><i class="fa-solid fa-ellipsis"></i></button>
+    </div>
+</header>
+
+<main class="reader-shell">
+    <div id="readerStatus" class="reader-status">Opening your book...</div>
+    <article id="pageContent" class="page-content" hidden>
+        <p id="pageText" class="page-text"></p>
+        <figure id="editorialImage" class="editorial-image" hidden>
+            <div class="image-card"><img id="imageUrl" alt=""></div>
+            <h2 id="imageTitle"></h2>
+            <p id="imageSubtitle" class="image-subtitle"></p>
+            <p id="imageCaption" class="image-caption"></p>
+            <p id="imagePhotoCredit" class="image-credit"></p>
+        </figure>
+    </article>
+</main>
+
+<footer class="pagination-bar">
+    <button id="previousButton" type="button">‹ Previous</button>
+    <span>Page <strong id="pageNumber">—</strong> of <strong id="pageCount">—</strong></span>
+    <button id="nextButton" type="button">Next ›</button>
+</footer>
+<script th:src="@{/js/book-reader.js}"></script>
+</body>
+</html>

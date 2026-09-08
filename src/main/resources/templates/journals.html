@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Journals - READORA</title>
+    <link rel="stylesheet" th:href="@{/css/journals.css}">
+</head>
+<body>
+    <th:block th:replace="~{fragments/chrome :: header}"></th:block>
+    <header class="header legacy-chrome-header">
+        <div class="header-inner">
+            <a th:href="@{/index}" class="logo">READORA</a>
+            <nav class="nav-links">
+                <a th:href="@{/index}">Discover</a>
+                <a th:href="@{/Book}">Books</a>
+                <a th:href="@{/newspapers}">Newspapers</a>
+                <a th:href="@{/magazines}">Magazines</a>
+                <a th:href="@{/read-nepal}">Read Nepal</a>
+                <a th:href="@{/library}">My Library</a>
+            </nav>
+            <div class="profile-icon">👤</div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="page-header">
+                <h1>Journals</h1>
+                <p>Academic and research journals for deep learning.</p>
+            </div>
+
+            <div class="filter-section">
+                <input type="text" id="searchInput" class="search-input" placeholder="Search journals by title or author...">
+                <select id="categoryFilter" class="filter-select">
+                    <option value="">All Categories</option>
+                    <option value="Science">Science</option>
+                    <option value="Technology">Technology</option>
+                    <option value="Medical">Medical</option>
+                    <option value="Research">Research</option>
+                </select>
+            </div>
+
+            <div id="emptyState" class="empty-state" style="display: none;">
+                <p>No journals found.</p>
+            </div>
+
+            <div id="journalsContainer" class="journals-grid"></div>
+        </div>
+    </main>
+
+    <footer class="footer legacy-chrome-footer">
+        <div class="footer-inner">
+            <div class="footer-logo">READORA</div>
+            <div class="footer-links">
+                <a href="#">About</a>
+                <a href="#">Support</a>
+                <a href="#">Terms</a>
+                <a href="#">Privacy</a>
+            </div>
+            <div class="footer-copyright">© 2026 READORA. All rights reserved.</div>
+        </div>
+    </footer>
+    <th:block th:replace="~{fragments/chrome :: footer}"></th:block>
+
+    <div id="toast" class="toast"></div>
+
+    <script>
+        const journalsData = [
+            { id: 1, title: "Nature", author: "Scientific Community", category: "Science", description: "Multidisciplinary research journal publishing high-quality scientific research.", premium: true, date: "August 2026" },
+            { id: 2, title: "Science Daily", author: "Various", category: "Science", description: "Latest discoveries in science and technology.", premium: false, date: "August 2026" },
+            { id: 3, title: "IEEE Transactions", author: "IEEE", category: "Technology", description: "Engineering and technology research journal.", premium: true, date: "August 2026" },
+            { id: 4, title: "Medical Research", author: "Various", category: "Medical", description: "Clinical and medical research publications.", premium: true, date: "August 2026" }
+        ];
+
+        document.addEventListener('DOMContentLoaded', function() {
+            displayJournals();
+            document.getElementById('searchInput').addEventListener('input', displayJournals);
+            document.getElementById('categoryFilter').addEventListener('change', displayJournals);
+        });
+
+        function displayJournals() {
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const category = document.getElementById('categoryFilter').value;
+            const filtered = journalsData.filter(j => 
+                (j.title.toLowerCase().includes(search) || j.author.toLowerCase().includes(search)) &&
+                (!category || j.category === category)
+            );
+
+            const container = document.getElementById('journalsContainer');
+            const emptyState = document.getElementById('emptyState');
+
+            if (filtered.length === 0) {
+                container.innerHTML = '';
+                emptyState.style.display = 'block';
+                return;
+            }
+
+            emptyState.style.display = 'none';
+            container.innerHTML = filtered.map(j => `
+                <div class="journal-card">
+                    <h3>${j.title}</h3>
+                    <p class="author">${j.author}</p>
+                    <p class="category">${j.category}</p>
+                    <p class="description">${j.description}</p>
+                    <p class="date">${j.date}</p>
+                    ${j.premium ? '<span class="premium-badge">Premium</span>' : ''}
+                    <div class="journal-actions">
+                        <button class="btn-read">Read</button>
+                        <button class="btn-save">Save</button>
+                    </div>
+                </div>
+            `).join('');
+
+            document.querySelectorAll('.btn-read').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const card = this.closest('.journal-card');
+                    const index = Array.from(container.children).indexOf(card);
+                    const journal = filtered[index];
+                    sessionStorage.setItem('currentJournal', JSON.stringify(journal));
+                    window.location.href = 'reader.html';
+                });
+            });
+
+            document.querySelectorAll('.btn-save').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    showToast('Saved to library');
+                });
+            });
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+    </script>
+</body>
+</html>

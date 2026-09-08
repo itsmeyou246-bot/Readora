@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Purchase Successful - Readora</title>
+	<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+	<link rel="stylesheet" th:href="@{/css/purchase-success.css}">
+</head>
+<body>
+<th:block th:replace="~{fragments/chrome :: header}"></th:block>
+<main class="success-page">
+	<div class="success-icon"><i class="fa-solid fa-check"></i></div>
+	<div class="eyebrow">READORA LIBRARY</div>
+	<h1>Purchase Successful</h1>
+	<p>Thank you for your purchase.</p>
+	<p class="muted">Your book has been added to your READORA Library.</p>
+	<div class="order-details">
+		<div><small>Order ID</small><strong id="orderId">RD-2026-0001</strong></div>
+		<div><small>Amount</small><strong id="orderAmount">Rs. 0</strong></div>
+	</div>
+	<div class="success-actions">
+		<a class="primary-button" id="startReading" th:href="@{/library}">Start Reading</a>
+		<a class="button" th:href="@{/library}">Go to My Library</a>
+	</div>
+</main>
+<th:block th:replace="~{fragments/chrome :: footer}"></th:block>
+<script>
+	const purchase = JSON.parse(localStorage.getItem('readoraLastPurchase') || 'null');
+	if (purchase) {
+		document.getElementById('orderId').textContent = purchase.orderId;
+		document.getElementById('orderAmount').textContent = `Rs. ${Number(purchase.amount).toLocaleString('en-IN')}`;
+		if (purchase.books && purchase.books[0]) {
+			sessionStorage.setItem('currentBook', JSON.stringify(purchase.books[0]));
+			document.getElementById('startReading').href = `/reader/${encodeURIComponent(purchase.books[0].id)}`;
+		}
+	}
+</script>
+</body>
+</html>

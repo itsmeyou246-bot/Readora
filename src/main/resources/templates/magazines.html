@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magazines - Readora</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/magazines.css}">
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <th:block th:replace="~{fragments/chrome :: header}"></th:block>
+    <header class="header legacy-chrome-header">
+        <div class="header-inner">
+            <a th:href="@{/index}" class="logo">READORA</a>
+
+            <nav class="nav-links">
+                <a th:href="@{/index}">Discover</a>
+                <a th:href="@{/Book}">Books</a>
+                <a th:href="@{/newspapers}">Newspapers</a>
+                <a th:href="@{/magazines}" class="nav-active">Magazines</a>
+                <a th:href="@{/read-nepal}">Read Nepal</a>
+                <a th:href="@{/library}">My Library</a>
+            </nav>
+
+            <div class="profile-icon">☺</div>
+        </div>
+    </header>
+
+   <section class="magazine-hero">
+
+        <div class="magazine-hero-content">
+
+            <span class="hero-label">
+                <i class="fa-solid fa-layer-group"></i>
+                DIGITAL MAGAZINES
+            </span>
+
+            <h1>
+                Stories, ideas and
+                <span>inspiration.</span>
+            </h1>
+
+            <p>
+                Explore thoughtfully selected magazines covering
+                culture, technology, lifestyle, business, travel
+                and ideas from Nepal and around the world.
+            </p>
+
+            <div class="hero-actions">
+                <a href="#latest-magazines" class="primary-btn">
+                    Explore Magazines
+                    <i class="fa-solid fa-arrow-down"></i>
+                </a>
+
+                <a href="#categories" class="secondary-btn">
+                    Browse Categories
+                </a>
+            </div>
+
+        </div>
+
+
+        <div class="featured-magazine">
+
+            <div class="featured-cover">
+
+                <img th:src="@{/img/timesMagazines.png}" alt="TIME Magazine">
+
+                <span class="featured-badge">
+                    FEATURED ISSUE
+                </span>
+
+            </div>
+
+            <div class="featured-info">
+
+                <span>THIS MONTH</span>
+
+                <h3>TIME</h3>
+
+                <p>
+                    Current ideas, people and stories shaping
+                    the world today.
+                </p>
+
+                <a href="#" class="featured-link">
+                    Read Issue
+                    <i class="fa-solid fa-arrow-right"></i>
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= SEARCH ================= -->
+
+    <section class="magazine-tools">
+
+        <div class="magazine-search">
+
+            <i class="fa-solid fa-magnifying-glass"></i>
+
+            <input
+                type="text"
+                id="magazineSearch"
+                placeholder="Search magazines, topics or categories..."
+            >
+
+        </div>
+
+
+        <div class="access-filter">
+
+            <button class="access-btn active" data-access="all">
+                All
+            </button>
+
+            <button class="access-btn" data-access="free">
+                Free
+            </button>
+
+            <button class="access-btn" data-access="premium">
+                Premium
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= CATEGORIES ================= -->
+
+    <section class="categories" id="categories">
+
+        <div class="section-heading">
+
+            <div>
+                <span>EXPLORE</span>
+
+                <h2>Browse by Interest</h2>
+
+                <p>
+                    Find magazines based on what you enjoy reading.
+                </p>
+            </div>
+
+        </div>
+
+
+        <div class="category-list">
+
+            <button class="category-btn active" data-category="all">
+                <i class="fa-solid fa-border-all"></i>
+                All
+            </button>
+
+            <button class="category-btn" data-category="technology">
+                <i class="fa-solid fa-microchip"></i>
+                Technology
+            </button>
+
+            <button class="category-btn" data-category="lifestyle">
+                <i class="fa-solid fa-heart"></i>
+                Lifestyle
+            </button>
+
+            <button class="category-btn" data-category="business">
+                <i class="fa-solid fa-chart-line"></i>
+                Business
+            </button>
+
+            <button class="category-btn" data-category="travel">
+                <i class="fa-solid fa-plane"></i>
+                Travel
+            </button>
+
+            <button class="category-btn" data-category="culture">
+                <i class="fa-solid fa-palette"></i>
+                Culture
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= LATEST MAGAZINES ================= -->
+
+    <section class="latest-magazines" id="latest-magazines">
+
+        <div class="section-heading magazine-heading">
+
+            <div>
+
+                <span>LATEST ISSUES</span>
+
+                <h2>Magazines Worth Reading</h2>
+
+                <p>
+                    Discover the latest editions from selected publications.
+                </p>
+
+            </div>
+
+
+            <div class="language-filter">
+
+                <button class="language-btn active" data-language="all">
+                    All
+                </button>
+
+                <button class="language-btn" data-language="english">
+                    English
+                </button>
+
+                <button class="language-btn" data-language="nepali">
+                    नेपाली
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div class="magazine-grid" id="magazineGrid">
+
+
+            <!-- MAGAZINE 1 -->
+
+            <article
+                class="magazine-card"
+                data-access="free"
+                data-category="technology"
+                data-language="english"
+                data-search="wired technology innovation artificial intelligence"
+            >
+
+                <div class="magazine-cover">
+
+                    <img th:src="@{/img/wired.png}" alt="Wired Magazine">
+
+                    <span class="access-badge free">
+                        FREE
+                    </span>
+
+                    <button class="save-btn" aria-label="Save magazine">
+                        <i class="fa-regular fa-bookmark"></i>
+                    </button>
+
+                </div>
+
+
+                <div class="magazine-info">
+
+                    <div class="magazine-meta">
+                        <span>English</span>
+                        <span>•</span>
+                        <span>Technology</span>
+                    </div>
+
+                    <h3>WIRED</h3>
+
+                    <p>
+                        Technology, science, innovation and the ideas
+                        changing modern life.
+                    </p>
+
+                    <div class="issue-date">
+                        <i class="fa-regular fa-calendar"></i>
+                        August 2026 Issue
+                    </div>
+
+                    <div class="magazine-bottom">
+
+                        <span class="source">
+                            Official Source
+                        </span>
+
+                        <a href="#" class="read-btn">
+                            Read Now
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+            <!-- MAGAZINE 2 -->
+
+            <article
+                class="magazine-card"
+                data-access="premium"
+                data-category="business"
+                data-language="english"
+                data-search="forbes business finance leadership entrepreneurship"
+            >
+
+                <div class="magazine-cover">
+
+                    <img th:src="@{/img/fashion.png}" alt="Tablet Fashion Magazine">
+
+                    <span class="access-badge premium">
+                        PREMIUM
+                    </span>
+
+                    <button class="save-btn" aria-label="Save magazine">
+                        <i class="fa-regular fa-bookmark"></i>
+                    </button>
+
+                </div>
+
+
+                <div class="magazine-info">
+
+                    <div class="magazine-meta">
+                        <span>English</span>
+                        <span>•</span>
+                        <span>Business</span>
+                    </div>
+
+                    <h3>Forbes</h3>
+
+                    <p>
+                        Business leaders, entrepreneurship, finance
+                        and ideas shaping the global economy.
+                    </p>
+
+                    <div class="issue-date">
+                        <i class="fa-regular fa-calendar"></i>
+                        August 2026 Issue
+                    </div>
+
+                    <div class="magazine-bottom">
+
+                        <span class="source">
+                            Official Source
+                        </span>
+
+                        <a href="#" class="read-btn">
+                            Read Now
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+            <!-- MAGAZINE 3 -->
+
+            <article
+                class="magazine-card"
+                data-access="free"
+                data-category="lifestyle"
+                data-language="english"
+                data-search="national geographic lifestyle nature photography"
+            >
+
+                <div class="magazine-cover">
+
+                    <img
+                        th:src="@{/img/National.png}"
+                        alt="National Geographic"
+                    >
+
+                    <span class="access-badge free">
+                        FREE
+                    </span>
+
+                    <button class="save-btn" aria-label="Save magazine">
+                        <i class="fa-regular fa-bookmark"></i>
+                    </button>
+
+                </div>
+
+
+                <div class="magazine-info">
+
+                    <div class="magazine-meta">
+                        <span>English</span>
+                        <span>•</span>
+                        <span>Lifestyle</span>
+                    </div>
+
+                    <h3>National Geographic</h3>
+
+                    <p>
+                        Discover nature, people, science, travel and
+                        remarkable stories from around the world.
+                    </p>
+
+                    <div class="issue-date">
+                        <i class="fa-regular fa-calendar"></i>
+                        August 2026 Issue
+                    </div>
+
+                    <div class="magazine-bottom">
+
+                        <span class="source">
+                            Official Source
+                        </span>
+
+                        <a href="#" class="read-btn">
+                            Read Now
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+            <!-- MAGAZINE 4 -->
+
+            <article
+                class="magazine-card"
+                data-access="free"
+                data-category="travel"
+                data-language="english"
+                data-search="travel leisure destination culture"
+            >
+
+                <div class="magazine-cover">
+
+                    <img
+                        th:src="@{/img/travel.png}"
+                        alt="Travel Magazine"
+                    >
+
+                    <span class="access-badge free">
+                        FREE
+                    </span>
+
+                    <button class="save-btn" aria-label="Save magazine">
+                        <i class="fa-regular fa-bookmark"></i>
+                    </button>
+
+                </div>
+
+
+                <div class="magazine-info">
+
+                    <div class="magazine-meta">
+                        <span>English</span>
+                        <span>•</span>
+                        <span>Travel</span>
+                    </div>
+
+                    <h3>Travel + Leisure</h3>
+
+                    <p>
+                        Inspiring destinations, travel experiences,
+                        hotels and places worth discovering.
+                    </p>
+
+                    <div class="issue-date">
+                        <i class="fa-regular fa-calendar"></i>
+                        August 2026 Issue
+                    </div>
+
+                    <div class="magazine-bottom">
+
+                        <span class="source">
+                            Official Source
+                        </span>
+
+                        <a href="#" class="read-btn">
+                            Read Now
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+            <!-- MAGAZINE 5 -->
+
+            <article
+                class="magazine-card"
+                data-access="premium"
+                data-category="culture"
+                data-language="english"
+                data-search="the new yorker culture literature art society"
+            >
+
+                <div class="magazine-cover">
+
+                    <img
+                        th:src="@{/img/newyorker.png}"
+                        alt="The New Yorker"
+                    >
+
+                    <span class="access-badge premium">
+                        PREMIUM
+                    </span>
+
+                    <button class="save-btn" aria-label="Save magazine">
+                        <i class="fa-regular fa-bookmark"></i>
+                    </button>
+
+                </div>
+
+
+                <div class="magazine-info">
+
+                    <div class="magazine-meta">
+                        <span>English</span>
+                        <span>•</span>
+                        <span>Culture</span>
+                    </div>
+
+                    <h3>The New Yorker</h3>
+
+                    <p>
+                        Fiction, culture, art, society and thoughtful
+                        journalism from contemporary life.
+                    </p>
+
+                    <div class="issue-date">
+                        <i class="fa-regular fa-calendar"></i>
+                        August 2026 Issue
+                    </div>
+
+                    <div class="magazine-bottom">
+
+                        <span class="source">
+                            Official Source
+                        </span>
+
+                        <a href="#" class="read-btn">
+                            Read Now
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+            <!-- MAGAZINE 6 -->
+
+            <article
+                class="magazine-card"
+                data-access="free"
+                data-category="culture"
+                data-language="nepali"
+                data-search="nepali culture literature art nepal magazine"
+            >
+
+                <div class="magazine-cover">
+
+                    <img
+                        th:src="@{/img/nepal.png}"
+                        alt="Nepali Magazine"
+                    >
+
+                    <span class="access-badge free">
+                        FREE
+                    </span>
+
+                    <button class="save-btn" aria-label="Save magazine">
+                        <i class="fa-regular fa-bookmark"></i>
+                    </button>
+
+                </div>
+
+
+                <div class="magazine-info">
+
+                    <div class="magazine-meta">
+                        <span>नेपाली</span>
+                        <span>•</span>
+                        <span>Culture</span>
+                    </div>
+
+                    <h3>साहित्यिक संसार</h3>
+
+                    <p>
+                        नेपाली साहित्य, कला, संस्कृति र समसामयिक
+                        विचारहरू समेटिएको डिजिटल पत्रिका।
+                    </p>
+
+                    <div class="issue-date">
+                        <i class="fa-regular fa-calendar"></i>
+                        August 2026 Issue
+                    </div>
+
+                    <div class="magazine-bottom">
+
+                        <span class="source">
+                            Official Source
+                        </span>
+
+                        <a href="#" class="read-btn">
+                            Read Now
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+        </div>
+
+
+        <div class="no-results" id="noResults">
+
+            <i class="fa-solid fa-book-open"></i>
+
+            <h3>No magazines found</h3>
+
+            <p>
+                Try another magazine, language or category.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- FOOTER -->
+    <footer class="footer legacy-chrome-footer">
+        <div class="footer-inner">
+            <div class="footer-logo">READORA</div>
+            <div class="footer-copyright">© 2024 Readora. Cultivating intellectual clarity.</div>
+            <div class="footer-links">
+                <a href="#">Archives</a>
+                <a href="#">Authors</a>
+                <a href="#">Terms</a>
+                <a href="#">Privacy</a>
+                <a href="#">Support</a>
+            </div>
+        </div>
+    </footer>
+    <th:block th:replace="~{fragments/chrome :: footer}"></th:block>
+
+    <script th:src="@{/js/magazines.js}">
+        // ================= MAGAZINE FILTER SYSTEM =================
+
+const searchInput = document.getElementById("magazineSearch");
+const magazineCards = document.querySelectorAll(".magazine-card");
+const noResults = document.getElementById("noResults");
+
+const accessButtons = document.querySelectorAll(".access-btn");
+const categoryButtons = document.querySelectorAll(".category-btn");
+const languageButtons = document.querySelectorAll(".language-btn");
+
+let selectedAccess = "all";
+let selectedCategory = "all";
+let selectedLanguage = "all";
+
+
+// ================= FILTER MAGAZINES =================
+
+function filterMagazines() {
+
+    const searchText = searchInput.value.toLowerCase().trim();
+
+    let visibleCount = 0;
+
+    magazineCards.forEach(card => {
+
+        const access = card.dataset.access;
+        const category = card.dataset.category;
+        const language = card.dataset.language;
+        const searchableText = card.dataset.search.toLowerCase();
+
+        const accessMatch =
+            selectedAccess === "all" ||
+            access === selectedAccess;
+
+        const categoryMatch =
+            selectedCategory === "all" ||
+            category === selectedCategory;
+
+        const languageMatch =
+            selectedLanguage === "all" ||
+            language === selectedLanguage;
+
+        const searchMatch =
+            searchText === "" ||
+            searchableText.includes(searchText) ||
+            card.querySelector("h3").textContent
+                .toLowerCase()
+                .includes(searchText);
+
+        if (
+            accessMatch &&
+            categoryMatch &&
+            languageMatch &&
+            searchMatch
+        ) {
+            card.style.display = "block";
+            visibleCount++;
+        } else {
+            card.style.display = "none";
+        }
+
+    });
+
+
+    // Show / hide no results message
+
+    if (visibleCount === 0) {
+        noResults.style.display = "block";
+    } else {
+        noResults.style.display = "none";
+    }
+}
+
+
+// ================= ACCESS FILTER =================
+
+accessButtons.forEach(button => {
+
+    button.addEventListener("click", function () {
+
+        accessButtons.forEach(btn => {
+            btn.classList.remove("active");
+        });
+
+        this.classList.add("active");
+
+        selectedAccess = this.dataset.access;
+
+        filterMagazines();
+
+    });
+
+});
+
+
+// ================= CATEGORY FILTER =================
+
+categoryButtons.forEach(button => {
+
+    button.addEventListener("click", function () {
+
+        categoryButtons.forEach(btn => {
+            btn.classList.remove("active");
+        });
+
+        this.classList.add("active");
+
+        selectedCategory = this.dataset.category;
+
+        filterMagazines();
+
+    });
+
+});
+
+
+// ================= LANGUAGE FILTER =================
+
+languageButtons.forEach(button => {
+
+    button.addEventListener("click", function () {
+
+        languageButtons.forEach(btn => {
+            btn.classList.remove("active");
+        });
+
+        this.classList.add("active");
+
+        selectedLanguage = this.dataset.language;
+
+        filterMagazines();
+
+    });
+
+});
+
+
+// ================= SEARCH =================
+
+searchInput.addEventListener("input", filterMagazines);
+
+
+// ================= SAVE / BOOKMARK =================
+
+const saveButtons = document.querySelectorAll(".save-btn");
+
+saveButtons.forEach(button => {
+
+    button.addEventListener("click", function () {
+
+        this.classList.toggle("saved");
+
+        const icon = this.querySelector("i");
+
+        if (this.classList.contains("saved")) {
+
+            icon.classList.remove("fa-regular");
+            icon.classList.add("fa-solid");
+
+        } else {
+
+            icon.classList.remove("fa-solid");
+            icon.classList.add("fa-regular");
+
+        }
+
+    });
+
+});
+
+
+// ================= READ NOW =================
+
+const readButtons = document.querySelectorAll(".read-btn");
+
+readButtons.forEach((button, index) => {
+
+    button.addEventListener("click", function (event) {
+
+        event.preventDefault();
+
+        window.location.href = `reader.html?id=${index + 1}`;
+
+    });
+
+});
+
+
+// ================= INITIAL FILTER =================
+
+filterMagazines();
+    </script>
+
+</body>
+
+</html>

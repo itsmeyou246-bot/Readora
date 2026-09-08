@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search - READORA</title>
+    <link rel="stylesheet" th:href="@{/css/search.css}">
+</head>
+<body>
+
+    <!-- HEADER -->
+    <th:block th:replace="~{fragments/chrome :: header}"></th:block>
+    <header class="header legacy-chrome-header">
+        <div class="header-inner">
+            <a th:href="@{/index}" class="logo">READORA</a>
+            <nav class="nav-links">
+                <a th:href="@{/index}">Discover</a>
+                <a th:href="@{/Book}">Books</a>
+                <a th:href="@{/newspapers}">Newspapers</a>
+                <a th:href="@{/magazines}">Magazines</a>
+                <a th:href="@{/read-nepal}">Read Nepal</a>
+                <a th:href="@{/library}">My Library</a>
+            </nav>
+            <div class="profile-icon">👤</div>
+        </div>
+    </header>
+
+    <!-- MAIN -->
+    <main class="main-content">
+        <div class="container">
+
+            <!-- SEARCH HERO -->
+            <div class="search-hero">
+                <h1>Search READORA</h1>
+                <p>Find books, newspapers, magazines and more</p>
+                <div class="search-input-wrapper">
+                    <input type="text" id="mainSearchInput" class="main-search-input" placeholder="Search by title, author, publication...">
+                    <button class="search-button">🔍</button>
+                </div>
+            </div>
+
+            <!-- FILTERS -->
+            <div class="filters-section">
+                <div class="filter-group">
+                    <label for="contentType">Content Type</label>
+                    <select id="contentType" class="filter-select">
+                        <option value="">All Types</option>
+                        <option value="books">Books</option>
+                        <option value="newspapers">Newspapers</option>
+                        <option value="magazines">Magazines</option>
+                        <option value="journals">Journals</option>
+                        <option value="nepal">Read Nepal</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label for="category">Category</label>
+                    <select id="category" class="filter-select">
+                        <option value="">All Categories</option>
+                        <option value="Fiction">Fiction</option>
+                        <option value="History">History</option>
+                        <option value="Science">Science</option>
+                        <option value="Poetry">Poetry</option>
+                        <option value="Technology">Technology</option>
+                        <option value="Lifestyle">Lifestyle</option>
+                        <option value="Travel">Travel</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label for="language">Language</label>
+                    <select id="language" class="filter-select">
+                        <option value="">All Languages</option>
+                        <option value="English">English</option>
+                        <option value="Nepali">नेपाली</option>
+                        <option value="Hindi">हिन्दी</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label for="premium">Availability</label>
+                    <select id="premium" class="filter-select">
+                        <option value="">All</option>
+                        <option value="free">Free</option>
+                        <option value="premium">Premium</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- RESULTS INFO -->
+            <div id="resultsInfo" class="results-info" style="display: none;">
+                <p>Showing <span id="resultCount">0</span> results</p>
+            </div>
+
+            <!-- EMPTY STATE -->
+            <div id="emptyState" class="empty-state" style="display: none;">
+                <p>No results found.</p>
+                <p>Try searching with different keywords, or browse our collections.</p>
+                <div class="empty-actions">
+                    <a th:href="@{/Book}" class="btn-secondary">Browse Books</a>
+                    <a th:href="@{/newspapers}" class="btn-secondary">Browse Newspapers</a>
+                    <a th:href="@{/magazines}" class="btn-secondary">Browse Magazines</a>
+                </div>
+            </div>
+
+            <!-- RESULTS GRID -->
+            <div id="resultsContainer" class="results-grid">
+                <!-- Results will be inserted here -->
+            </div>
+
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer legacy-chrome-footer">
+        <div class="footer-inner">
+            <div class="footer-logo">READORA</div>
+            <div class="footer-links">
+                <a href="#">About</a>
+                <a href="#">Support</a>
+                <a href="#">Terms</a>
+                <a href="#">Privacy</a>
+            </div>
+            <div class="footer-copyright">© 2026 READORA. All rights reserved.</div>
+        </div>
+    </footer>
+    <th:block th:replace="~{fragments/chrome :: footer}"></th:block>
+
+    <script>
+        // ========================================
+        // SEARCH DATA - ACROSS ALL CONTENT TYPES
+        // Later: GET /api/search?q=...&type=...
+        // ========================================
+
+        const allContent = {
+            books: [
+                { id: 1, type: 'book', title: "The Silent Spring", author: "Rachel Carson", category: "Science", language: "English", premium: false, image: "book1.jpg" },
+                { id: 2, type: 'book', title: "The Mountain Path", author: "Demo Author", category: "Fiction", language: "English", premium: true, image: "book2.jpg" },
+                { id: 3, type: 'book', title: "Atomic Habits", author: "James Clear", category: "Self-Help", language: "English", premium: false, image: "book3.jpg" }
+            ],
+            newspapers: [
+                { id: 1, type: 'newspaper', title: "The Guardian", edition: "Daily", language: "English", premium: false, image: "guardian.jpg" },
+                { id: 2, type: 'newspaper', title: "BBC News", edition: "Daily", language: "English", premium: false, image: "bbc.jpg" },
+                { id: 3, type: 'newspaper', title: "Kantipur", edition: "Daily", language: "Nepali", premium: false, image: "kantipur.jpg" }
+            ],
+            magazines: [
+                { id: 1, type: 'magazine', title: "Wired", issue: "September 2026", category: "Technology", language: "English", premium: true, image: "wired.jpg" },
+                { id: 2, type: 'magazine', title: "Vogue", issue: "Fall 2026", category: "Lifestyle", language: "English", premium: false, image: "vogue.jpg" },
+                { id: 3, type: 'magazine', title: "National Geographic", issue: "August 2026", category: "Travel", language: "English", premium: true, image: "natgeo.jpg" }
+            ],
+            journals: [
+                { id: 1, type: 'journal', title: "Nature", author: "Scientific Community", category: "Science", language: "English", premium: true },
+                { id: 2, type: 'journal', title: "Science Daily", author: "Various", category: "Science", language: "English", premium: false }
+            ],
+            nepal: [
+                { id: 1, type: 'nepal', title: "Muna Madan", nepaliTitle: "मुना मदन", author: "Laxmi Prasad Devkota", category: "Poetry", language: "Nepali", premium: false, image: "nepal1.jpg" },
+                { id: 2, type: 'nepal', title: "Chronicles of the Valley", author: "Demo Author", category: "History", language: "Nepali", premium: false, image: "nepal2.jpg" }
+            ]
+        };
+
+        // ========================================
+        // INITIALIZE PAGE
+        // ========================================
+
+        document.addEventListener('DOMContentLoaded', function() {
+            setupEventListeners();
+            
+            // Check if search term in URL
+            const params = new URLSearchParams(window.location.search);
+            const searchTerm = params.get('q');
+            if (searchTerm) {
+                document.getElementById('mainSearchInput').value = searchTerm;
+                performSearch();
+            }
+        });
+
+        // ========================================
+        // SETUP EVENT LISTENERS
+        // ========================================
+
+        function setupEventListeners() {
+            const searchInput = document.getElementById('mainSearchInput');
+            const searchButton = document.querySelector('.search-button');
+            const filters = document.querySelectorAll('.filter-select');
+
+            // Search on input
+            searchInput.addEventListener('input', performSearch);
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    performSearch();
+                }
+            });
+
+            // Search on button click
+            searchButton.addEventListener('click', performSearch);
+
+            // Filter changes
+            filters.forEach(filter => {
+                filter.addEventListener('change', performSearch);
+            });
+        }
+
+        // ========================================
+        // PERFORM SEARCH
+        // ========================================
+
+        function performSearch() {
+            const searchTerm = document.getElementById('mainSearchInput').value.toLowerCase();
+            const contentType = document.getElementById('contentType').value;
+            const category = document.getElementById('category').value;
+            const language = document.getElementById('language').value;
+            const premium = document.getElementById('premium').value;
+
+            let results = [];
+
+            // Search across all content types
+            Object.keys(allContent).forEach(key => {
+                if (contentType === '' || contentType === key) {
+                    const items = allContent[key];
+                    const filtered = items.filter(item => {
+                        // Search by title/author
+                        const matchSearch = !searchTerm || 
+                            item.title.toLowerCase().includes(searchTerm) ||
+                            (item.author && item.author.toLowerCase().includes(searchTerm)) ||
+                            (item.nepaliTitle && item.nepaliTitle.includes(searchTerm));
+
+                        // Filter by category
+                        const matchCategory = !category || item.category === category;
+
+                        // Filter by language
+                        const matchLanguage = !language || item.language === language;
+
+                        // Filter by premium
+                        let matchPremium = true;
+                        if (premium === 'free') {
+                            matchPremium = !item.premium;
+                        } else if (premium === 'premium') {
+                            matchPremium = item.premium;
+                        }
+
+                        return matchSearch && matchCategory && matchLanguage && matchPremium;
+                    });
+
+                    results = results.concat(filtered);
+                }
+            });
+
+            displayResults(results, searchTerm);
+        }
+
+        // ========================================
+        // DISPLAY RESULTS
+        // ========================================
+
+        function displayResults(results, searchTerm) {
+            const container = document.getElementById('resultsContainer');
+            const emptyState = document.getElementById('emptyState');
+            const resultsInfo = document.getElementById('resultsInfo');
+            const resultCount = document.getElementById('resultCount');
+
+            if (results.length === 0) {
+                container.innerHTML = '';
+                emptyState.style.display = 'block';
+                resultsInfo.style.display = 'none';
+                return;
+            }
+
+            emptyState.style.display = 'none';
+            resultsInfo.style.display = 'block';
+            resultCount.textContent = results.length;
+
+            // Group results by type
+            const grouped = {};
+            results.forEach(result => {
+                if (!grouped[result.type]) {
+                    grouped[result.type] = [];
+                }
+                grouped[result.type].push(result);
+            });
+
+            let html = '';
+
+            // Display grouped results
+            Object.keys(grouped).forEach(type => {
+                const typeLabel = {
+                    'book': 'Books',
+                    'newspaper': 'Newspapers',
+                    'magazine': 'Magazines',
+                    'journal': 'Journals',
+                    'nepal': 'Read Nepal'
+                }[type] || type;
+
+                html += `<div class="results-section">
+                    <h2 class="results-section-title">${typeLabel}</h2>
+                    <div class="results-section-grid">`;
+
+                grouped[type].forEach(item => {
+                    html += createResultCard(item);
+                });
+
+                html += `</div></div>`;
+            });
+
+            container.innerHTML = html;
+            attachResultClickHandlers();
+        }
+
+        // ========================================
+        // CREATE RESULT CARD
+        // ========================================
+
+        function createResultCard(item) {
+            let html = '';
+
+            if (item.type === 'book') {
+                html = `
+                    <div class="result-card book-card" data-id="${item.id}">
+                        <div class="result-image" style="background-image: url('${item.image}')"></div>
+                        <h3>${item.title}</h3>
+                        <p class="author">${item.author}</p>
+                        <p class="category"><span>${item.category}</span></p>
+                        ${item.premium ? '<span class="premium-badge">Premium</span>' : ''}
+                    </div>
+                `;
+            } else if (item.type === 'newspaper') {
+                html = `
+                    <div class="result-card newspaper-card" data-id="${item.id}">
+                        <div class="result-image" style="background-image: url('${item.image}')"></div>
+                        <h3>${item.title}</h3>
+                        <p class="meta">${item.edition}</p>
+                    </div>
+                `;
+            } else if (item.type === 'magazine') {
+                html = `
+                    <div class="result-card magazine-card" data-id="${item.id}">
+                        <div class="result-image" style="background-image: url('${item.image}')"></div>
+                        <h3>${item.title}</h3>
+                        <p class="meta">${item.issue}</p>
+                        ${item.premium ? '<span class="premium-badge">Premium</span>' : ''}
+                    </div>
+                `;
+            } else if (item.type === 'journal') {
+                html = `
+                    <div class="result-card journal-card" data-id="${item.id}">
+                        <h3>${item.title}</h3>
+                        <p class="author">${item.author}</p>
+                        <p class="category"><span>${item.category}</span></p>
+                        ${item.premium ? '<span class="premium-badge">Premium</span>' : ''}
+                    </div>
+                `;
+            } else if (item.type === 'nepal') {
+                html = `
+                    <div class="result-card nepal-card" data-id="${item.id}">
+                        <div class="result-image" style="background-image: url('${item.image}')"></div>
+                        <h3>${item.title}</h3>
+                        <p class="nepali-text">${item.nepaliTitle}</p>
+                        <p class="author">${item.author}</p>
+                    </div>
+                `;
+            }
+
+            return html;
+        }
+
+        // ========================================
+        // ATTACH CLICK HANDLERS
+        // ========================================
+
+        function attachResultClickHandlers() {
+            const cards = document.querySelectorAll('.result-card');
+            cards.forEach(card => {
+                card.addEventListener('click', function() {
+                    // For now, just navigate based on type
+                    const type = this.className.split(' ')[1];
+                    if (type === 'book-card') {
+                        window.location.href = 'Book.html';
+                    } else if (type === 'newspaper-card') {
+                        window.location.href = 'newspapers.html';
+                    } else if (type === 'magazine-card') {
+                        window.location.href = 'magazines.html';
+                    } else if (type === 'nepal-card') {
+                        window.location.href = 'read-nepal.html';
+                    }
+                });
+            });
+        }
+    </script>
+
+</body>
+</html>

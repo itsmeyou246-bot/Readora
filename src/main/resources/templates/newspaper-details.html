@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Newspaper Details - READORA</title>
+    <link rel="stylesheet" th:href="@{/css/newspaper-details.css}">
+</head>
+<body>
+
+    <!-- HEADER -->
+    <th:block th:replace="~{fragments/chrome :: header}"></th:block>
+    <header class="header legacy-chrome-header">
+        <div class="header-inner">
+            <a th:href="@{/index}" class="logo">READORA</a>
+            <nav class="nav-links">
+                <a th:href="@{/index}">Discover</a>
+                <a th:href="@{/Book}">Books</a>
+                <a th:href="@{/newspapers}">Newspapers</a>
+                <a th:href="@{/magazines}">Magazines</a>
+                <a th:href="@{/read-nepal}">Read Nepal</a>
+                <a th:href="@{/library}">My Library</a>
+            </nav>
+            <div class="profile-icon">👤</div>
+        </div>
+    </header>
+
+    <!-- MAIN -->
+    <main class="main-content">
+        <div class="container">
+
+            <!-- BREADCRUMB -->
+            <a th:href="@{/newspapers}" class="breadcrumb-link">← Back to Newspapers</a>
+
+            <!-- DETAILS LAYOUT -->
+            <div class="details-layout">
+
+                <!-- LEFT COLUMN -->
+                <div class="details-left">
+                    <img id="newspaperCover" src="newspapers.png" alt="Newspaper Cover" class="newspaper-cover">
+                </div>
+
+                <!-- RIGHT COLUMN -->
+                <div class="details-right">
+                    <h1 id="newspaperTitle">The Guardian</h1>
+                    <p id="newspaperEdition" class="edition">Daily Edition</p>
+                    <p id="newspaperDate" class="date">August 31, 2026</p>
+                    
+                    <div class="language-badges">
+                        <span id="languageBadge" class="language-badge">English</span>
+                    </div>
+
+                    <p id="newspaperDescription" class="description">
+                        Leading publication bringing you the latest news and in-depth analysis from around the world.
+                    </p>
+
+                    <div class="actions">
+                        <button id="readBtn" class="btn-primary">Read Issue</button>
+                        <button id="saveBtn" class="btn-secondary">Save</button>
+                        <button id="bookmarkBtn" class="btn-secondary">🔖 Bookmark</button>
+                    </div>
+
+                    <div class="info-section">
+                        <h3>About this Publication</h3>
+                        <p id="aboutText">
+                            This is one of the leading newspaper publications with a rich tradition of quality journalism.
+                        </p>
+                    </div>
+
+                    <div class="info-section">
+                        <h3>Today's Highlights</h3>
+                        <ul id="highlights" class="highlights-list">
+                            <li>Breaking news update</li>
+                            <li>Feature story</li>
+                            <li>Editorial column</li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- RELATED PUBLICATIONS -->
+            <div class="related-section">
+                <h2>More from this Publication</h2>
+                <div id="relatedGrid" class="related-grid">
+                    <!-- Related publications will be inserted here -->
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer legacy-chrome-footer">
+        <div class="footer-inner">
+            <div class="footer-logo">READORA</div>
+            <div class="footer-links">
+                <a href="#">About</a>
+                <a href="#">Support</a>
+                <a href="#">Terms</a>
+                <a href="#">Privacy</a>
+            </div>
+            <div class="footer-copyright">© 2026 READORA. All rights reserved.</div>
+        </div>
+    </footer>
+    <th:block th:replace="~{fragments/chrome :: footer}"></th:block>
+
+    <!-- TOAST -->
+    <div id="toast" class="toast"></div>
+
+    <script>
+        // ========================================
+        // NEWSPAPER DATA
+        // Later: GET /api/newspapers/{id}
+        // ========================================
+
+        const newspapersDataFull = {
+            1: {
+                id: 1,
+                title: "The Guardian",
+                edition: "Daily",
+                date: "August 31, 2026",
+                language: "English",
+                image: "guardian.png",
+                description: "One of the world's leading newspapers, delivering comprehensive news, analysis, and features.",
+                about: "The Guardian is a progressive national newspaper with a tradition of independent, investigative journalism.",
+                highlights: [
+                    "Climate change report reveals new data",
+                    "International politics: Latest developments",
+                    "Technology innovation in renewable energy",
+                    "Culture and arts review"
+                ]
+            },
+            2: {
+                id: 2,
+                title: "BBC News",
+                edition: "Daily Update",
+                date: "August 31, 2026",
+                language: "English",
+                image: "bbc.png",
+                description: "Trusted news from around the world with impartial reporting.",
+                about: "BBC News brings you the latest news stories from around the globe with trusted reporting.",
+                highlights: [
+                    "World news roundup",
+                    "Business and economics",
+                    "Science and environment",
+                    "Human interest stories"
+                ]
+            },
+            3: {
+                id: 3,
+                title: "Kantipur",
+                edition: "दैनिक संस्करण",
+                date: "Aug 31, 2026",
+                language: "Nepali",
+                image: "kantipur.png",
+                description: "नेपालको प्रमुख समाचार पत्र - दैनिक खबर र विश्लेषण",
+                about: "कान्तिपुर नेपालको प्रमुख समाचार पत्र हो जो गुणस्तरीय पत्रकारिताको परम्परा राख्दै आएको छ।",
+                highlights: [
+                    "राष्ट्रीय समाचार",
+                    "अर्थनीति र व्यापार",
+                    "स्थानीय समाचार",
+                    "खेलकुद"
+                ]
+            }
+        };
+
+        // ========================================
+        // INITIALIZE PAGE
+        // ========================================
+
+        document.addEventListener('DOMContentLoaded', function() {
+            loadNewspaperDetails();
+            setupEventListeners();
+        });
+
+        // ========================================
+        // LOAD NEWSPAPER DETAILS
+        // ========================================
+
+        function loadNewspaperDetails() {
+            const newspaper = JSON.parse(sessionStorage.getItem('selectedNewspaper')) || newspapersDataFull[1];
+
+            document.getElementById('newspaperTitle').textContent = newspaper.title;
+            document.getElementById('newspaperEdition').textContent = newspaper.edition;
+            document.getElementById('newspaperDate').textContent = newspaper.date;
+            document.getElementById('languageBadge').textContent = newspaper.language;
+            document.getElementById('newspaperCover').src = newspaper.image;
+            document.getElementById('newspaperDescription').textContent = newspaper.description;
+            document.getElementById('aboutText').textContent = newspaper.about;
+
+            const highlightsList = document.getElementById('highlights');
+            highlightsList.innerHTML = newspaper.highlights.map(h => `<li>${h}</li>`).join('');
+
+            displayRelatedPublications(newspaper.id);
+        }
+
+        // ========================================
+        // DISPLAY RELATED PUBLICATIONS
+        // ========================================
+
+        function displayRelatedPublications(currentId) {
+            const grid = document.getElementById('relatedGrid');
+            const related = Object.values(newspapersDataFull).filter(n => n.id !== currentId).slice(0, 3);
+
+            grid.innerHTML = related.map(newspaper => `
+                <div class="related-card" data-id="${newspaper.id}">
+                    <img src="${newspaper.image}" alt="${newspaper.title}">
+                    <h3>${newspaper.title}</h3>
+                    <p>${newspaper.edition}</p>
+                    <p class="date">${newspaper.date}</p>
+                </div>
+            `).join('');
+
+            attachRelatedClickHandlers();
+        }
+
+        // ========================================
+        // SETUP EVENT LISTENERS
+        // ========================================
+
+        function setupEventListeners() {
+            document.getElementById('readBtn').addEventListener('click', readNewspaper);
+            document.getElementById('saveBtn').addEventListener('click', saveNewspaper);
+            document.getElementById('bookmarkBtn').addEventListener('click', bookmarkNewspaper);
+        }
+
+        // ========================================
+        // READ NEWSPAPER
+        // ========================================
+
+        function readNewspaper() {
+            const newspaper = JSON.parse(sessionStorage.getItem('selectedNewspaper'));
+            sessionStorage.setItem('currentNewspaper', JSON.stringify(newspaper));
+            window.location.href = 'reader.html';
+        }
+
+        // ========================================
+        // SAVE NEWSPAPER
+        // ========================================
+
+        function saveNewspaper() {
+            const newspaper = JSON.parse(sessionStorage.getItem('selectedNewspaper'));
+            let saved = localStorage.getItem('myLibrary');
+            saved = saved ? JSON.parse(saved) : [];
+
+            if (!saved.find(s => s.id === newspaper.id)) {
+                saved.push({...newspaper, dateSaved: new Date().toISOString(), type: 'newspaper'});
+                localStorage.setItem('myLibrary', JSON.stringify(saved));
+                showToast('Saved to library');
+            } else {
+                showToast('Already in your library');
+            }
+        }
+
+        // ========================================
+        // BOOKMARK NEWSPAPER
+        // ========================================
+
+        function bookmarkNewspaper() {
+            const btn = document.getElementById('bookmarkBtn');
+            btn.classList.toggle('bookmarked');
+            
+            if (btn.classList.contains('bookmarked')) {
+                showToast('Bookmark saved');
+            } else {
+                showToast('Bookmark removed');
+            }
+        }
+
+        // ========================================
+        // ATTACH RELATED CLICK HANDLERS
+        // ========================================
+
+        function attachRelatedClickHandlers() {
+            const cards = document.querySelectorAll('.related-card');
+            cards.forEach(card => {
+                card.addEventListener('click', function() {
+                    const id = this.getAttribute('data-id');
+                    const newspaper = newspapersDataFull[id];
+                    sessionStorage.setItem('selectedNewspaper', JSON.stringify(newspaper));
+                    location.reload();
+                });
+            });
+        }
+
+        // ========================================
+        // TOAST NOTIFICATION
+        // ========================================
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+    </script>
+
+</body>
+</html>

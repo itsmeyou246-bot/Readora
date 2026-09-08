@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Newspapers - Readora</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/newspapers.css}">
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <th:block th:replace="~{fragments/chrome :: header}"></th:block>
+    <header class="header legacy-chrome-header">
+        <div class="header-inner">
+            <a th:href="@{/index}" class="logo">READORA</a>
+
+            <nav class="nav-links">
+                <a th:href="@{/index}">Discover</a>
+                <a th:href="@{/Book}">Books</a>
+                <a th:href="@{/newspapers}" class="nav-active">Newspapers</a>
+                <a th:href="@{/magazines}">Magazines</a>
+                <a th:href="@{/read-nepal}">Read Nepal</a>
+                <a th:href="@{/library}">My Library</a>
+            </nav>
+
+            <div class="profile-icon">☺</div>
+        </div>
+    </header>
+
+    <!-- PAGE TITLE -->
+    <section class="page-intro">
+        <div class="container">
+            <h1 class="page-title">Today's Newspapers</h1>
+            <p class="page-subtitle">Stay informed with daily publications from around the world.</p>
+        </div>
+    </section>
+
+    <!-- SEARCH & FILTER -->
+    <section class="filter-section">
+        <div class="container">
+            <div class="filter-row">
+                <div class="search-bar">
+                    <input type="text" id="searchInput" class="search-input" placeholder="Search publications...">
+                </div>
+
+                <div class="filter-controls">
+                    <select id="filterLanguage" class="filter-select">
+                        <option value="">All Languages</option>
+                        <option value="English">English</option>
+                        <option value="Nepali">नेपाली</option>
+                        <option value="Hindi">हिन्दी</option>
+                    </select>
+
+                    <select id="sortBy" class="filter-select">
+                        <option value="latest">Latest</option>
+                        <option value="popular">Popular</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TODAY'S EDITION HERO -->
+    <section class="todays-edition">
+        <div class="container">
+            <div class="edition-grid">
+                <!-- Featured publication (large card) -->
+                <div class="featured-publication" id="featuredPub">
+                    <img th:src="@{/img/All newspaper.png}" alt="Today's Featured Publication">
+                    <div class="featured-content">
+                        <h2 id="featuredTitle">The Daily Times</h2>
+                        <p id="featuredEdition">Morning Edition</p>
+                        <p id="featuredDate">December 27, 2024</p>
+                        <button class="read-btn">Read Issue</button>
+                    </div>
+                </div>
+
+                <!-- Secondary publications -->
+                <div class="publication-list">
+                    <div class="pub-card">
+                        <div class="pub-cover">
+                            <img th:src="@{/img/The global herald.png}" alt="Publication">
+                        </div>
+                        <div class="pub-info">
+                            <h4>The Global Herald</h4>
+                            <p class="pub-edition">Evening Edition</p>
+                            <p class="pub-date">Dec 27, 2024</p>
+                            <span class="pub-lang">English</span>
+                        </div>
+                        <button class="read-btn-small">Read</button>
+                    </div>
+
+                    <div class="pub-card">
+                        <div class="pub-cover">
+                            <img th:src="@{/img/kantipur.png}" alt="Publication">
+                        </div>
+                        <div class="pub-info">
+                            <h4>Kantipur Times</h4>
+                            <p class="pub-edition">आज को संस्करण</p>
+                            <p class="pub-date">Dec 27, 2024</p>
+                            <span class="pub-lang">नेपाली</span>
+                        </div>
+                        <button class="read-btn-small">Read</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- LATEST PUBLICATIONS SECTION -->
+  <section class="featured-news">
+
+    <div class="news-section-title">
+        <div>
+            <span>TRUSTED SOURCES</span>
+            <h2>Featured Newspapers</h2>
+            <p>Read today's news from trusted local and international sources.</p>
+        </div>
+
+        <div class="news-language">
+            <button class="active">All</button>
+            <button>English</button>
+            <button>नेपाली</button>
+        </div>
+    </div>
+
+    <div class="newspaper-grid">
+
+        <div class="newspaper-card">
+
+            <div class="newspaper-image">
+                <img th:src="@{/img/Kathmandu.png}" alt="The Kathmandu Post">
+                <span class="free-badge">FREE</span>
+            </div>
+
+            <div class="newspaper-info">
+
+                <div class="news-meta">
+                    <span>English</span>
+                    <span>•</span>
+                    <span>Nepal</span>
+                </div>
+
+                <h3>The Kathmandu Post</h3>
+
+                <p>
+                    Daily English newspaper covering national,
+                    international, business and cultural news.
+                </p>
+
+                <div class="newspaper-bottom">
+
+                    <span class="source">
+                        <i class="fa-solid fa-circle-check"></i>
+                        Official Source
+                    </span>
+
+                    <a href="https://kathmandupost.com/" target="_blank" class="read-news">
+                        Read Now
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="newspaper-card">
+
+            <div class="newspaper-image">
+                <img th:src="@{/img/kantipur.png}" alt="Kantipur">
+                <span class="free-badge">FREE</span>
+            </div>
+
+            <div class="newspaper-info">
+
+                <div class="news-meta">
+                    <span>नेपाली</span>
+                    <span>•</span>
+                    <span>Nepal</span>
+                </div>
+
+                <h3>कान्तिपुर</h3>
+
+                <p>
+                    नेपालको लोकप्रिय दैनिक पत्रिका जसमा
+                    राष्ट्रिय, राजनीति, समाज र आर्थिक समाचार समावेश छन्।
+                </p>
+
+                <div class="newspaper-bottom">
+
+                    <span class="source">
+                        <i class="fa-solid fa-circle-check"></i>
+                        Official Source
+                    </span>
+
+                    <a href="https://ekantipur.com/" target="_blank" class="read-news">
+                        Read Now
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="newspaper-card">
+
+            <div class="newspaper-image">
+                <img th:src="@{/img/himalayan.png}" alt="The Himalayan Times">
+                <span class="free-badge">FREE</span>
+            </div>
+
+            <div class="newspaper-info">
+
+                <div class="news-meta">
+                    <span>English</span>
+                    <span>•</span>
+                    <span>Nepal</span>
+                </div>
+
+                <h3>The Himalayan Times</h3>
+
+                <p>
+                    English-language news covering Nepal,
+                    world affairs, business, lifestyle and sports.
+                </p>
+
+                <div class="newspaper-bottom">
+
+                    <span class="source">
+                        <i class="fa-solid fa-circle-check"></i>
+                        Official Source
+                    </span>
+
+                    <a href="https://thehimalayantimes.com/" target="_blank" class="read-news">
+                        Read Now
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</section>
+<section class="featured-news international-news">
+
+    <div class="news-section-title">
+        <div>
+            <span>GLOBAL SOURCES</span>
+            <h2>International Newspapers</h2>
+            <p>Stay updated with trusted news from around the world.</p>
+        </div>
+
+        <div class="news-language">
+            <button class="active">All</button>
+            <button>English</button>
+        </div>
+    </div>
+
+    <div class="newspaper-grid">
+
+        <div class="newspaper-card">
+            <div class="newspaper-image">
+                <img th:src="@{/img/BBC.png}" alt="BBC News">
+                <span class="free-badge">FREE</span>
+            </div>
+
+            <div class="newspaper-info">
+                <div class="news-meta">
+                    <span>English</span>
+                    <span>•</span>
+                    <span>United Kingdom</span>
+                </div>
+
+                <h3>BBC News</h3>
+
+                <p>
+                    International news covering world affairs,
+                    politics, business, technology, science and culture.
+                </p>
+
+                <div class="newspaper-bottom">
+                    <span class="source">
+                        <i class="fa-solid fa-circle-check"></i>
+                        Official Source
+                    </span>
+
+                    <a href="https://www.bbc.com/news"
+                       target="_blank"
+                       class="read-news">
+                        Read Now
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="newspaper-card">
+            <div class="newspaper-image">
+                <img th:src="@{/img/Reuters.png}" alt="Reuters">
+                <span class="free-badge">FREE</span>
+            </div>
+
+            <div class="newspaper-info">
+                <div class="news-meta">
+                    <span>English</span>
+                    <span>•</span>
+                    <span>International</span>
+                </div>
+
+                <h3>Reuters</h3>
+
+                <p>
+                    Global breaking news covering politics, business,
+                    markets, technology and major world events.
+                </p>
+
+                <div class="newspaper-bottom">
+                    <span class="source">
+                        <i class="fa-solid fa-circle-check"></i>
+                        Official Source
+                    </span>
+
+                    <a href="https://www.reuters.com/"
+                       target="_blank"
+                       class="read-news">
+                        Read Now
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="newspaper-card">
+            <div class="newspaper-image">
+                <img th:src="@{/img/Aljazeera.png}" alt="Al Jazeera">
+                <span class="free-badge">FREE</span>
+            </div>
+
+            <div class="newspaper-info">
+                <div class="news-meta">
+                    <span>English</span>
+                    <span>•</span>
+                    <span>Qatar</span>
+                </div>
+
+                <h3>Al Jazeera</h3>
+
+                <p>
+                    Global news covering international affairs,
+                    politics, conflicts, society and world events.
+                </p>
+
+                <div class="newspaper-bottom">
+                    <span class="source">
+                        <i class="fa-solid fa-circle-check"></i>
+                        Official Source
+                    </span>
+
+                    <a href="https://www.aljazeera.com/"
+                       target="_blank"
+                       class="read-news">
+                        Read Now
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="newspaper-card">
+            <div class="newspaper-image">
+                <img th:src="@{/img/ap.png}" alt="Associated Press">
+                <span class="free-badge">FREE</span>
+            </div>
+
+            <div class="newspaper-info">
+                <div class="news-meta">
+                    <span>English</span>
+                    <span>•</span>
+                    <span>United States</span>
+                </div>
+
+                <h3>Associated Press</h3>
+
+                <p>
+                    Independent global news covering world affairs,
+                    politics, business, science, sports and culture.
+                </p>
+
+                <div class="newspaper-bottom">
+                    <span class="source">
+                        <i class="fa-solid fa-circle-check"></i>
+                        Official Source
+                    </span>
+
+                    <a href="https://apnews.com/"
+                       target="_blank"
+                       class="read-news">
+                        Read Now
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="newspaper-card">
+            <div class="newspaper-image">
+                <img th:src="@{/img/guardian.png}" alt="The Guardian">
+                <span class="free-badge">FREE</span>
+            </div>
+
+            <div class="newspaper-info">
+                <div class="news-meta">
+                    <span>English</span>
+                    <span>•</span>
+                    <span>United Kingdom</span>
+                </div>
+
+                <h3>The Guardian</h3>
+
+                <p>
+                    International reporting on politics, society,
+                    climate, technology, culture and world affairs.
+                </p>
+
+                <div class="newspaper-bottom">
+                    <span class="source">
+                        <i class="fa-solid fa-circle-check"></i>
+                        Official Source
+                    </span>
+
+                    <a href="https://www.theguardian.com/international"
+                       target="_blank"
+                       class="read-news">
+                        Read Now
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="newspaper-card">
+            <div class="newspaper-image">
+                <img th:src="@{/img/cnn.png}" alt="CNN">
+                <span class="free-badge">FREE</span>
+            </div>
+
+            <div class="newspaper-info">
+                <div class="news-meta">
+                    <span>English</span>
+                    <span>•</span>
+                    <span>United States</span>
+                </div>
+
+                <h3>CNN</h3>
+
+                <p>
+                    Breaking international news covering politics,
+                    business, technology, entertainment and world events.
+                </p>
+
+                <div class="newspaper-bottom">
+                    <span class="source">
+                        <i class="fa-solid fa-circle-check"></i>
+                        Official Source
+                    </span>
+
+                    <a href="https://www.cnn.com/"
+                       target="_blank"
+                       class="read-news">
+                        Read Now
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+    <!-- FOOTER -->
+    <footer class="footer legacy-chrome-footer">
+        <div class="footer-inner">
+            <div class="footer-logo">READORA</div>
+            <div class="footer-copyright">© 2024 Readora. Cultivating intellectual clarity.</div>
+            <div class="footer-links">
+                <a href="#">Archives</a>
+                <a href="#">Authors</a>
+                <a href="#">Terms</a>
+                <a href="#">Privacy</a>
+                <a href="#">Support</a>
+            </div>
+        </div>
+    </footer>
+    <th:block th:replace="~{fragments/chrome :: footer}"></th:block>
+
+    <script th:src="@{/js/newspapers.js}"></script>
+
+</body>
+
+</html>

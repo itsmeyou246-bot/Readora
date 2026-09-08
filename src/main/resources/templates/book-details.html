@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <title>Premium Library - Readora</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/book-details.css}">
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <th:block th:replace="~{fragments/chrome :: header}"></th:block>
+    <header class="header legacy-chrome-header">
+        <div class="header-inner">
+            <a th:href="@{/index}" class="logo">READORA</a>
+
+            <nav class="nav-links">
+                <a th:href="@{/index}">Discover</a>
+                <a th:href="@{/Book}" class="nav-active">Books</a>
+                <a th:href="@{/newspapers}">Newspapers</a>
+                <a th:href="@{/magazines}">Magazines</a>
+                <a th:href="@{/read-nepal}">Read Nepal</a>
+                <a th:href="@{/library}">My Library</a>
+            </nav>
+
+            <div class="profile-icon"><i class="fa-solid fa-user"></i></div>
+        </div>
+    </header>
+
+    <main class="premium-page">
+        <section class="page-heading">
+            <h1>Premium Library</h1>
+            <p>Discover stories worth keeping.</p>
+        </section>
+
+        <section class="premium-book-card">
+            <div class="book-copy">
+                <span class="editor-tag">Editor's Choice</span>
+                <h2 id="bookTitle">Book Title</h2>
+                <p id="bookAuthor" class="book-author">Author Name</p>
+                <p id="bookDescription" class="book-description">Discover a story selected for curious readers and thoughtful collections.</p>
+                <strong id="bookPrice" class="book-price">NPR 0</strong>
+                <button id="addToCartBtn" class="primary-button" type="button"><i class="fa-solid fa-cart-shopping" aria-hidden="true"></i> Add to Cart</button>
+            </div>
+
+            <div class="app-preview" aria-label="READORA reading app preview">
+                <div class="preview-header"><span>READORA</span><span class="preview-premium">Premium</span></div>
+                <img id="bookCover" src="" alt="Book cover">
+                <h3 id="previewTitle">Book Title</h3>
+                <p id="previewAuthor">Author Name</p>
+                <div class="rating" aria-label="Five star rating">★★★★★</div>
+                <button type="button">Get Reading</button>
+                <button type="button">Add to Cart</button>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer legacy-chrome-footer">
+        <div class="footer-inner">
+            <div class="footer-logo">READORA</div>
+            <div class="footer-copyright">© 2024 Readora. Cultivating intellectual clarity.</div>
+            <div class="footer-links">
+                <a href="#">Archives</a>
+                <a href="#">Authors</a>
+                <a href="#">Terms</a>
+                <a href="#">Privacy</a>
+                <a href="#">Support</a>
+            </div>
+        </div>
+    </footer>
+    <th:block th:replace="~{fragments/chrome :: footer}"></th:block>
+
+    <script th:src="@{/js/cart-utils.js}"></script>
+    <script th:src="@{/js/book-details.js}"></script>
+
+</body>
+
+</html>

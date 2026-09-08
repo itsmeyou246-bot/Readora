@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bookmarks - READORA</title>
+    <link rel="stylesheet" th:href="@{/css/bookmarks.css}">
+</head>
+<body>
+
+    <!-- HEADER -->
+    <th:block th:replace="~{fragments/chrome :: header}"></th:block>
+    <header class="header legacy-chrome-header">
+        <div class="header-inner">
+            <a th:href="@{/index}" class="logo">READORA</a>
+            <nav class="nav-links">
+                <a th:href="@{/index}">Discover</a>
+                <a th:href="@{/Book}">Books</a>
+                <a th:href="@{/newspapers}">Newspapers</a>
+                <a th:href="@{/magazines}">Magazines</a>
+                <a th:href="@{/read-nepal}">Read Nepal</a>
+                <a th:href="@{/library}">My Library</a>
+            </nav>
+            <div class="profile-icon">👤</div>
+        </div>
+    </header>
+
+    <!-- MAIN -->
+    <main class="main-content">
+        <div class="container">
+
+            <!-- PAGE HEADER -->
+            <div class="page-header">
+                <h1>Bookmarks</h1>
+                <p>Your saved bookmarks across books and publications.</p>
+            </div>
+
+            <!-- EMPTY STATE -->
+            <div id="emptyState" class="empty-state">
+                <p>You haven't saved any bookmarks yet.</p>
+                <p>When reading, click the bookmark icon to save your place.</p>
+                <a th:href="@{/Book}" class="btn-primary" style="display: inline-block; margin-top: 16px;">Start Reading</a>
+            </div>
+
+            <!-- BOOKMARKS TABLE -->
+            <div id="bookmarksContainer" class="bookmarks-container">
+                <div class="bookmarks-table">
+                    <div class="table-header">
+                        <div class="col-book">Book / Publication</div>
+                        <div class="col-page">Page / Location</div>
+                        <div class="col-date">Saved Date</div>
+                        <div class="col-actions">Actions</div>
+                    </div>
+                    <div id="bookmarksList" class="table-body">
+                        <!-- Bookmarks will be inserted here -->
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer legacy-chrome-footer">
+        <div class="footer-inner">
+            <div class="footer-logo">READORA</div>
+            <div class="footer-links">
+                <a href="#">About</a>
+                <a href="#">Support</a>
+                <a href="#">Terms</a>
+                <a href="#">Privacy</a>
+            </div>
+            <div class="footer-copyright">© 2026 READORA. All rights reserved.</div>
+        </div>
+    </footer>
+    <th:block th:replace="~{fragments/chrome :: footer}"></th:block>
+
+    <!-- TOAST -->
+    <div id="toast" class="toast"></div>
+
+    <script>
+        // ========================================
+        // DEMO DATA - BOOKMARKS
+        // Later: GET /api/bookmarks
+        // ========================================
+
+        const demoBookmarks = [
+            {
+                id: 1,
+                bookTitle: "The Silent Spring",
+                bookAuthor: "Rachel Carson",
+                page: "Chapter 3, Page 45",
+                savedDate: "2026-08-28",
+                link: "reader.html"
+            },
+            {
+                id: 2,
+                bookTitle: "The Mountain Path",
+                bookAuthor: "Demo Author",
+                page: "Chapter 5, Page 78",
+                savedDate: "2026-08-25",
+                link: "reader.html"
+            },
+            {
+                id: 3,
+                bookTitle: "Muna Madan",
+                bookAuthor: "Laxmi Prasad Devkota",
+                page: "Verse 120",
+                savedDate: "2026-08-20",
+                link: "reader.html"
+            }
+        ];
+
+        // ========================================
+        // INITIALIZE PAGE
+        // ========================================
+
+        document.addEventListener('DOMContentLoaded', function() {
+            loadBookmarks();
+        });
+
+        // ========================================
+        // LOAD BOOKMARKS FROM STORAGE
+        // ========================================
+
+        function loadBookmarks() {
+            let bookmarks = localStorage.getItem('myBookmarks');
+            
+            if (bookmarks) {
+                bookmarks = JSON.parse(bookmarks);
+            } else {
+                bookmarks = demoBookmarks;
+            }
+
+            displayBookmarks(bookmarks);
+        }
+
+        // ========================================
+        // DISPLAY BOOKMARKS
+        // ========================================
+
+        function displayBookmarks(bookmarks) {
+            const bookmarksList = document.getElementById('bookmarksList');
+            const emptyState = document.getElementById('emptyState');
+            const bookmarksContainer = document.getElementById('bookmarksContainer');
+
+            if (bookmarks.length === 0) {
+                bookmarksList.innerHTML = '';
+                emptyState.style.display = 'block';
+                bookmarksContainer.style.display = 'none';
+                return;
+            }
+
+            emptyState.style.display = 'none';
+            bookmarksContainer.style.display = 'block';
+
+            bookmarksList.innerHTML = bookmarks.map(bookmark => {
+                const date = new Date(bookmark.savedDate);
+                const formattedDate = date.toLocaleDateString('en-US', { 
+                    year: 'numeric', 
+                    month: 'short', 
+                    day: 'numeric' 
+                });
+
+                return `
+                    <div class="table-row">
+                        <div class="col-book">
+                            <div class="book-info">
+                                <p class="book-title">${bookmark.bookTitle}</p>
+                                <p class="book-author">${bookmark.bookAuthor}</p>
+                            </div>
+                        </div>
+                        <div class="col-page">
+                            <p>${bookmark.page}</p>
+                        </div>
+                        <div class="col-date">
+                            <p>${formattedDate}</p>
+                        </div>
+                        <div class="col-actions">
+                            <button class="btn-open" data-id="${bookmark.id}">Open</button>
+                            <button class="btn-delete" data-id="${bookmark.id}">Delete</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            attachEventListeners();
+        }
+
+        // ========================================
+        // ATTACH EVENT LISTENERS
+        // ========================================
+
+        function attachEventListeners() {
+            // Open buttons
+            const openButtons = document.querySelectorAll('.btn-open');
+            openButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const id = this.getAttribute('data-id');
+                    openBookmark(id);
+                });
+            });
+
+            // Delete buttons
+            const deleteButtons = document.querySelectorAll('.btn-delete');
+            deleteButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const id = this.getAttribute('data-id');
+                    deleteBookmark(id);
+                });
+            });
+        }
+
+        // ========================================
+        // OPEN BOOKMARK
+        // ========================================
+
+        function openBookmark(id) {
+            let bookmarks = localStorage.getItem('myBookmarks');
+            if (bookmarks) {
+                bookmarks = JSON.parse(bookmarks);
+                const bookmark = bookmarks.find(b => b.id == id);
+                if (bookmark) {
+                    // Store for reader page
+                    sessionStorage.setItem('readerBookmark', JSON.stringify(bookmark));
+                    window.location.href = 'reader.html';
+                }
+            }
+        }
+
+        // ========================================
+        // DELETE BOOKMARK
+        // ========================================
+
+        function deleteBookmark(id) {
+            let bookmarks = localStorage.getItem('myBookmarks');
+            
+            if (bookmarks) {
+                bookmarks = JSON.parse(bookmarks);
+                bookmarks = bookmarks.filter(b => b.id != id);
+                localStorage.setItem('myBookmarks', JSON.stringify(bookmarks));
+            }
+
+            showToast('Bookmark removed');
+            loadBookmarks();
+        }
+
+        // ========================================
+        // TOAST NOTIFICATION
+        // ========================================
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+    </script>
+
+</body>
+</html>

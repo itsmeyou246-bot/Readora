@@ -1,0 +1,462 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #faf6ee;
+  color: #201d18;
+  font-family: 'Inter', sans-serif;
+  line-height: 1.5;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* this class centers content and gives it side spacing, used many times below */
+.container {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+/* HEADER */
+
+.header {
+  border-bottom: 1px solid #ddd4c0;
+  padding: 20px 0;
+}
+
+.header-inner {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  font-family: 'Fraunces', serif;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.nav-links {
+  display: flex;
+  gap: 30px;
+}
+
+.nav-links a {
+  font-size: 13px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #55503f;
+}
+
+.nav-links a:hover {
+  color: #201d18;
+}
+
+.nav-active {
+  color: #201d18;
+  border-bottom: 1px solid #201d18;
+  padding-bottom: 5px;
+}
+
+.profile-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid #ddd4c0;
+  text-align: center;
+  line-height: 34px;
+}
+
+/* HERO SECTION */
+
+.hero {
+  padding: 70px 0;
+}
+
+.hero-inner {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 40px;
+  display: flex;
+  align-items: center;
+  gap: 60px;
+}
+
+.hero-left {
+  flex: 1;
+}
+
+.hero-right {
+  flex: 1;
+}
+
+.hero-title {
+  font-family: 'Fraunces', serif;
+  font-size: 44px;
+  font-weight: 500;
+  line-height: 1.15;
+}
+
+.hero-text {
+  margin-top: 20px;
+  color: #55503f;
+  font-size: 15px;
+  max-width: 400px;
+}
+
+.hero-buttons {
+  margin-top: 28px;
+  display: flex;
+  gap: 14px;
+}
+
+.btn {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 14px 24px;
+  border-radius: 3px;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.btn-green {
+  background-color: #2f4a3a;
+  color: white;
+}
+
+.btn-outline {
+  background-color: transparent;
+  border: 1px solid #201d18;
+  color: #201d18;
+}
+
+/* this is a simple colored box that stands in for a real photo */
+.image-box {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background-color: #4b3c26;
+  border-radius: 4px;
+}
+
+/* if you put a real photo inside .hero-right or .spotlight-right,
+   use this so it fills the box neatly instead of stretching */
+.hero-right img,
+.spotlight-right img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+/* CONTINUE READING STRIP */
+
+.continue-section {
+  background-color: #ece5d8;
+  padding: 26px 0;
+}
+
+.continue-inner {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 40px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.continue-cover {
+  width: 44px;
+  height: 60px;
+  background-color: #cfc4a4;
+  border-radius: 2px;
+}
+
+.continue-title {
+  font-family: 'Fraunces', serif;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.continue-author {
+  font-size: 12px;
+  color: #948d78;
+}
+
+.progress-bar-background {
+  flex: 1;
+  max-width: 300px;
+  height: 3px;
+  background-color: #ddd4c0;
+  border-radius: 3px;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  width: 68%;
+  background-color: #201d18;
+  border-radius: 3px;
+}
+
+.progress-text {
+  font-size: 12px;
+  color: #948d78;
+}
+
+.small-btn {
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 10px 18px;
+  border: 1px solid #201d18;
+  border-radius: 3px;
+  background-color: transparent;
+  cursor: pointer;
+  margin-left: auto;
+}
+
+/* SECTION TITLE ROW (used above Spotlight, Recommended, Front Pages) */
+
+.section-heading-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  border-bottom: 1px solid #ddd4c0;
+  padding-bottom: 16px;
+  margin-bottom: 40px;
+}
+
+.section-heading {
+  font-family: 'Fraunces', serif;
+  font-size: 22px;
+  font-weight: 500;
+}
+
+.section-link {
+  font-size: 12px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #55503f;
+}
+
+/* READ NEPAL SPOTLIGHT */
+
+.spotlight-section {
+  padding: 80px 0;
+}
+
+.spotlight-inner {
+  display: flex;
+  align-items: center;
+  gap: 60px;
+}
+
+.spotlight-left {
+  flex: 1;
+}
+
+.spotlight-right {
+  flex: 1;
+}
+
+.tag {
+  display: inline-block;
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  border: 1px solid #ddd4c0;
+  padding: 6px 12px;
+  border-radius: 3px;
+  color: #55503f;
+}
+
+.spotlight-title {
+  font-family: 'Fraunces', serif;
+  font-size: 30px;
+  font-weight: 500;
+  margin-top: 20px;
+}
+
+.spotlight-nepali {
+  font-size: 15px;
+  color: #55503f;
+  margin-top: 8px;
+}
+
+.spotlight-text {
+  margin-top: 18px;
+  color: #55503f;
+  font-size: 15px;
+  max-width: 420px;
+}
+
+.spotlight-link {
+  display: inline-block;
+  margin-top: 24px;
+  font-size: 12px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  border-bottom: 1px solid #201d18;
+  padding-bottom: 4px;
+}
+
+.spotlight-image {
+  width: 100%;
+  border-radius: 4px;
+}
+
+.recommended-section {
+  background-color: #ece5d8;
+  padding: 80px 0;
+}
+
+.book-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 30px;
+}
+
+/* each book is a card: an image on top, then title, author, tag below */
+.book-card img {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  border-radius: 3px;
+  background-color: #ece5d8;
+}
+
+.book-card h3 {
+  font-family: 'Fraunces', serif;
+  font-size: 15px;
+  font-weight: 500;
+  margin-top: 14px;
+}
+
+.book-card p {
+  font-size: 12px;
+  color: #948d78;
+  margin-top: 2px;
+}
+
+.book-tag {
+  display: inline-block;
+  margin-top: 10px;
+  font-size: 10px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #55503f;
+  border: 1px solid #ddd4c0;
+  padding: 5px 10px;
+  border-radius: 3px;
+}
+
+/* TODAY'S FRONT PAGES */
+
+.front-pages-section {
+  padding: 80px 0;
+}
+
+.newspaper-row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 24px 0;
+  border-top: 1px solid #ddd4c0;
+}
+
+.newspaper-row:last-child {
+  border-bottom: 1px solid #ddd4c0;
+}
+
+.newspaper-thumb {
+  width: 44px;
+  height: 58px;
+  background-color: #d9d0b8;
+  border-radius: 2px;
+}
+
+.newspaper-title {
+  font-family: 'Fraunces', serif;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.newspaper-meta {
+  font-size: 12px;
+  color: #948d78;
+}
+
+/* FOOTER */
+
+.footer {
+  border-top: 1px solid #ddd4c0;
+  padding: 30px 0;
+}
+
+.footer-inner {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.footer-logo {
+  font-family: 'Fraunces', serif;
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.footer-copyright {
+  font-size: 12px;
+  color: #948d78;
+}
+
+.footer-links {
+  display: flex;
+  gap: 24px;
+}
+
+.footer-links a {
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #55503f;
+}
+
+/* RESPONSIVE - screens smaller than 900px (tablets/phones) */
+
+@media (max-width: 900px) {
+  .nav-links {
+    display: none;
+  }
+
+  .hero-inner {
+    flex-direction: column;
+  }
+
+  .spotlight-inner {
+    flex-direction: column;
+  }
+
+  .book-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .continue-inner {
+    flex-wrap: wrap;
+  }
+}

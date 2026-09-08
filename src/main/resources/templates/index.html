@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <title>Readora</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/index.css}">
+</head>
+
+<body>
+    <th:block th:replace="~{fragments/chrome :: header}"></th:block>
+    <header class="header legacy-chrome-header">
+        <div class="header-inner">
+            <a th:href="@{/index}" class="logo">READORA</a>
+
+            <nav class="nav-links">
+                <a th:href="@{/index}" class="nav-active">Discover</a>
+                <a th:href="@{/Book}">Books</a>
+                <a th:href="@{/newspapers}">Newspapers</a>
+                <a th:href="@{/magazines}">Magazines</a>
+                <a th:href="@{/read-nepal}">Read Nepal</a>
+                <a th:href="@{/library}">My Library</a>
+            </nav>
+
+            <div class="profile-icon"><i class="fa-solid fa-user"></i></div>
+        </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-inner">
+            <div class="hero-left">
+                <h1 class="hero-title">Read something worth remembering.</h1>
+                <p class="hero-text">Discover books, stories, newspapers and ideas curated around the way you read.</p>
+                <div class="hero-buttons">
+                    <button class="btn btn-green">Explore Library</button>
+                    <button class="btn btn-outline">Read Nepal</button>
+                </div>
+            </div>
+
+            <div class="hero-right">
+                <div class="image-box">
+                    <img th:src="@{/img/AllBook.png}">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTINUE READING -->
+    <section class="continue-section">
+        <div class="continue-inner">
+            <div class="continue-cover"></div>
+
+            <div>
+                <div class="continue-title">The Mountain Path</div>
+                <div class="continue-author">Demo Author</div>
+            </div>
+
+            <div class="progress-bar-background">
+                <div class="progress-bar-fill"></div>
+            </div>
+            <span class="progress-text">68%</span>
+
+            <button class="small-btn">Continue Reading</button>
+        </div>
+    </section>
+
+    <!-- READ NEPAL SPOTLIGHT -->
+    <section class="spotlight-section">
+        <div class="container">
+            <div class="section-heading-row">
+                <h2 class="section-heading">Read Nepal Spotlight</h2>
+                <a href="#" class="section-link">View Archives</a>
+            </div>
+
+            <div class="spotlight-inner">
+                <div class="spotlight-left">
+                    <span class="tag">Heritage Collection</span>
+                    <h3 class="spotlight-title">Chronicles of the Valley</h3>
+                    <p class="spotlight-nepali">उपत्यकाको प्राचीन इतिहास र संस्कृति</p>
+                    <p class="spotlight-text">Dive into curated selections of historical texts, preserved manuscripts,
+                        and detailed accounts documenting the rich architectural and cultural evolution of the Kathmandu
+                        Valley.</p>
+                    <a href="#" class="spotlight-link">Explore Collection</a>
+                </div>
+
+                <div class="spotlight-right">
+                    <div class="spotlight-image">
+                        <img th:src="@{/img/Historic.png}">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- RECOMMENDED FOR YOU -->
+    <section class="recommended-section">
+        <div class="container">
+            <div class="section-heading-row">
+                <h2 class="section-heading">Recommended for you</h2>
+            </div>
+
+            <div class="book-grid">
+
+                <div class="book-card">
+                    <img th:src="@{/img/TheSilentSpring.png}" alt="The Silent Spring">
+                    <h3>The Silent Spring</h3>
+                    <p>Rachel Carson</p>
+                    <span class="book-tag">Science &amp; Nature</span>
+                </div>
+
+                <div class="book-card">
+                    <img th:src="@{/img/StructuresOfLight.png}" alt="Structures of Light">
+                    <h3>Structures of Light</h3>
+                    <p>Hiroshi Sugimoto</p>
+                    <span class="book-tag">Architecture</span>
+                </div>
+
+                <div class="book-card">
+                    <img th:src="@{/img/TheStoryofnewname.png}" alt="The Story of New Name">
+                    <h3>TheStoryofnewname</h3>
+                    <p>Elena Ferrante</p>
+                    <span class="book-tag">Fiction</span>
+                </div>
+
+                <div class="book-card">
+                    <img th:src="@{/img/John.png}" alt="On Clarity">
+                    <h3>On Clarity</h3>
+                    <p>John Berger</p>
+                    <span class="book-tag">Philosophy</span>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- TODAY'S FRONT PAGES -->
+    <section class="front-pages-section">
+        <div class="container">
+            <div class="section-heading-row">
+                <h2 class="section-heading">Today's Front Pages</h2>
+                <a href="#" class="section-link">View All Publications</a>
+            </div>
+
+            <div class="newspaper-row">
+                <div class="newspaper-thumb"></div>
+                <div style="flex: 1;">
+                    <div class="newspaper-title">The Daily Chronicle</div>
+                    <div class="newspaper-meta">October 24, 2024</div>
+                </div>
+                <button class="small-btn" style="margin-left: 0;">Read Issue</button>
+            </div>
+
+            <div class="newspaper-row">
+                <div class="newspaper-thumb"></div>
+                <div style="flex: 1;">
+                    <div class="newspaper-title">Synthesis Magazine</div>
+                    <div class="newspaper-meta">Autumn Quarterly Issue</div>
+                </div>
+                <button class="small-btn" style="margin-left: 0;">Read Issue</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer legacy-chrome-footer">
+        <div class="footer-inner">
+            <div class="footer-logo">READORA</div>
+            <div class="footer-copyright">© 2024 Readora. Cultivating intellectual clarity.</div>
+            <div class="footer-links">
+                <a href="#">Archives</a>
+                <a href="#">Authors</a>
+                <a href="#">Terms</a>
+                <a href="#">Privacy</a>
+                <a href="#">Support</a>
+            </div>
+        </div>
+    </footer>
+    <th:block th:replace="~{fragments/chrome :: footer}"></th:block>
+
+    <script th:src="@{/js/cart-utils.js}"></script>
+    <script>
+        // this makes a nav link turn "active" (underlined) when you click it
+        var navLinks = document.querySelectorAll('.nav-links a');
+
+        for (var i = 0; i < navLinks.length; i++) {
+            navLinks[i].addEventListener('click', function () {
+                for (var j = 0; j < navLinks.length; j++) {
+                    navLinks[j].classList.remove('nav-active');
+                }
+                this.classList.add('nav-active');
+            });
+        }
+    </script>
+
+</body>
+
+</html>

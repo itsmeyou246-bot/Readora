@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Checkout - Readora</title>
+	<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+	<link rel="stylesheet" th:href="@{/css/checkout.css}">
+</head>
+<body>
+
+<th:block th:replace="~{fragments/chrome :: header}"></th:block>
+<header class="checkout-header legacy-chrome-header">
+	<a th:href="@{/index}" class="logo">READORA</a>
+	<a th:href="@{/cart}"><i class="fa-solid fa-cart-shopping" aria-hidden="true"></i> Cart <span data-cart-count hidden>0</span></a>
+</header>
+
+<main class="checkout-page">
+
+	<div class="checkout-layout">
+
+		<!-- LEFT: product hero + order summary, fully populated by checkout.js -->
+		<div id="orderSummary" class="order-summary"></div>
+
+		<!-- RIGHT: heading, step tracker, form -->
+		<div class="checkout-right">
+
+			<div class="eyebrow">Secure Checkout</div>
+			<h1>Complete Your Purchase</h1>
+
+			<div class="steps">
+				<div class="step done">
+					<span class="step-circle"><i class="fa-solid fa-check"></i></span>
+					<small>Review</small>
+				</div>
+				<span class="step-line done"></span>
+				<div class="step active">
+					<span class="step-circle">2</span>
+					<small>Payment</small>
+				</div>
+				<span class="step-line"></span>
+				<div class="step">
+					<span class="step-circle">3</span>
+					<small>Confirmation</small>
+				</div>
+			</div>
+
+			<form id="checkoutForm" class="checkout-form" novalidate>
+
+				<section class="form-section">
+					<h2>Customer Information</h2>
+					<label for="fullName">Full Name<input id="fullName" type="text" autocomplete="name"></label>
+					<label for="email">Email Address<input id="email" type="email" autocomplete="email"></label>
+				</section>
+
+				<section class="form-section payment-card">
+					<h2>Select Payment Method</h2>
+					<div class="payment-options">
+						<label>
+							<input type="radio" name="paymentMethod" value="Khalti" checked>
+							<span>Khalti</span>
+							<i class="fa-solid fa-credit-card"></i>
+						</label>
+						<label>
+							<input type="radio" name="paymentMethod" value="eSewa">
+							<span>eSewa</span>
+							<i class="fa-solid fa-wallet"></i>
+						</label>
+						<label>
+							<input type="radio" name="paymentMethod" value="FonePay">
+							<span>FonePay</span>
+							<i class="fa-solid fa-qrcode"></i>
+						</label>
+					</div>
+				</section>
+
+				<p id="checkoutError" class="checkout-error" role="alert"></p>
+
+				<button class="primary-button" type="submit">
+					<i class="fa-solid fa-lock"></i> <span data-pay-label>Place Order</span>
+				</button>
+
+			</form>
+
+			<p class="secure-footnote">
+				<span><i class="fa-solid fa-shield-halved"></i> Secure Checkout</span>
+				<span><i class="fa-regular fa-clock"></i> 24/7 Support</span>
+			</p>
+
+		</div>
+
+	</div>
+
+</main>
+
+<th:block th:replace="~{fragments/chrome :: footer}"></th:block>
+
+<script th:src="@{/js/cart-utils.js}"></script>
+<script th:src="@{/js/checkout.js}"></script>
+</body>
+</html>

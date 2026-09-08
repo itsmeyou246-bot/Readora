@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Read Nepal - Readora</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=Inter:wght@400;500;600&family=Noto+Sans+Devanagari:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" th:href="@{/css/read-nepal.css}">
+</head>
+<body>
+
+  <!-- HEADER -->
+    <th:block th:replace="~{fragments/chrome :: header}"></th:block>
+    <header class="header legacy-chrome-header">
+        <div class="header-inner">
+            <a th:href="@{/index}" class="logo">READORA</a>
+
+            <nav class="nav-links">
+                <a th:href="@{/index}" class="nav-active">Discover</a>
+                <a th:href="@{/Book}">Books</a>
+                <a th:href="@{/newspapers}">Newspapers</a>
+                <a th:href="@{/magazines}">Magazines</a>
+                <a th:href="@{/read-nepal}">Read Nepal</a>
+                <a th:href="@{/library}">My Library</a>
+            </nav>
+
+            <div class="profile-icon">☺</div>
+        </div>
+    </header>
+
+  <!-- HERO BANNER -->
+  <section class="nepal-hero">
+    <div class="hero-overlay"></div>
+
+    <div class="hero-content">
+      <p class="hero-label">Cultural Archive</p>
+      <h1 class="hero-title">Stories from Nepal, preserved for tomorrow.</h1>
+      <p class="hero-nepali">नेपालका कथाहरू, भोलिका लागि संरक्षित।</p>
+      <div class="hero-divider"></div>
+      <p class="hero-text">A curated collection of classical literature, poetry, and historical manuscripts that define the literary heritage of Nepal.</p>
+    </div>
+  </section>
+
+  <!-- CATEGORY FILTER TABS -->
+  <section class="filter-section">
+    <div class="container">
+      <div class="filter-tabs">
+        <button class="filter-tab filter-active" data-filter="literature">Nepali Literature</button>
+        <button class="filter-tab" data-filter="poetry">Poetry</button>
+        <button class="filter-tab" data-filter="folk">Folk Stories</button>
+        <button class="filter-tab" data-filter="history">History</button>
+        <button class="filter-tab" data-filter="culture">Culture</button>
+        <button class="filter-tab" data-filter="regional">Regional Literature</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- RECENTLY DIGITIZED -->
+  <section class="digitized-section">
+    <div class="container">
+      <div class="section-heading-row">
+        <h2 class="section-heading">Recently Digitized</h2>
+        <a href="#" class="section-link">View All →</a>
+      </div>
+
+      <div class="digitized-grid">
+
+        <div class="archive-card" data-category="literature">
+          <img th:src="@{/img/Munamadan.png}" alt="Muna Madan">
+          <p class="archive-meta">Poetry · 1936</p>
+          <h3>Muna Madan</h3>
+          <p class="archive-nepali">मुनामदन</p>
+          <p class="archive-author">Laxmi Prasad Devkota</p>
+        </div>
+
+        <div class="archive-card" data-category="folk">
+          <img th:src="@{/img/page.png}" alt="Sirishko Phool">
+          <p class="archive-meta">Novel · 1965</p>
+          <h3>Sirishko Phool</h3>
+          <p class="archive-nepali">सिरिषको फूल</p>
+          <p class="archive-author">Parijat</p>
+        </div>
+
+        <div class="archive-card" data-category="history">
+          <img th:src="@{/img/prithivinaraynshah.png}" alt="Dibya Upadesh">
+          <p class="archive-meta">History · 18th Century</p>
+          <h3>Dibya Upadesh</h3>
+          <p class="archive-nepali">दिव्योपदेश</p>
+          <p class="archive-author">Prithvi Narayan Shah</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURED MASTERPIECE -->
+  <section class="featured-section">
+    <div class="container">
+      <div class="featured-inner">
+
+        <div class="featured-image">
+          <img th:src="@{/img/nepalipage.png}" alt="Ghumne Mechmathi Andho Manche">
+        </div>
+
+        <div class="featured-text">
+          <p class="featured-label">— Featured Masterpiece</p>
+          <h2 class="featured-title">Ghumne Mechmathi Andho Manche</h2>
+          <p class="featured-nepali">घुम्ने मेचमाथि अन्धो मान्छे</p>
+          <p class="featured-description">Bhupi Sherchan's seminal collection of prose poetry revolutionized Nepali literature by introducing free verse and sharp social critique. His words remain profoundly relevant, offering a lucid reflection on modern Nepali society.</p>
+          <button class="btn-dark">Read the Collection</button>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer legacy-chrome-footer">
+    <div class="footer-inner">
+      <div class="footer-logo">READORA</div>
+      <div class="footer-copyright">© 2024 Readora. Cultivating intellectual clarity.</div>
+      <div class="footer-links">
+        <a href="#">Archives</a>
+        <a href="#">Authors</a>
+        <a href="#">Terms</a>
+        <a href="#">Privacy</a>
+        <a href="#">Support</a>
+      </div>
+    </div>
+  </footer>
+  <th:block th:replace="~{fragments/chrome :: footer}"></th:block>
+
+  <script>
+    // grab all the filter buttons and all the archive cards
+var filterButtons = document.querySelectorAll('.filter-tab');
+var archiveCards = document.querySelectorAll('.archive-card');
+
+// run this whenever a filter button is clicked
+function handleFilterClick() {
+  var selectedFilter = this.getAttribute('data-filter');
+
+  // update which button looks active
+  for (var i = 0; i < filterButtons.length; i++) {
+    filterButtons[i].classList.remove('filter-active');
+  }
+  this.classList.add('filter-active');
+
+  // show or hide each card based on its category
+  for (var j = 0; j < archiveCards.length; j++) {
+    var card = archiveCards[j];
+    var cardCategory = card.getAttribute('data-category');
+
+    var shouldShow = (selectedFilter === 'literature') || (cardCategory === selectedFilter);
+
+    if (shouldShow) {
+      card.classList.remove('hidden');
+    } else {
+      card.classList.add('hidden');
+    }
+  }
+}
+
+// attach the click event to every filter button
+for (var k = 0; k < filterButtons.length; k++) {
+  filterButtons[k].addEventListener('click', handleFilterClick);
+}
+  </script>
+
+</body>
+</html>

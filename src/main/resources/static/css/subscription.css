@@ -1,0 +1,408 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Georgia, "Times New Roman", serif;
+    background: #f7f7f4;
+    color: #183525;
+}
+
+.subscription-page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+
+
+/* =========================
+   HEADER
+========================= */
+
+.header {
+    height: 68px;
+    background: #ffffff;
+    border-bottom: 1px solid #eaeae6;
+    box-shadow: 0 1px 3px rgba(24, 53, 37, 0.04);
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 40px;
+
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.logo {
+    font-size: 19px;
+    letter-spacing: 0.5px;
+    color: #193c29;
+    font-weight: 700;
+}
+
+.close-btn {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+
+    border: 1px solid transparent;
+    border-radius: 20px;
+    padding: 7px 14px;
+
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+    color: #55655b;
+    text-decoration: none;
+
+    transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.close-btn i {
+    font-size: 11px;
+}
+
+.close-btn:hover {
+    background: #f0f3f0;
+    border-color: #d8ddd9;
+    color: #193c29;
+}
+
+
+/* =========================
+   MAIN
+========================= */
+
+.main-content {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.plans-section {
+    width: 100%;
+    max-width: 1050px;
+    padding: 32px 20px 48px;
+    text-align: center;
+}
+
+.plans-section h1 {
+    font-size: 34px;
+    font-weight: 600;
+    color: #183525;
+    margin-bottom: 12px;
+}
+
+.subtitle {
+    max-width: 470px;
+    margin: 0 auto 40px;
+
+    font-size: 14px;
+    line-height: 1.6;
+    color: #777;
+}
+
+
+/* =========================
+   PLANS
+========================= */
+
+.plans-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.plan-card {
+    position: relative;
+
+    min-height: 360px;
+
+    background: #ffffff;
+    border: 1px solid #d8ddd9;
+    border-radius: 6px;
+
+    padding: 28px 24px 24px;
+
+    text-align: left;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.plan-card.premium {
+    border-color: #193c29;
+    box-shadow: 0 8px 24px rgba(25, 60, 41, 0.08);
+}
+
+
+/* =========================
+   POPULAR
+========================= */
+
+.popular {
+    position: absolute;
+    top: -13px;
+    left: 50%;
+    transform: translateX(-50%);
+
+    background: #193c29;
+    color: #ffffff;
+    border-radius: 3px;
+
+    padding: 5px 16px;
+
+    font-family: Arial, sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+
+    white-space: nowrap;
+}
+
+
+/* =========================
+   PLAN TEXT
+========================= */
+
+.plan-card h2 {
+    font-size: 20px;
+    color: #193c29;
+    margin-bottom: 8px;
+}
+
+.plan-description {
+    font-family: Arial, sans-serif;
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: #777;
+
+    min-height: 34px;
+}
+
+.price {
+    font-size: 30px;
+    color: #183525;
+    font-weight: 600;
+
+    margin: 16px 0 12px;
+}
+
+.price span {
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+    color: #777;
+}
+
+.custom-price {
+    margin-top: 16px;
+}
+
+
+/* =========================
+   FEATURES
+========================= */
+
+.features {
+    list-style: none;
+
+    margin: 0 0 20px;
+    padding: 0;
+
+    flex: 1;
+}
+
+.features li {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+    color: #555;
+
+    margin-bottom: 11px;
+
+    line-height: 1.4;
+}
+
+.features li i {
+    color: #193c29;
+    font-size: 11px;
+    margin-top: 3px;
+    flex-shrink: 0;
+}
+
+
+/* =========================
+   BUTTON
+========================= */
+
+.plan-btn {
+    width: 100%;
+    height: 44px;
+
+    border: 1px solid #9ca59f;
+    border-radius: 4px;
+    background: #ffffff;
+
+    color: #193c29;
+
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    margin-top: 16px;
+
+    transition: 0.2s ease;
+}
+
+.plan-btn:hover {
+    background: #f0f3f0;
+    border-color: #193c29;
+}
+
+.premium-btn {
+    background: #193c29;
+    color: #ffffff;
+    border-color: #193c29;
+}
+
+.premium-btn:hover {
+    background: #102b1d;
+}
+
+
+/* =========================
+   SECURE NOTE
+========================= */
+
+.secure-note {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+
+    color: #777;
+
+    margin-top: 36px;
+}
+
+.secure-note i {
+    color: #193c29;
+    font-size: 12px;
+}
+
+
+/* =========================
+   FOOTER
+========================= */
+
+.footer {
+    min-height: 68px;
+
+    border-top: 1px solid #e1e4e1;
+
+    background: #ffffff;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 32px;
+}
+
+.footer-logo {
+    font-size: 15px;
+    font-weight: 700;
+    color: #193c29;
+}
+
+.footer-links {
+    display: flex;
+    gap: 24px;
+}
+
+.footer-links a {
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+
+    color: #555;
+    text-decoration: none;
+}
+
+.footer-links a:hover {
+    color: #193c29;
+}
+
+.copyright {
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    color: #777;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 900px) {
+
+    .footer-links {
+        gap: 14px;
+    }
+}
+
+@media (max-width: 700px) {
+
+    .plans-section {
+        padding: 40px 15px;
+    }
+
+    .plans-container {
+        grid-template-columns: 1fr;
+        max-width: 360px;
+        gap: 32px;
+    }
+
+    .plan-card {
+        min-height: auto;
+    }
+
+    .plans-section h1 {
+        font-size: 26px;
+    }
+
+    .subtitle {
+        font-size: 13px;
+    }
+
+    .footer {
+        flex-direction: column;
+        gap: 10px;
+        padding: 16px;
+        min-height: auto;
+    }
+
+    .footer-links {
+        gap: 14px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}

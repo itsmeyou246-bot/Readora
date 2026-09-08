@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>READORA - Sign Up</title>
+
+
+    <!-- Font Awesome -->
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+
+    <link rel="stylesheet"
+          th:href="@{/css/signup.css}">
+
+</head>
+
+
+<body>
+
+
+<div class="signup-container">
+
+
+    <div class="signup-card">
+
+
+        <!-- ========================= -->
+        <!-- LOGO -->
+        <!-- ========================= -->
+
+        <div class="brand">
+
+            <h1>
+                READORA
+            </h1>
+
+            <p>
+                Join READORA
+            </p>
+
+        </div>
+
+
+
+        <!-- ========================= -->
+        <!-- SIGNUP FORM -->
+        <!-- ========================= -->
+
+        <form id="signupForm">
+
+
+            <!-- Full Name -->
+
+            <div class="form-group">
+
+                <label for="fullname">
+                    Full Name
+                </label>
+
+
+                <div class="input-box">
+
+                    <i class="fa-regular fa-user"></i>
+
+                    <input
+                            type="text"
+                            id="fullname"
+                            placeholder="Jane Doe"
+                            required>
+
+                </div>
+
+
+                <small
+                        class="error"
+                        id="nameError">
+                </small>
+
+            </div>
+
+
+
+            <!-- Email -->
+
+            <div class="form-group">
+
+                <label for="email">
+                    Email
+                </label>
+
+
+                <div class="input-box">
+
+                    <i class="fa-regular fa-envelope"></i>
+
+                    <input
+                            type="email"
+                            id="email"
+                            placeholder="jane@example.com"
+                            required>
+
+                </div>
+
+
+                <small
+                        class="error"
+                        id="emailError">
+                </small>
+
+            </div>
+
+
+
+            <!-- Password -->
+
+            <div class="form-group">
+
+                <label for="password">
+                    Password
+                </label>
+
+
+                <div class="input-box">
+
+                    <i class="fa-solid fa-lock"></i>
+
+
+                    <input
+                            type="password"
+                            id="password"
+                            placeholder="••••••••"
+                            required>
+
+
+                    <button
+                            type="button"
+                            class="password-toggle"
+                            onclick="togglePassword('password', this)">
+
+                        <i class="fa-regular fa-eye"></i>
+
+                    </button>
+
+                </div>
+
+
+                <small
+                        class="error"
+                        id="passwordError">
+                </small>
+
+            </div>
+
+
+
+            <!-- Confirm Password -->
+
+            <div class="form-group">
+
+                <label for="confirmPassword">
+                    Confirm Password
+                </label>
+
+
+                <div class="input-box">
+
+                    <i class="fa-solid fa-lock"></i>
+
+
+                    <input
+                            type="password"
+                            id="confirmPassword"
+                            placeholder="••••••••"
+                            required>
+
+
+                    <button
+                            type="button"
+                            class="password-toggle"
+                            onclick="togglePassword('confirmPassword', this)">
+
+                        <i class="fa-regular fa-eye"></i>
+
+                    </button>
+
+                </div>
+
+
+                <small
+                        class="error"
+                        id="confirmError">
+                </small>
+
+            </div>
+
+
+
+            <!-- ========================= -->
+            <!-- ROLE -->
+            <!-- ========================= -->
+            <div class="form-group">
+
+                <label for="role">Register as</label>
+
+                <div class="role-group">
+                    <i class="fa-solid fa-user-tag"></i>
+
+                    <select id="role">
+                        <option value="user">Reader</option>
+                        <option value="author">Author</option>
+                    </select>
+                </div>
+
+                <small class="error" id="roleError"></small>
+
+            </div>
+
+            <!-- ========================= -->
+            <!-- TERMS -->
+            <!-- ========================= -->
+
+            <div class="terms">
+
+                <label>
+
+                    <input
+                            type="checkbox"
+                            id="terms">
+
+
+                    <span>
+
+                        By signing up, you agree to our
+
+                        <a href="#">
+                            Terms
+                        </a>
+
+                        and
+
+                        <a href="#">
+                            Privacy Policy
+                        </a>.
+
+                    </span>
+
+                </label>
+
+
+                <small
+                        class="error"
+                        id="termsError">
+                </small>
+
+            </div>
+
+
+
+            <!-- ========================= -->
+            <!-- CREATE ACCOUNT -->
+            <!-- ========================= -->
+
+            <button
+                    type="submit"
+                    class="create-btn"
+                    id="createAccountButton">
+
+                <span>
+                    Create Account
+                </span>
+
+            </button>
+
+
+        </form>
+
+
+
+        <!-- ========================= -->
+        <!-- LOGIN -->
+        <!-- ========================= -->
+
+        <div class="login-text">
+
+            Already have an account?
+
+            <a th:href="@{/login}">
+                Login
+            </a>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+
+<script>
+
+
+    // =====================================================
+    // SIGNUP FORM
+    // =====================================================
+
+    const signupForm =
+        document.getElementById("signupForm");
+
+
+
+    // =====================================================
+    // SHOW / HIDE PASSWORD
+    // =====================================================
+
+    function togglePassword(inputId, button) {
+
+        const input =
+            document.getElementById(inputId);
+
+        const icon =
+            button.querySelector("i");
+
+
+        if (input.type === "password") {
+
+            input.type = "text";
+
+            icon.classList.remove("fa-eye");
+
+            icon.classList.add("fa-eye-slash");
+
+        }
+
+        else {
+
+            input.type = "password";
+
+            icon.classList.remove("fa-eye-slash");
+
+            icon.classList.add("fa-eye");
+
+        }
+
+    }
+
+
+
+    // =====================================================
+    // SIGNUP FORM SUBMIT
+    // =====================================================
+
+    signupForm.addEventListener(
+        "submit",
+        async function (event) {
+
+            event.preventDefault();
+
+
+
+            // -------------------------------------------------
+            // GET FORM VALUES
+            // -------------------------------------------------
+
+            const name =
+                document
+                    .getElementById("fullname")
+                    .value
+                    .trim();
+
+
+            const email =
+                document
+                    .getElementById("email")
+                    .value
+                    .trim();
+
+
+            const password =
+                document
+                    .getElementById("password")
+                    .value;
+
+
+            const confirmPassword =
+                document
+                    .getElementById("confirmPassword")
+                    .value;
+
+
+            const role =
+                document
+                    .getElementById("role")
+                    .value;
+
+
+            const terms =
+                document
+                    .getElementById("terms")
+                    .checked;
+
+
+
+            // -------------------------------------------------
+            // ERROR ELEMENTS
+            // -------------------------------------------------
+
+            const nameError =
+                document.getElementById("nameError");
+
+
+            const emailError =
+                document.getElementById("emailError");
+
+
+            const passwordError =
+                document.getElementById("passwordError");
+
+
+            const confirmError =
+                document.getElementById("confirmError");
+
+
+            const termsError =
+                document.getElementById("termsError");
+
+
+            const roleError =
+                document.getElementById("roleError");
+
+
+
+            // -------------------------------------------------
+            // CLEAR OLD ERRORS
+            // -------------------------------------------------
+
+            nameError.textContent = "";
+
+            emailError.textContent = "";
+
+            passwordError.textContent = "";
+
+            confirmError.textContent = "";
+
+            termsError.textContent = "";
+
+            roleError.textContent = "";
+
+
+
+            let valid = true;
+
+
+
+            // -------------------------------------------------
+            // NAME VALIDATION
+            // -------------------------------------------------
+
+            if (name.length < 2) {
+
+                nameError.textContent =
+                    "Please enter your full name.";
+
+                valid = false;
+
+            }
+
+
+
+            // -------------------------------------------------
+            // EMAIL VALIDATION
+            // -------------------------------------------------
+
+            const emailPattern =
+                /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+
+            if (!emailPattern.test(email)) {
+
+                emailError.textContent =
+                    "Please enter a valid email address.";
+
+                valid = false;
+
+            }
+
+
+
+            // -------------------------------------------------
+            // PASSWORD VALIDATION
+            // -------------------------------------------------
+
+            if (password.length < 8) {
+
+                passwordError.textContent =
+                    "Password must be at least 8 characters.";
+
+                valid = false;
+
+            }
+
+
+
+            // -------------------------------------------------
+            // CONFIRM PASSWORD
+            // -------------------------------------------------
+
+            if (password !== confirmPassword) {
+
+                confirmError.textContent =
+                    "Passwords do not match.";
+
+                valid = false;
+
+            }
+
+
+
+            // -------------------------------------------------
+            // ROLE VALIDATION
+            // -------------------------------------------------
+
+            if (!role) {
+
+                roleError.textContent =
+                    "Please select your role.";
+
+                valid = false;
+
+            }
+
+
+
+            // -------------------------------------------------
+            // TERMS VALIDATION
+            // -------------------------------------------------
+
+            if (!terms) {
+
+                termsError.textContent =
+                    "Please accept the terms and privacy policy.";
+
+                valid = false;
+
+            }
+
+
+
+            // -------------------------------------------------
+            // STOP IF FORM IS INVALID
+            // -------------------------------------------------
+
+            if (!valid) {
+
+                return;
+
+            }
+
+
+
+            // -------------------------------------------------
+            // DISABLE BUTTON
+            // -------------------------------------------------
+
+            const createAccountButton =
+                document.getElementById(
+                    "createAccountButton"
+                );
+
+
+            createAccountButton.disabled = true;
+
+
+            createAccountButton.querySelector("span")
+                .textContent = "Creating Account...";
+
+
+
+            // =================================================
+            // SEND DATA TO SPRING BOOT
+            // =================================================
+
+            try {
+
+                const response =
+                    await fetch(
+                        "/api/auth/register",
+                        {
+
+                            method: "POST",
+
+                            headers: {
+
+                                "Content-Type":
+                                    "application/json"
+
+                            },
+
+                            body: JSON.stringify({
+
+                                name: name,
+
+                                email: email,
+
+                                password: password,
+
+                                role: role
+
+                            })
+
+                        }
+                    );
+
+
+
+                // -------------------------------------------------
+                // READ RESPONSE
+                // -------------------------------------------------
+
+                const data =
+                    await response.json()
+                        .catch(() => null);
+
+
+
+                // =================================================
+                // REGISTRATION SUCCESS
+                // =================================================
+
+                if (response.ok) {
+
+                    alert(
+                        "Account created successfully! Please login."
+                    );
+
+
+                    // Clear form
+
+                    signupForm.reset();
+
+
+                    // Go to subscription page
+
+                    window.location.href =
+                        "/subscription";
+                }
+
+
+
+                    // =================================================
+                    // REGISTRATION FAILED
+                // =================================================
+
+                else {
+
+                    let errorMessage =
+                        "Registration failed. Please try again.";
+
+
+                    if (typeof data === "string") {
+
+                        errorMessage = data;
+
+                    }
+
+                    else if (data && data.message) {
+
+                        errorMessage = data.message;
+
+                    }
+
+
+                    alert(errorMessage);
+
+
+                    // Enable button again
+
+                    createAccountButton.disabled = false;
+
+
+                    createAccountButton.querySelector("span")
+                        .textContent = "Create Account";
+
+                }
+
+            }
+
+
+
+                // =================================================
+                // SERVER CONNECTION ERROR
+                // =================================================
+
+            catch (error) {
+
+                console.error(
+                    "Registration error:",
+                    error
+                );
+
+
+                alert(
+                    "Unable to connect to READORA server. " +
+                    "Please make sure Spring Boot is running."
+                );
+
+
+                createAccountButton.disabled = false;
+
+
+                createAccountButton.querySelector("span")
+                    .textContent = "Create Account";
+
+            }
+
+        }
+    );
+
+</script>
+
+
+</body>
+
+</html>

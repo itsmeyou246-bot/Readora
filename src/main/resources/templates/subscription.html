@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Subscription Plans | READORA</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/subscription.css}">
+</head>
+
+<body>
+
+<div class="subscription-page">
+
+    <!-- HEADER -->
+    <th:block th:replace="~{fragments/chrome :: header}"></th:block>
+    <header class="header legacy-chrome-header">
+
+        <div class="logo">
+            READORA
+        </div>
+
+        <a href="/signup" class="close-btn">
+            Close
+        </a>
+
+    </header>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+        <section class="plans-section">
+
+            <h1>Choose your reading journey</h1>
+
+            <p class="subtitle">
+                Select the plan that best fits your literary exploration.
+                Upgrade as your interests grow.
+            </p>
+
+
+            <!-- PLANS -->
+            <div class="plans-container">
+
+
+                <!-- FREE PLAN -->
+                <div class="plan-card">
+
+                    <h2>Free</h2>
+
+                    <p class="plan-description">
+                        Basic access to foundational texts.
+                    </p>
+
+                    <div class="price">
+                        NPR 0
+                        <span>/month</span>
+                    </div>
+
+                    <ul class="features">
+
+                        <li><i class="fa-solid fa-check"></i> Access to public domain books</li>
+
+                        <li><i class="fa-solid fa-check"></i> Basic reading interface</li>
+
+                        <li><i class="fa-solid fa-check"></i> Web access only</li>
+
+                    </ul>
+
+                    <button
+                            class="plan-btn"
+                            data-plan="Free"
+                            data-price="0">
+                        GET STARTED
+                    </button>
+
+                </div>
+
+
+                <!-- PREMIUM PLAN -->
+                <div class="plan-card premium">
+
+                    <div class="popular">
+                        MOST POPULAR
+                    </div>
+
+                    <h2>Premium</h2>
+
+                    <p class="plan-description">
+                        Unlock the complete literary archive.
+                    </p>
+
+                    <div class="price">
+                        NPR 499
+                        <span>/month</span>
+                    </div>
+
+                    <ul class="features">
+
+                        <li><i class="fa-solid fa-check"></i> Unlock all books, magazines</li>
+
+                        <li><i class="fa-solid fa-check"></i> Full Read Nepal archive access</li>
+
+                        <li><i class="fa-solid fa-check"></i> Offline reading</li>
+
+                        <li><i class="fa-solid fa-check"></i> Digital notes &amp; highlights</li>
+
+                        <li><i class="fa-solid fa-check"></i> AI Recommendations</li>
+
+                    </ul>
+
+                    <button
+                            class="plan-btn premium-btn"
+                            data-plan="Premium"
+                            data-price="499">
+                        START PREMIUM
+                    </button>
+
+                </div>
+
+
+                <!-- INSTITUTIONAL PLAN -->
+                <div class="plan-card">
+
+                    <h2>Institutional</h2>
+
+                    <p class="plan-description">
+                        For schools, libraries, and researchers.
+                    </p>
+
+                    <div class="price custom-price">
+                        Custom
+                    </div>
+
+                    <ul class="features">
+
+                        <li><i class="fa-solid fa-check"></i> Everything in Premium</li>
+
+                        <li><i class="fa-solid fa-check"></i> Multi-user licensing</li>
+
+                        <li><i class="fa-solid fa-check"></i> Advanced API access</li>
+
+                        <li><i class="fa-solid fa-check"></i> Dedicated support</li>
+
+                    </ul>
+
+                    <button
+                            class="plan-btn"
+                            id="institutionalBtn">
+                        CONTACT US
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- NOTE -->
+            <p class="secure-note">
+                <i class="fa-solid fa-lock"></i>
+                Securely integrated with READORA for all your reading needs.
+            </p>
+
+        </section>
+
+    </main>
+
+
+    <!-- FOOTER -->
+    <footer class="footer legacy-chrome-footer">
+
+        <div class="footer-logo">
+            READORA
+        </div>
+
+        <div class="footer-links">
+
+            <a href="#">ARCHIVE</a>
+            <a href="#">AUTHORS</a>
+            <a href="#">TERMS</a>
+            <a href="#">PRIVACY</a>
+            <a href="#">SUPPORT</a>
+
+        </div>
+
+        <div class="copyright">
+            © 2026 READORA. ALL RIGHTS RESERVED.
+        </div>
+
+    </footer>
+    <th:block th:replace="~{fragments/chrome :: footer}"></th:block>
+
+</div>
+
+
+<script th:src="@{/js/subscription.js}"></script>
+
+</body>
+</html>

@@ -1,0 +1,91 @@
+:root {
+    --paper: #fbfaf7;
+    --ink: #27251f;
+    --muted: #9a978f;
+    --line: #e8e4dc;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    color: var(--ink);
+    background: var(--paper);
+    font-family: Inter, Arial, sans-serif;
+}
+
+.reader-topbar {
+    height: 70px;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    padding: 0 clamp(20px, 6vw, 84px);
+    border-bottom: 1px solid var(--line);
+    background: rgba(251, 250, 247, .94);
+}
+
+.library-link, .reader-actions button, .pagination-bar, .chapter-label {
+    color: var(--muted);
+    font-size: 11px;
+}
+
+.library-link { text-decoration: none; }
+.reader-title { text-align: center; display: flex; flex-direction: column; gap: 3px; }
+.reader-title strong { font: 500 17px Georgia, serif; }
+.reader-title span { color: var(--muted); font-size: 10px; letter-spacing: .8px; }
+.reader-actions { justify-self: end; display: flex; gap: 12px; }
+.reader-actions button { border: 0; background: transparent; cursor: pointer; font-size: 14px; }
+
+.reader-shell {
+    width: min(100% - 40px, 650px);
+    margin: 0 auto;
+    padding: 66px 0 120px;
+}
+
+.reader-status { text-align: center; color: var(--muted); padding: 90px 0; }
+.page-content { font: 17px/1.78 Georgia, "Times New Roman", serif; }
+.page-text { white-space: pre-line; margin: 0; }
+.page-text::first-letter {
+    float: left;
+    padding: 9px 8px 0 0;
+    font: 700 58px/.72 Georgia, serif;
+}
+
+.editorial-image { margin: 42px 0 0; text-align: left; }
+.image-card { padding: 14px; background: #f0eee8; }
+.image-card img { display: block; width: 100%; max-height: 330px; object-fit: cover; }
+.editorial-image h2 { margin: 19px 0 4px; font: 700 17px/1.2 Arial, sans-serif; letter-spacing: 1.4px; text-transform: uppercase; }
+.image-subtitle { margin: 0 0 12px; font: 14px Georgia, serif; color: #5d5a54; }
+.image-caption { margin: 0 0 8px; font: 13px/1.5 Georgia, serif; color: #66625b; }
+.image-credit { margin: 0; color: var(--muted); font: italic 12px Georgia, serif; }
+
+.pagination-bar {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px clamp(20px, 8vw, 120px);
+    border-top: 1px solid var(--line);
+    background: rgba(251, 250, 247, .97);
+}
+
+.pagination-bar button {
+    border: 0;
+    background: transparent;
+    color: var(--ink);
+    cursor: pointer;
+    font: 12px Georgia, serif;
+}
+.pagination-bar button:disabled { color: #c7c3bb; cursor: not-allowed; }
+
+@media (max-width: 600px) {
+    .reader-topbar { height: 62px; padding: 0 14px; }
+    .reader-title strong { font-size: 14px; }
+    .reader-shell { width: min(100% - 32px, 650px); padding-top: 38px; }
+    .page-content { font-size: 16px; line-height: 1.7; }
+    .pagination-bar { padding: 16px; }
+}

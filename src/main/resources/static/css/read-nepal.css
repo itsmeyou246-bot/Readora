@@ -1,0 +1,391 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #faf6ee;
+  color: #201d18;
+  font-family: 'Inter', sans-serif;
+  line-height: 1.5;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.container {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+/* HEADER */
+
+
+.header {
+  border-bottom: 1px solid #ddd4c0;
+  padding: 20px 0;
+}
+
+.header-inner {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  font-family: 'Fraunces', serif;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.nav-links {
+  display: flex;
+  gap: 30px;
+}
+
+.nav-links a {
+  font-size: 13px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #55503f;
+}
+
+.nav-links a:hover {
+  color: #201d18;
+}
+
+.nav-active {
+  color: #201d18;
+  border-bottom: 1px solid #201d18;
+  padding-bottom: 5px;
+}
+
+.profile-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid #ddd4c0;
+  text-align: center;
+  line-height: 34px;
+}
+
+/* HERO BANNER */
+
+.nepal-hero {
+  position: relative;
+  min-height: 340px;
+  background-color: #b7ab95;
+  background-image: url('/img/overallkathmandu.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(250, 246, 238, 0.72);
+}
+
+.hero-content {
+  position: relative;
+  max-width: 640px;
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.hero-label {
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #55503f;
+}
+
+.hero-title {
+  font-family: 'Fraunces', serif;
+  font-size: 40px;
+  font-weight: 500;
+  margin-top: 14px;
+  line-height: 1.2;
+}
+
+.hero-nepali {
+  font-family: 'Noto Sans Devanagari', sans-serif;
+  font-size: 16px;
+  color: #55503f;
+  margin-top: 12px;
+}
+
+.hero-divider {
+  width: 50px;
+  height: 1px;
+  background-color: #a89f89;
+  margin: 22px auto;
+}
+
+.hero-text {
+  font-size: 14px;
+  color: #55503f;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+/* CATEGORY FILTER TABS */
+
+.filter-section {
+  border-bottom: 1px solid #ddd4c0;
+  padding: 20px 0;
+}
+
+.filter-tabs {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.filter-tab {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+  padding: 9px 16px;
+  border-radius: 3px;
+  border: 1px solid transparent;
+  background-color: transparent;
+  color: #55503f;
+  cursor: pointer;
+}
+
+.filter-tab:hover {
+  color: #201d18;
+}
+
+.filter-active {
+  background-color: white;
+  border-color: #ddd4c0;
+  color: #201d18;
+}
+
+/* SECTION HEADING ROW (shared by Recently Digitized) */
+
+.section-heading-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 30px;
+}
+
+.section-heading {
+  font-family: 'Fraunces', serif;
+  font-size: 22px;
+  font-weight: 500;
+}
+
+.section-link {
+  font-size: 12px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #55503f;
+}
+
+/* RECENTLY DIGITIZED */
+
+.digitized-section {
+  padding: 50px 0;
+}
+
+.digitized-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+}
+
+.archive-card img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 3px;
+  background-color: #ece5d8;
+}
+
+.archive-meta {
+  font-size: 11px;
+  color: #948d78;
+  margin-top: 14px;
+}
+
+.archive-card h3 {
+  font-family: 'Fraunces', serif;
+  font-size: 17px;
+  font-weight: 500;
+  margin-top: 6px;
+}
+
+.archive-nepali {
+  font-family: 'Noto Sans Devanagari', sans-serif;
+  font-size: 14px;
+  color: #55503f;
+  margin-top: 2px;
+}
+
+.archive-author {
+  font-size: 12px;
+  color: #948d78;
+  margin-top: 8px;
+}
+
+/* hidden is used by nepal.js to hide cards that don't match the filter */
+.archive-card.hidden {
+  display: none;
+}
+
+/* FEATURED MASTERPIECE */
+
+.featured-section {
+  background-color: #ece5d8;
+  padding: 70px 0;
+}
+
+.featured-inner {
+  display: flex;
+  align-items: center;
+  gap: 60px;
+}
+
+.featured-image {
+  flex: 1;
+}
+
+.featured-image img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 3px;
+}
+
+.featured-text {
+  flex: 1;
+}
+
+.featured-label {
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #55503f;
+}
+
+.featured-title {
+  font-family: 'Fraunces', serif;
+  font-size: 30px;
+  font-weight: 500;
+  margin-top: 14px;
+  line-height: 1.2;
+}
+
+.featured-nepali {
+  font-family: 'Noto Sans Devanagari', sans-serif;
+  font-size: 15px;
+  color: #55503f;
+  margin-top: 8px;
+}
+
+.featured-description {
+  font-size: 14px;
+  color: #55503f;
+  margin-top: 18px;
+  max-width: 440px;
+}
+
+.btn-dark {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  letter-spacing: 1px;
+  text-transform: none;
+  padding: 14px 24px;
+  border-radius: 3px;
+  border: none;
+  background-color: #201d18;
+  color: white;
+  margin-top: 24px;
+  cursor: pointer;
+}
+
+/* FOOTER */
+
+.footer {
+  border-top: 1px solid #ddd4c0;
+  padding: 30px 0;
+}
+
+.footer-inner {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.footer-logo {
+  font-family: 'Fraunces', serif;
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.footer-copyright {
+  font-size: 12px;
+  color: #948d78;
+}
+
+.footer-links {
+  display: flex;
+  gap: 24px;
+}
+
+.footer-links a {
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #55503f;
+}
+
+/* RESPONSIVE - screens smaller than 900px (tablets/phones) */
+
+@media (max-width: 900px) {
+  .nav-links {
+    display: none;
+  }
+
+  .digitized-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .featured-inner {
+    flex-direction: column;
+  }
+
+  .hero-title {
+    font-size: 30px;
+  }
+}

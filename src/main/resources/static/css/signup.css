@@ -1,0 +1,311 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Georgia, "Times New Roman", serif;
+    background: #f7f7f4;
+    color: #183525;
+    min-height: 100vh;
+}
+
+
+/* =========================
+   MAIN CONTAINER
+========================= */
+
+.signup-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px 20px;
+}
+
+
+/* =========================
+   CARD
+========================= */
+
+.signup-card {
+    width: 100%;
+    max-width: 440px;
+    background: #ffffff;
+    border: 1px solid #d9ddd8;
+    padding: 38px 42px 32px;
+    box-shadow: 0 10px 30px rgba(24, 53, 37, 0.05);
+}
+
+
+/* =========================
+   BRAND
+========================= */
+
+.brand {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.brand h1 {
+    font-size: 35px;
+    letter-spacing: 4px;
+    font-weight: 700;
+    color: #193c29;
+    margin-bottom: 5px;
+}
+
+.brand p {
+    font-size: 20px;
+    color: #666;
+    letter-spacing: 0.3px;
+}
+
+
+/* =========================
+   FORM
+========================= */
+
+.form-group {
+    margin-bottom: 18px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: #505650;
+    margin-bottom: 7px;
+}
+
+
+/* =========================
+   INPUT
+========================= */
+
+.input-box {
+    height: 46px;
+    border: 1px solid #aeb6b0;
+    display: flex;
+    align-items: center;
+    background: #fff;
+    transition: 0.25s ease;
+}
+
+.input-box:focus-within {
+    border-color: #193c29;
+    box-shadow: 0 0 0 2px rgba(25, 60, 41, 0.08);
+}
+
+.input-box > i {
+    width: 42px;
+    text-align: center;
+    color: #68736b;
+    font-size: 16px;
+}
+
+.input-box input {
+    flex: 1;
+    height: 100%;
+    border: none;
+    outline: none;
+    font-family: Arial, sans-serif;
+    font-size: 15px;
+    color: #333;
+    padding-right: 8px;
+}
+
+.input-box input::placeholder {
+    color: #a0a5a1;
+}
+
+
+/* =========================
+   PASSWORD TOGGLE
+========================= */
+
+.password-toggle {
+    width: 42px;
+    height: 100%;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    color: #69736d;
+}
+
+.password-toggle:hover {
+    color: #193c29;
+}
+
+
+/* =========================
+   ROLE
+========================= */
+
+.role-group {
+    height: 46px;
+    border: 1px solid #aeb6b0;
+    display: flex;
+    align-items: center;
+    background: #fff;
+}
+
+.role-group i {
+    width: 42px;
+    text-align: center;
+    color: #68736b;
+    font-size: 16px;
+}
+
+.role-group select {
+    height: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 15px;
+    color: #183525;
+    padding: 0 8px;
+    cursor: pointer;
+}
+
+/* =========================
+   TERMS
+========================= */
+
+.terms {
+    margin: 6px 0 20px;
+}
+
+.terms label {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+    line-height: 1.6;
+    color: #666;
+}
+
+.terms input {
+    margin-top: 3px;
+    accent-color: #193c29;
+}
+
+.terms a {
+    color: #193c29;
+    font-weight: 600;
+}
+
+
+/* =========================
+   BUTTON
+========================= */
+
+.create-btn {
+    width: 100%;
+    height: 47px;
+    border: none;
+    background: #193c29;
+    color: white;
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+
+    font-family: Arial, sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 1px;
+
+    transition: 0.25s ease;
+}
+
+.create-btn:hover {
+    background: #102b1d;
+}
+
+
+/* =========================
+   LOGIN
+========================= */
+
+.login-text {
+    text-align: center;
+    margin-top: 22px;
+    font-family: Arial, sans-serif;
+    font-size: 15px;
+    color: #777;
+}
+
+.login-text a {
+    color: #193c29;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.login-text a:hover {
+    text-decoration: underline;
+}
+
+
+/* =========================
+   ERROR
+========================= */
+
+.error {
+    display: block;
+    color: #b13b3b;
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    margin-top: 5px;
+    min-height: 0;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 500px) {
+
+    .signup-container {
+        padding: 15px;
+    }
+
+    .signup-card {
+        padding: 32px 25px 28px;
+    }
+
+    .brand h1 {
+        font-size: 28px;
+    }
+
+    .brand p {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 350px) {
+
+    .signup-card {
+        padding: 28px 18px;
+    }
+
+    .brand h1 {
+        font-size: 25px;
+    }
+
+    .input-box {
+        height: 44px;
+    }
+
+    .create-btn {
+        height: 44px;
+    }
+}

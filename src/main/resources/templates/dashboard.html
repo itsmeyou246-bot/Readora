@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>READORA Dashboard</title>
+
+    <link rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+</head>
+
+
+<!-- ================= HEADER ================= -->
+
+<th:block th:replace="~{fragments/chrome :: header}"></th:block>
+<header class="header legacy-chrome-header">
+    <div class="header-inner">
+
+        <a class="logo" th:href="@{/index}">READORA</a>
+
+        <nav class="nav-links">
+            <a class="nav-active" th:href="@{/dashboard}">Dashboard</a>
+            <a th:href="@{/index}">Discover</a>
+            <a th:href="@{/Book}">Books</a>
+            <a th:href="@{/newspapers}">Newspapers</a>
+            <a th:href="@{/magazines}">Magazines</a>
+            <a th:href="@{/read-nepal}">Read Nepal</a>
+            <a th:href="@{/library}">My Library</a>
+        </nav>
+
+        <div class="profile-icon" aria-label="Laxmi Sapkota profile">
+            <i class="fa-solid fa-user"></i>
+        </div>
+
+    </div>
+</header>
+
+
+<!-- ================= MAIN ================= -->
+
+<main class="container">
+
+    <!-- Dashboard navigation -->
+
+    <div class="sub-nav">
+
+        <div class="sub-links">
+            <a class="selected" href="#overview">
+                <i class="fa-solid fa-compass"></i>
+                Overview
+            </a>
+
+            <a href="#continue">
+                <i class="fa-solid fa-book-open-reader"></i>
+                Continue Reading
+            </a>
+
+            <a href="#goals">
+                <i class="fa-solid fa-bullseye"></i>
+                Goals & Activity
+            </a>
+
+            <a href="#recommendations">
+                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                Recommendations
+            </a>
+
+            <a href="#bookmarks">
+                <i class="fa-solid fa-bookmark"></i>
+                Bookmarks & Notes
+            </a>
+
+            <a href="#analytics">
+                <i class="fa-solid fa-chart-line"></i>
+                Analytics
+            </a>
+        </div>
+
+        <div class="location">
+            <b>Laxmi Sapkota</b>
+            <span>·</span>
+            <strong>Premium</strong>
+            <small>Kathmandu (NPT)</small>
+        </div>
+
+    </div>
+
+
+    <!-- ================= OVERVIEW ================= -->
+
+    <section class="overview card" id="overview">
+
+        <div class="welcome">
+
+            <div>
+                <div class="session">
+                    ACTIVE SESSION
+                    <span>•</span>
+                    Friday, March 2026
+                    <span>•</span>
+                    <b>Daily Goal Met (78m)</b>
+                </div>
+
+                <h1>
+                    Good evening,
+                    <i>Laxmi</i>.
+                    Continue your reading journey.
+                </h1>
+
+                <p>
+                    You have completed 3 books this month.
+                    Your intellectual immersion is pacing 24%
+                    ahead of schedule.
+                </p>
+            </div>
+
+            <div class="welcome-buttons">
+                <button class="primary">
+                    <i class="fa-solid fa-play"></i>
+                    Continue Reading
+                </button>
+
+                <button>
+                    <i class="fa-solid fa-book"></i>
+                    My Library
+                </button>
+
+                <button>
+                    <i class="fa-solid fa-bookmark"></i>
+                    Bookmarks
+                </button>
+            </div>
+
+        </div>
+
+
+        <!-- Statistics -->
+
+        <div class="stats">
+
+            <div class="stat">
+                <div class="stat-title">
+                    Books Read
+                    <i class="fa-solid fa-book"></i>
+                </div>
+
+                <strong>24</strong>
+                <span>/ 32 target</span>
+
+                <p>75% of yearly quota</p>
+            </div>
+
+
+            <div class="stat">
+                <div class="stat-title">
+                    In Progress
+                    <i class="fa-solid fa-hourglass-half"></i>
+                </div>
+
+                <strong>3</strong>
+                <span>active volumes</span>
+
+                <p>Avg 68% progress</p>
+            </div>
+
+
+            <div class="stat">
+                <div class="stat-title">
+                    Reading Time
+                    <i class="fa-solid fa-clock"></i>
+                </div>
+
+                <strong>18h 42m</strong>
+
+                <p>Recorded this month</p>
+            </div>
+
+
+            <div class="stat">
+                <div class="stat-title">
+                    Reading Streak
+                    <i class="fa-solid fa-fire"></i>
+                </div>
+
+                <strong class="green">12</strong>
+                <span>days active</span>
+
+                <p>Personal best 42 days</p>
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ================= CONTINUE READING ================= -->
+
+    <section id="continue">
+
+        <div class="section-title">
+            <h2>
+                <i class="fa-solid fa-book-open-reader"></i>
+                Continue Reading
+            </h2>
+
+            <span>3 works in active memory</span>
+        </div>
+
+
+        <div class="reading-card card">
+
+            <div class="main-book">
+
+                <!-- Book Cover -->
+
+                <div class="book-cover">
+
+                    <small>READORA EDITION</small>
+
+                    <div class="book-middle">
+                        <i class="fa-solid fa-mountain"></i>
+
+                        <h3>The Mountain Path</h3>
+
+                        <em>Tenzing Norbu</em>
+                    </div>
+
+                    <small>Chapter 8: The Ascent</small>
+
+                </div>
+
+
+                <!-- Book information -->
+
+                <div class="book-details">
+
+                    <div class="category">
+                        HIMALAYAN MEMOIRS
+                        <span>•</span>
+                        Last opened 2h ago
+                    </div>
+
+                    <h3>The Mountain Path</h3>
+
+                    <em>
+                        By Tenzing Norbu · Himalayan Memoirs, 2024
+                    </em>
+
+                    <blockquote>
+                        "The air grew noticeably thinner as we passed
+                        the tree line. In this barren landscape,
+                        only the essential remained..."
+                    </blockquote>
+
+                    <div class="progress-info">
+                        <span>Chapter 8 of 12 · Page 124 of 480</span>
+                        <b>68% completed</b>
+                    </div>
+
+                    <div class="progress">
+                        <div style="width:68%"></div>
+                    </div>
+
+                    <div class="buttons">
+
+                        <button class="primary">
+                            <i class="fa-solid fa-play"></i>
+                            Continue Reading
+                        </button>
+
+                        <button>
+                            <i class="fa-solid fa-highlighter"></i>
+                            14 Notes
+                        </button>
+
+                        <button class="more">...</button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Other books -->
+
+            <div class="other-books">
+
+                <div class="small-book">
+
+                    <div class="mini-cover">RC</div>
+
+                    <div class="small-info">
+                        <strong>The Silent Spring</strong>
+                        <small>Rachel Carson · Ch. 5</small>
+
+                        <div class="mini-progress">
+                            <div style="width:42%"></div>
+                        </div>
+                    </div>
+
+                    <div class="percentage">
+                        42%
+                        <small>Resume</small>
+                    </div>
+
+                </div>
+
+
+                <div class="small-book">
+
+                    <div class="mini-cover dark">HS</div>
+
+                    <div class="small-info">
+                        <strong>Structures of Light</strong>
+                        <small>Hiroshi Sugimoto · Ch. 2</small>
+
+                        <div class="mini-progress gold">
+                            <div style="width:18%"></div>
+                        </div>
+                    </div>
+
+                    <div class="percentage">
+                        18%
+                        <small>Resume</small>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ================= GOALS ================= -->
+
+    <section class="two-column" id="goals">
+
+        <div class="card">
+
+            <div class="card-heading">
+                <h3>
+                    <i class="fa-solid fa-bullseye"></i>
+                    My Reading Goal (2026)
+                </h3>
+
+                <span>Annual Challenge</span>
+            </div>
+
+            <div class="goal-number">
+                <strong>32</strong>
+                <span>/ 50 books</span>
+
+                <b>64% Completed</b>
+            </div>
+
+            <div class="progress">
+                <div style="width:64%"></div>
+            </div>
+
+            <p>
+                18 books remaining to fulfill your 2026
+                intellectual reading pledge.
+            </p>
+
+            <div class="goal-bottom">
+                <span>This Month: <b>4 books</b></span>
+                <span>Last Month: <b>3 books</b></span>
+            </div>
+
+        </div>
+
+
+        <!-- Reading activity -->
+
+        <div class="card">
+
+            <div class="card-heading">
+                <h3>
+                    <i class="fa-solid fa-chart-column"></i>
+                    Reading Activity
+                </h3>
+
+                <span>Avg 45m / day</span>
+            </div>
+
+            <div class="chart">
+
+                <div><i style="height:48%"></i><span>M</span></div>
+                <div><i style="height:65%"></i><span>T</span></div>
+                <div><i style="height:35%"></i><span>W</span></div>
+                <div><i style="height:60%"></i><span>T</span></div>
+                <div><i style="height:80%"></i><span>F</span></div>
+                <div><i class="gold-bar" style="height:100%"></i><span>S</span></div>
+                <div><i class="light-bar" style="height:25%"></i><span>S</span></div>
+
+            </div>
+
+            <div class="chart-footer">
+                <span>Peak reading: <b>Saturday (78 min)</b></span>
+                <strong>Weekly target on track</strong>
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ================= MOOD ================= -->
+
+    <section class="card mood">
+
+        <div class="card-heading">
+
+            <h3>
+                <i class="fa-solid fa-heart-pulse"></i>
+                Mood-Based Reading
+            </h3>
+
+            <span id="moodStatus">Showing: Calm</span>
+
+        </div>
+
+        <p>
+            What state of mind do you feel like exploring today?
+        </p>
+
+        <div class="moods">
+
+            <button class="mood active" data-mood="Calm">
+                Calm
+            </button>
+
+            <button class="mood" data-mood="Focused">
+                Focused
+            </button>
+
+            <button class="mood" data-mood="Curious">
+                Curious
+            </button>
+
+            <button class="mood" data-mood="Inspired">
+                Inspired
+            </button>
+
+            <button class="mood" data-mood="Thoughtful">
+                Thoughtful
+            </button>
+
+            <button class="mood" data-mood="Adventurous">
+                Adventurous
+            </button>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ================= RECOMMENDATIONS ================= -->
+
+    <section id="recommendations">
+
+        <div class="section-title">
+
+            <h2>
+                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                Recommended For You
+            </h2>
+
+            <a href="#">Browse catalog →</a>
+
+        </div>
+
+
+        <div class="recommendations">
+
+
+            <!-- Book 1 -->
+
+            <div class="recommend card">
+
+                <div class="recommend-cover light">
+
+                    <i class="fa-solid fa-feather-pointed"></i>
+
+                    <small>PHILOSOPHY</small>
+
+                    <h3>On Clarity</h3>
+
+                    <em>John Berger</em>
+
+                </div>
+
+                <div class="match">
+                    96% AI Match
+                    <span>3h 10m</span>
+                </div>
+
+                <h3>On Clarity</h3>
+
+                <p>
+                    Because you read Philosophy & Aesthetics.
+                </p>
+
+                <div class="book-footer">
+                    <strong>Rs. 420</strong>
+                    <button>Read Sample →</button>
+                </div>
+
+            </div>
+
+
+            <!-- Book 2 -->
+
+            <div class="recommend card">
+
+                <div class="recommend-cover light">
+
+                    <i class="fa-solid fa-mountain-sun"></i>
+
+                    <small>NEPALI FICTION</small>
+
+                    <h3>Seto Dharti</h3>
+
+                    <p>सेतो धरती</p>
+
+                    <em>Amar Neupane</em>
+
+                </div>
+
+                <div class="match">
+                    98% AI Match
+                    <span>6h 15m</span>
+                </div>
+
+                <h3>Seto Dharti (सेतो धरती)</h3>
+
+                <p>
+                    Modern Nepali classic depicting social courage.
+                </p>
+
+                <div class="book-footer">
+                    <strong>Rs. 499</strong>
+                    <button>Unlock →</button>
+                </div>
+
+            </div>
+
+
+            <!-- Book 3 -->
+
+            <div class="recommend card">
+
+                <div class="recommend-cover black">
+
+                    <i class="fa-solid fa-lines-leaning"></i>
+
+                    <small>MODERN CLASSIC</small>
+
+                    <h3>The Story of the New Name</h3>
+
+                    <em>Elena Ferrante</em>
+
+                </div>
+
+                <div class="match">
+                    92% AI Match
+                    <span>8h 40m</span>
+                </div>
+
+                <h3>The Story of the New Name</h3>
+
+                <p>
+                    Acclaimed Neapolitan literary journey.
+                </p>
+
+                <div class="book-footer">
+                    <strong>In Subscription</strong>
+                    <button>Read Now →</button>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ================= BOOKMARKS ================= -->
+
+    <section class="two-column" id="bookmarks">
+
+        <div class="card">
+
+            <div class="card-heading">
+
+                <h3>
+                    <i class="fa-solid fa-bookmark"></i>
+                    Recent Bookmarks
+                </h3>
+
+                <a href="#">View all</a>
+
+            </div>
+
+            <div class="note">
+
+                <small>The Silent Spring · Ch. 5 · p. 84</small>
+
+                <p>
+                    "Nature has its own balance,
+                    untouched by sudden machinery."
+                </p>
+
+                <a href="#">Jump to page →</a>
+
+            </div>
+
+            <div class="note">
+
+                <small>Muna Madan · मुनामदन · Ch. 2</small>
+
+                <p>
+                    "मानिस ठूलो दिलले हुन्छ जातले हुँदैन..."
+                </p>
+
+                <a href="#">Jump to page →</a>
+
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="card-heading">
+
+                <h3>
+                    <i class="fa-solid fa-highlighter"></i>
+                    Notes & Marginalia
+                </h3>
+
+                <a href="#">14 Notes</a>
+
+            </div>
+
+            <div class="note">
+
+                <small>The Mountain Path · Ch. 4 · Yesterday</small>
+
+                <p>
+                    "The cacophony of the city we had left
+                    behind felt like a distant dream..."
+                </p>
+
+                <a href="#">Reflections on silence →</a>
+
+            </div>
+
+            <div class="note">
+
+                <small>Meditations · Book IV · 3 days ago</small>
+
+                <p>
+                    "The soul becomes dyed with the color
+                    of its thoughts."
+                </p>
+
+                <a href="#">#stoicism #mind →</a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ================= ANALYTICS ================= -->
+
+    <section class="three-column" id="analytics">
+
+
+        <div class="card">
+
+            <h3>
+                <i class="fa-solid fa-gem"></i>
+                Subscription Status
+            </h3>
+
+            <div class="status">
+                ● READORA Premium Active
+            </div>
+
+            <p>
+                Renews on <b>Sept 28, 2026</b>
+            </p>
+
+            <span class="tag">
+                Unlimited Cloud Access & AI Synthesis
+            </span>
+
+            <a href="#">Manage Subscription →</a>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>
+                <i class="fa-solid fa-chart-line"></i>
+                Reading Analytics
+            </h3>
+
+            <div class="analytics-row">
+                <span>Pages Read:</span>
+                <b>2,840</b>
+            </div>
+
+            <div class="analytics-row">
+                <span>Avg Session:</span>
+                <b>32 min</b>
+            </div>
+
+            <div class="analytics-row">
+                <span>Top Category:</span>
+                <b>Philosophy & Fiction</b>
+            </div>
+
+            <a href="#">View Full Analytics →</a>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>
+                <i class="fa-solid fa-receipt"></i>
+                Recent Purchases
+            </h3>
+
+            <div class="purchase">
+                <b>The Silent Spring</b>
+                <strong>Rs. 450</strong>
+                <small>Aug 28 · Khalti Gateway</small>
+            </div>
+
+            <div class="purchase">
+                <b>Seto Dharti</b>
+                <strong>Rs. 499</strong>
+                <small>Jul 15 · eSewa Gateway</small>
+            </div>
+
+            <a href="#">Purchase History →</a>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ================= NOTIFICATIONS ================= -->
+
+    <section class="notifications-box card">
+
+        <div class="card-heading">
+
+            <h3>
+                <i class="fa-solid fa-bell"></i>
+                Recent Notifications
+            </h3>
+
+            <span>3 unread updates</span>
+
+        </div>
+
+        <div class="notification-row">
+            <span>●</span>
+            AI match: New essay uploaded in Philosophy & Aesthetics
+            <small>1h ago</small>
+        </div>
+
+        <div class="notification-row">
+            <span>●</span>
+            Weekly reading goal badge reached
+            <small>Yesterday</small>
+        </div>
+
+        <div class="notification-row">
+            <span>●</span>
+            Read Nepal Digitization: 12 manuscripts added
+            <small>2d ago</small>
+        </div>
+
+    </section>
+
+</main>
+
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer class="footer legacy-chrome-footer">
+    <div class="footer-inner">
+        <div class="footer-logo">READORA</div>
+        <div class="footer-copyright">© 2024 Readora. Cultivating intellectual clarity.</div>
+        <div class="footer-links">
+            <a th:href="@{/library}">Library</a>
+            <a th:href="@{/read-nepal}">Read Nepal Archive</a>
+            <a href="#">Analytics</a>
+            <a href="#">Terms</a>
+            <a href="#">Support</a>
+        </div>
+    </div>
+</footer>
+<th:block th:replace="~{fragments/chrome :: footer}"></th:block>
+
+
+<script >// ================= MOOD BUTTONS =================
+
+const moodButtons = document.querySelectorAll(".mood");
+const moodStatus = document.getElementById("moodStatus");
+
+moodButtons.forEach(function(button) {
+
+    button.addEventListener("click", function() {
+
+        // Remove active from all buttons
+        moodButtons.forEach(function(btn) {
+            btn.classList.remove("active");
+        });
+
+        // Add active to clicked button
+        this.classList.add("active");
+
+        // Change text
+        const mood = this.getAttribute("data-mood");
+
+        moodStatus.textContent = "Showing: " + mood;
+
+    });
+
+});
+
+
+// ================= SMOOTH SCROLL =================
+
+const links = document.querySelectorAll('a[href^="#"]');
+
+links.forEach(function(link) {
+
+    link.addEventListener("click", function(event) {
+
+        const target = document.querySelector(
+            this.getAttribute("href")
+        );
+
+        if (target) {
+
+            event.preventDefault();
+
+            target.scrollIntoView({
+                behavior: "smooth"
+            });
+
+        }
+
+    });
+
+});</script>
+
+</body>
+</html>
