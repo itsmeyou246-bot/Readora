@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Books & Catalog · READORA Admin</title>
+
+    ```
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --forest: #1b3022;
+            --dark: #122017;
+            --gold: #c5a059;
+            --ivory: #fcf9f8;
+            --sand: #f6f3f2;
+            --border: #e5ded9;
+            --text: #211f1d;
+            --muted: #706b67;
+        }
+
+        body {
+            background: var(--ivory);
+            color: var(--text);
+            font-family: "Plus Jakarta Sans", sans-serif;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        button {
+            font-family: inherit;
+            cursor: pointer;
+        }
+
+        .header {
+            min-height: 64px;
+            height: auto;
+            background: var(--ivory);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .header-inner {
+            max-width: 1400px;
+            margin: auto;
+            padding: 18px 28px;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 18px;
+        }
+
+        .logo-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo {
+            font-family: "Playfair Display", serif;
+            font-size: 19px;
+            font-weight: 700;
+            color: var(--forest);
+            letter-spacing: 0.3px;
+        }
+
+        .admin-badge {
+            background: var(--forest);
+            color: white;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            padding: 4px 9px;
+            border-radius: 5px;
+        }
+
+        .nav-links {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 0;
+            width: 100%;
+        }
+
+        .nav-links a {
+            font-size: 13.5px;
+            color: var(--muted);
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-links a:hover {
+            color: var(--forest);
+        }
+
+        .nav-links a.active {
+            color: var(--forest);
+            font-weight: 600;
+            border-bottom: 2px solid var(--forest);
+        }
+
+        .header-search {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            background: var(--sand);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 9px 14px;
+            width: 100%;
+            color: var(--muted);
+            font-size: 12.5px;
+        }
+
+        .header-search i {
+            font-size: 12px;
+        }
+
+        .header-actions {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 12px;
+            width: 100%;
+        }
+
+        .reader-view-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--sand);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 9px 14px;
+            font-size: 12.5px;
+            font-weight: 600;
+            color: var(--text);
+            white-space: nowrap;
+        }
+
+        .bell {
+            position: relative;
+            color: var(--muted);
+            font-size: 15px;
+            width: fit-content;
+        }
+
+        .bell .dot {
+            position: absolute;
+            top: -3px;
+            right: -3px;
+            width: 7px;
+            height: 7px;
+            background: #c0503f;
+            border-radius: 50%;
+        }
+
+        .profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .profile-avatar {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: var(--forest);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .profile-info {
+            line-height: 1.3;
+        }
+
+        .profile-info strong {
+            display: block;
+            font-size: 12.5px;
+        }
+
+        .profile-info small {
+            color: var(--muted);
+            font-size: 9.5px;
+            letter-spacing: 0.4px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: auto;
+            padding: 30px 28px 70px;
+        }
+
+        .page-eyebrow {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: var(--muted);
+            margin-bottom: 6px;
+        }
+
+        .page-head {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: stretch;
+            margin-bottom: 28px;
+            gap: 20px;
+        }
+
+        .page-head h1 {
+            font-family: "Playfair Display", serif;
+            font-size: 34px;
+            color: var(--dark);
+            margin-bottom: 6px;
+        }
+
+        .page-head p {
+            color: var(--muted);
+            font-size: 13.5px;
+        }
+
+        .page-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 11px 18px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            border: 1px solid var(--border);
+            white-space: nowrap;
+        }
+
+        .btn-ghost {
+            background: white;
+            color: var(--text);
+        }
+
+        .btn-primary {
+            background: var(--forest);
+            color: white;
+            border-color: var(--forest);
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .stat-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 10.5px;
+            font-weight: 700;
+            letter-spacing: 0.6px;
+            color: var(--muted);
+            margin-bottom: 14px;
+        }
+
+        .stat-top i {
+            color: var(--gold);
+            font-size: 13px;
+        }
+
+        .stat-value {
+            font-family: "Playfair Display", serif;
+            font-size: 30px;
+            color: var(--dark);
+            margin-bottom: 8px;
+        }
+
+        .stat-sub {
+            font-size: 11.5px;
+            color: var(--muted);
+        }
+
+        .stat-sub .up {
+            color: #3f7a4e;
+            font-weight: 700;
+        }
+
+        .stat-bar {
+            margin-top: 10px;
+            height: 5px;
+            border-radius: 4px;
+            background: var(--sand);
+            overflow: hidden;
+        }
+
+        .stat-bar div {
+            height: 100%;
+            background: var(--forest);
+            border-radius: 4px;
+        }
+
+        .filter-panel {
+            background: var(--sand);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 22px;
+        }
+
+        .filter-tabs {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .filter-tab {
+            width: 100%;
+            padding: 8px 14px;
+            border-radius: 7px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            background: white;
+            border: 1px solid var(--border);
+            color: var(--muted);
+            text-align: left;
+        }
+
+        .filter-tab.active {
+            background: var(--forest);
+            color: white;
+            border-color: var(--forest);
+        }
+
+        .filter-row {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+
+        .filter-row input,
+        .filter-row select {
+            width: 100%;
+            padding: 11px 14px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: white;
+            font-size: 12.5px;
+            font-family: inherit;
+            color: var(--text);
+        }
+
+        .filter-row .search-input {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 0 14px;
+        }
+
+        .filter-row .search-input i {
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .filter-row .search-input input {
+            border: none;
+            padding: 11px 0;
+        }
+
+        .table-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            padding: 18px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            display: none;
+        }
+
+        tbody {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        tbody tr {
+            display: flex;
+            flex-direction: column;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 18px;
+            background: white;
+        }
+
+        tbody td {
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+            vertical-align: middle;
+            font-size: 13px;
+        }
+
+        tbody td:last-child {
+            border-bottom: none;
+        }
+
+        tbody td:first-child {
+            padding-top: 0;
+        }
+
+        .cover-thumb {
+            width: 60px;
+            height: 80px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: "Playfair Display", serif;
+            font-size: 8.5px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            color: white;
+            text-align: center;
+            line-height: 1.2;
+        }
+
+        .cover-forest {
+            background: var(--forest);
+        }
+
+        .cover-dark {
+            background: #2b2b2b;
+        }
+
+        .cover-draft {
+            background: var(--sand);
+            color: var(--muted);
+            border: 1px dashed var(--border);
+        }
+
+        .title-cell strong {
+            display: block;
+            font-size: 13.5px;
+            margin-bottom: 3px;
+        }
+
+        .title-cell small {
+            color: var(--muted);
+            font-size: 11px;
+        }
+
+        .author-cell strong {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 13px;
+        }
+
+        .author-cell strong i {
+            color: var(--forest);
+            font-size: 10px;
+        }
+
+        .author-cell small {
+            display: block;
+            color: var(--muted);
+            font-size: 11px;
+            margin-top: 2px;
+        }
+
+        .category-pill {
+            display: inline-block;
+            background: var(--sand);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 5px 10px;
+            font-size: 11.5px;
+        }
+
+        .price-cell strong {
+            display: block;
+            font-size: 13.5px;
+        }
+
+        .price-cell small {
+            display: block;
+            font-size: 9.5px;
+            font-weight: 700;
+            letter-spacing: 0.4px;
+            color: var(--muted);
+            margin-top: 2px;
+        }
+
+        .price-cell.premium small {
+            color: var(--gold);
+        }
+
+        .price-cell.free strong {
+            color: #3f7a4e;
+        }
+
+        .price-cell.free small {
+            color: #3f7a4e;
+        }
+
+        .price-cell.unassigned strong {
+            color: var(--muted);
+        }
+
+        .format-cell small {
+            display: block;
+            color: var(--muted);
+            font-size: 11px;
+            margin-top: 2px;
+        }
+
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11.5px;
+            font-weight: 600;
+            padding: 5px 10px;
+            border-radius: 20px;
+        }
+
+        .status-pill i {
+            font-size: 6px;
+        }
+
+        .status-published {
+            background: #e7f2e9;
+            color: #3f7a4e;
+        }
+
+        .status-pending {
+            background: #fbf1de;
+            color: #a87a2c;
+        }
+
+        .status-draft {
+            background: var(--sand);
+            color: var(--muted);
+        }
+
+        .table-footer {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 16px;
+            padding: 18px 0 0;
+            font-size: 12.5px;
+            color: var(--muted);
+        }
+
+        .pagination {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .pagination a,
+        .pagination span {
+            padding: 7px 12px;
+            border-radius: 6px;
+            font-size: 12.5px;
+            color: var(--muted);
+        }
+
+        .pagination a:hover {
+            background: var(--sand);
+        }
+
+        .pagination .current {
+            background: var(--forest);
+            color: white;
+            font-weight: 700;
+        }
+    </style>
+    ```
+
+</head>
+
+<body>
+
+<header class="header">
+    <div class="header-inner">
+
+        ```
+        <div class="logo-group">
+            <span class="logo">READORA</span>
+            <span class="admin-badge">ADMIN</span>
+        </div>
+
+        <nav class="nav-links">
+            <a th:href="@{/admin/dashboard}">Dashboard</a>
+            <a class="active" th:href="@{/admin/books}">Content</a>
+            <a th:href="@{/admin/read-nepal}">Read Nepal</a>
+            <a th:href="@{/admin/author-studio}">Author Studio</a>
+            <a th:href="@{/admin/analytics}">Analytics</a>
+        </nav>
+
+        <div class="header-search">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            Search catalog, users, records.
+        </div>
+
+        <div class="header-actions">
+
+            <a class="reader-view-btn" th:href="@{/dashboard}">
+                <i class="fa-solid fa-book-open"></i>
+                Reader View
+            </a>
+
+            <span class="bell">
+            <i class="fa-solid fa-bell"></i>
+            <span class="dot"></span>
+        </span>
+
+            <div class="profile">
+                <div class="profile-avatar">
+                    <i class="fa-solid fa-user"></i>
+                </div>
+
+                <div class="profile-info">
+                    <strong>Laxmi Sapkota</strong>
+                    <small>SUPER ADMIN</small>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    ```
+
+</header>
+
+<main class="container">
+
+    ```
+    <div class="page-eyebrow">REPOSITORY & INVENTORY</div>
+
+    <div class="page-head">
+
+        <div>
+            <h1>Books</h1>
+            <p>Manage all books available on READORA.</p>
+        </div>
+
+        <div class="page-actions">
+
+            <button class="btn btn-ghost">
+                <i class="fa-solid fa-arrow-down-to-line"></i>
+                Export CSV
+            </button>
+
+            <a class="btn btn-primary" th:href="@{/admin/books/add}">
+                <i class="fa-solid fa-plus"></i>
+                Add Book
+            </a>
+
+        </div>
+
+    </div>
+
+    <div class="stats">
+
+        <div class="stat-card">
+            <div class="stat-top">
+                TOTAL BOOKS
+                <i class="fa-solid fa-book-open"></i>
+            </div>
+
+            <div class="stat-value">1,284</div>
+
+            <div class="stat-sub">
+                <span class="up">↑ 12</span> new this month
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-top">
+                PUBLISHED
+                <i class="fa-solid fa-circle-check"></i>
+            </div>
+
+            <div class="stat-value">1,150</div>
+
+            <div class="stat-bar">
+                <div style="width:89.5%"></div>
+            </div>
+
+            <div class="stat-sub" style="margin-top:8px;">
+                89.5% active
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-top">
+                DRAFTS & IN-REVIEW
+                <i class="fa-solid fa-clock"></i>
+            </div>
+
+            <div class="stat-value">134</div>
+
+            <div class="stat-sub">
+                84 drafts · 50 pending review
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-top">
+                PREMIUM CATALOG
+                <i class="fa-solid fa-medal"></i>
+            </div>
+
+            <div class="stat-value">890</div>
+
+            <div class="stat-bar">
+                <div style="width:69.3%"></div>
+            </div>
+
+            <div class="stat-sub" style="margin-top:8px;">
+                69.3% monetized
+            </div>
+        </div>
+
+    </div>
+
+    <div class="filter-panel">
+
+        <div class="filter-tabs">
+            <button class="filter-tab active">ALL (1,284)</button>
+            <button class="filter-tab">PUBLISHED (1,150)</button>
+            <button class="filter-tab">DRAFT (84)</button>
+            <button class="filter-tab">PENDING (50)</button>
+            <button class="filter-tab">PREMIUM (890)</button>
+            <button class="filter-tab">FREE (394)</button>
+        </div>
+
+        <div class="filter-row">
+
+            <div class="search-input">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" placeholder="Search books by title, author, ISBN...">
+            </div>
+
+            <select>
+                <option>All Categories</option>
+                <option>Himalayan Memoirs</option>
+                <option>Cultural Heritage</option>
+                <option>Philosophy</option>
+            </select>
+
+            <select>
+                <option>Language: All</option>
+                <option>English</option>
+                <option>Nepali</option>
+            </select>
+
+            <select>
+                <option>Filter by Author</option>
+            </select>
+
+        </div>
+
+    </div>
+
+    <div class="table-card">
+
+        <table>
+
+            <thead>
+            <tr>
+                <th>Cover</th>
+                <th>Title & Identity</th>
+                <th>Author</th>
+                <th>Category</th>
+                <th>Access / Price</th>
+                <th>Format</th>
+                <th>Status</th>
+            </tr>
+            </thead>
+
+            <tbody>
+
+            <tr>
+
+                <td>
+                    <div class="cover-thumb cover-forest">READORA</div>
+                </td>
+
+                <td class="title-cell">
+                    <strong>The Mountain Path</strong>
+                    <small>ISBN 978-9937-01-9921</small>
+                </td>
+
+                <td class="author-cell">
+                    <strong>
+                        Tenzing Norbu
+                        <i class="fa-solid fa-circle-check"></i>
+                    </strong>
+                    <small>4 Publications</small>
+                </td>
+
+                <td>
+                    <span class="category-pill">Himalayan Memoirs</span>
+                </td>
+
+                <td class="price-cell premium">
+                    <strong>Rs. 480</strong>
+                    <small>PREMIUM</small>
+                </td>
+
+                <td class="format-cell">
+                    Monograph
+                    <small>480 pgs</small>
+                </td>
+
+                <td>
+                <span class="status-pill status-published">
+                    <i class="fa-solid fa-circle"></i>
+                    Published
+                </span>
+                </td>
+
+            </tr>
+
+            <tr>
+
+                <td>
+                    <div class="cover-thumb cover-dark">READORA</div>
+                </td>
+
+                <td class="title-cell">
+                    <strong>Chronicles of the Valley</strong>
+                    <small>ISBN 978-9937-23-4410</small>
+                </td>
+
+                <td class="author-cell">
+                    <strong>Aruna Shrestha</strong>
+                    <small>Kathmandu Research</small>
+                </td>
+
+                <td>
+                    <span class="category-pill">Cultural Heritage</span>
+                </td>
+
+                <td class="price-cell premium">
+                    <strong>Rs. 350</strong>
+                    <small>PREMIUM</small>
+                </td>
+
+                <td class="format-cell">
+                    Anthology
+                    <small>310 pgs</small>
+                </td>
+
+                <td>
+                <span class="status-pill status-published">
+                    <i class="fa-solid fa-circle"></i>
+                    Published
+                </span>
+                </td>
+
+            </tr>
+
+            <tr>
+
+                <td>
+                    <div class="cover-thumb cover-forest">READORA</div>
+                </td>
+
+                <td class="title-cell">
+                    <strong>Echoes from Mustang</strong>
+                    <small>ISBN 978-9937-12-8829</small>
+                </td>
+
+                <td class="author-cell">
+                    <strong>
+                        Karma Lobsang
+                        <i class="fa-solid fa-circle-check"></i>
+                    </strong>
+                    <small>Lo Manthang Press</small>
+                </td>
+
+                <td>
+                    <span class="category-pill">Philosophy</span>
+                </td>
+
+                <td class="price-cell free">
+                    <strong>Free</strong>
+                    <small>OPEN ACCESS</small>
+                </td>
+
+                <td class="format-cell">
+                    Monograph
+                    <small>220 pgs</small>
+                </td>
+
+                <td>
+                <span class="status-pill status-published">
+                    <i class="fa-solid fa-circle"></i>
+                    Published
+                </span>
+                </td>
+
+            </tr>
+
+            <tr>
+
+                <td>
+                    <div class="cover-thumb cover-draft">DRAFT</div>
+                </td>
+
+                <td class="title-cell">
+                    <strong>Silent Terraces: Rural Agrarian Voices</strong>
+                    <small>ISBN 978-9937-90-1144</small>
+                </td>
+
+                <td class="author-cell">
+                    <strong>
+                        Dr. Sushila Bhattarai
+                        <i class="fa-solid fa-circle-check"></i>
+                    </strong>
+                    <small>Agrarian Institute</small>
+                </td>
+
+                <td>
+                    <span class="category-pill">Academic</span>
+                </td>
+
+                <td class="price-cell premium">
+                    <strong>Rs. 520</strong>
+                    <small>PREMIUM</small>
+                </td>
+
+                <td class="format-cell">
+                    Research Volume
+                    <small>390 pgs</small>
+                </td>
+
+                <td>
+                <span class="status-pill status-pending">
+                    <i class="fa-solid fa-circle"></i>
+                    Pending Review
+                </span>
+                </td>
+
+            </tr>
+
+            <tr>
+
+                <td>
+                    <div class="cover-thumb cover-draft">INPUT</div>
+                </td>
+
+                <td class="title-cell">
+                    <strong>Solitude at 5000 Meters</strong>
+                    <small>ISBN PENDING-MS-88</small>
+                </td>
+
+                <td class="author-cell">
+                    <strong>
+                        Tenzing Norbu
+                        <i class="fa-solid fa-circle-check"></i>
+                    </strong>
+                    <small>Independent</small>
+                </td>
+
+                <td>
+                    <span class="category-pill">Memoirs</span>
+                </td>
+
+                <td class="price-cell unassigned">
+                    <strong>—</strong>
+                    <small>UNASSIGNED</small>
+                </td>
+
+                <td class="format-cell">
+                    Manuscript
+                    <small>180 pgs est.</small>
+                </td>
+
+                <td>
+                <span class="status-pill status-draft">
+                    <i class="fa-solid fa-circle"></i>
+                    Draft
+                </span>
+                </td>
+
+            </tr>
+
+            <tr>
+
+                <td>
+                    <div class="cover-thumb cover-forest">CLASSIC</div>
+                </td>
+
+                <td class="title-cell">
+                    <strong>
+                        Shirishko Phool
+                        <em>(Classic Edition)</em>
+                    </strong>
+                    <small>ISBN 978-9993-31-0028</small>
+                </td>
+
+                <td class="author-cell">
+                    <strong>
+                        Parijat
+                        <i class="fa-solid fa-circle-check"></i>
+                    </strong>
+                    <small>Heritage Archive</small>
+                </td>
+
+                <td>
+                    <span class="category-pill">Nepali Literature</span>
+                </td>
+
+                <td class="price-cell premium">
+                    <strong>Rs. 280</strong>
+                    <small>PREMIUM</small>
+                </td>
+
+                <td class="format-cell">
+                    Novella
+                    <small>142 pgs</small>
+                </td>
+
+                <td>
+                <span class="status-pill status-published">
+                    <i class="fa-solid fa-circle"></i>
+                    Published
+                </span>
+                </td>
+
+            </tr>
+
+            <tr>
+
+                <td>
+                    <div class="cover-thumb cover-forest">READORA</div>
+                </td>
+
+                <td class="title-cell">
+                    <strong>Atmabrittanta</strong>
+                    <small>ISBN 978-9993-32-1550</small>
+                </td>
+
+                <td class="author-cell">
+                    <strong>
+                        BP Koirala
+                        <i class="fa-solid fa-circle-check"></i>
+                    </strong>
+                    <small>Historical Archive</small>
+                </td>
+
+                <td>
+                    <span class="category-pill">Historical Memoir</span>
+                </td>
+
+                <td class="price-cell free">
+                    <strong>Free</strong>
+                    <small>OPEN ACCESS</small>
+                </td>
+
+                <td class="format-cell">
+                    Autobiography
+                    <small>368 pgs</small>
+                </td>
+
+                <td>
+                <span class="status-pill status-published">
+                    <i class="fa-solid fa-circle"></i>
+                    Published
+                </span>
+                </td>
+
+            </tr>
+
+            </tbody>
+
+        </table>
+
+        <div class="table-footer">
+
+            <span>Showing 1 to 7 of 1,284 books</span>
+
+            <div class="pagination">
+                <a href="#">Previous</a>
+                <span class="current">1</span>
+                <a href="#">2</a>
+                <a href="#">3</a>
+                <span>…</span>
+                <a href="#">184</a>
+                <a href="#">Next</a>
+            </div>
+
+        </div>
+
+    </div>
+    ```
+
+</main>
+
+<script>
+    document.querySelectorAll(".filter-tab").forEach(function (tab) {
+        tab.addEventListener("click", function () {
+            document.querySelectorAll(".filter-tab").forEach(function (t) {
+                t.classList.remove("active");
+            });
+
+            tab.classList.add("active");
+        });
+    });
+</script>
+
+</body>
+</html>

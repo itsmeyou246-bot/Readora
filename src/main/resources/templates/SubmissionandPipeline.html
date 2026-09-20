@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Readora Studio · Submissions & Pipeline</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="pipeline.css">
+</head>
+<body>
+
+<!-- ===== HEADER (same as Dashboard) ===== -->
+<header class="header">
+    <div class="header-inner">
+        <div class="logo">READORA<span>STUDIO</span></div>
+        <nav class="nav-links">
+            <a href="index.html">Dashboard</a>
+            <a href="#">My Publications</a>
+            <a href="#" class="nav-active">Submissions & Pipeline</a>
+            <a href="#">Royalties & Sales</a>
+            <a href="#">Reader Analytics</a>
+            <a href="#">Editorial Guidelines</a>
+        </nav>
+        <div class="header-right">
+            <span class="search-pill">Search</span>
+            <span class="reader-btn">Reader View</span>
+        </div>
+    </div>
+</header>
+
+<div class="container">
+
+    <!-- ===== SUB NAV (same style as Dashboard) ===== -->
+    <div class="subnav">
+        <button class="subnav-tab">Overview</button>
+        <button class="subnav-tab subnav-active">Manuscript Pipeline · 5</button>
+        <button class="subnav-tab">Royalties & Earnings</button>
+        <button class="subnav-tab">Reader Reviews & Ratings</button>
+        <button class="subnav-tab">Publication Analytics</button>
+        <button class="subnav-tab">Author Profile & Bio</button>
+        <span class="subnav-spacer"></span>
+        <button class="subnav-tab">Drafts (3)</button>
+        <button class="new-pub-btn">+ Submit Manuscript</button>
+    </div>
+
+    <!-- ===== PAGE TITLE ===== -->
+    <section class="page-intro">
+        <div class="breadcrumb">Author Studio / Submissions & Pipeline</div>
+        <div class="page-title-row">
+            <div>
+                <h1 class="page-title">Submissions & Editorial Pipeline</h1>
+                <p class="page-subtitle">Track manuscript lifecycles from preliminary draft to peer review, editorial signoff, and public release.</p>
+            </div>
+            <button class="btn btn-dark">+ Submit New Manuscript</button>
+        </div>
+    </section>
+
+    <!-- ===== WORKFLOW STAGES ===== -->
+    <section class="card-section">
+        <div class="section-head">
+            <span class="section-label">Editorial Workflow Stages</span>
+            <span class="section-note">6 Systematic Progression Milestones</span>
+        </div>
+        <div class="stage-grid" id="stageGrid"></div>
+    </section>
+
+    <!-- ===== ACTIVE MANUSCRIPTS ===== -->
+    <section class="card-section">
+        <div class="section-head">
+            <span class="section-label">Active Manuscripts in Pipeline</span>
+            <span class="section-note" id="activeCount"></span>
+        </div>
+        <div id="manuscriptList"></div>
+    </section>
+
+    <!-- ===== COMPLETED SUBMISSIONS ===== -->
+    <section class="card-section">
+        <div class="card">
+            <div class="card-head">
+                <h3>Completed Editorial Submissions</h3>
+                <span class="card-subtitle" style="margin:0;" id="completedCount"></span>
+            </div>
+            <table>
+                <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Submission Date</th>
+                    <th>Approved By</th>
+                    <th>Published Date</th>
+                    <th>Editorial Rating</th>
+                    <th>Certificate</th>
+                </tr>
+                </thead>
+                <tbody id="completedRows"></tbody>
+            </table>
+        </div>
+    </section>
+
+</div>
+
+<!-- ===== FOOTER (same as Dashboard) ===== -->
+<footer class="footer">
+    <div class="footer-inner">
+        <div>
+            <div class="footer-logo">READORA</div>
+            <div class="footer-copyright" style="margin-top:4px;">Author Studio v2.4 (Advanced Java / Spring Boot Architecture)</div>
+        </div>
+        <div class="footer-links">
+            <a href="#">Editorial Guidelines</a>
+            <a href="#">Author Payout Terms</a>
+            <a href="#">Developer REST APIs</a>
+            <a href="#">Support</a>
+        </div>
+    </div>
+</footer>
+
+<script>
+    // ---- Data (edit these to update the pipeline page) ----
+
+    var stages = [
+        { num: 1, name: "Draft", desc: "Author authoring", active: 2, dotColor: "#948d78", isActive: false },
+        { num: 2, name: "Submitted", desc: "Intake & validation", active: 0, dotColor: "#3b6fd6", isActive: false },
+        { num: 3, name: "Editorial Review", desc: "Curator appraisal", active: 1, dotColor: "#c99a4b", isActive: true },
+        { num: 4, name: "Revision", desc: "Author edits", active: 0, dotColor: "#c9704b", isActive: false },
+        { num: 5, name: "Approved", desc: "Typesetting ready", active: 0, dotColor: "#2f4a3a", isActive: false },
+        { num: 6, name: "Published", desc: "Live on READORA", active: 3, dotColor: "#2f4a3a", isActive: false }
+    ];
+
+    var manuscripts = [
+        {
+            type: "review",
+            title: "Solitude at 5000m: High Altitude Verses",
+            status: "In Review",
+            meta: "Poetry · Bilingual (Nepali & English) · 120 pages · Proposed Price: Rs. 250",
+            submissionDate: "March 24, 2026 (4 days ago)",
+            editor: "Senior Literary Curator",
+            lastUpdate: "Today at 10:14 AM (Notes logged)",
+            action: "Awaiting editorial feedback",
+            actionType: "action-box",
+            note: {
+                date: "March 27, 2026",
+                text: "Initial stylistic scan completed. Imagery in Canto III exhibits strong resonance. Peer appraisal scheduled with Kathmandu Literary Society reviewer."
+            },
+            buttons: ["View Manuscript PDF", "View Details"]
+        },
+        {
+            type: "draft",
+            title: "Gorkha Kingdom Epistles",
+            status: "Draft",
+            meta: "Nepali Literature · Nepali · 360 pages · Proposed Price: Rs. 520",
+            submissionDate: "Not yet submitted",
+            editor: "Unassigned (Pre-submission)",
+            lastUpdate: "Yesterday (Chapter 9)",
+            action: "Continue editing draft",
+            actionType: "action-box info",
+            progress: 68,
+            remaining: "3 chapters remaining",
+            buttons: ["Continue Editing", "View Details"]
+        }
+    ];
+
+    var completedSubmissions = [
+        { title: "The Mountain Path", submitted: "June 12, 2024", approvedBy: "Prof. K. Sharma (Editorial Board)", published: "Aug 14, 2024", rating: "Exemplary (A+)" },
+        { title: "Chronicles of the Valley", submitted: "Sept 01, 2024", approvedBy: "Curator D. Bajracharya", published: "Nov 02, 2024", rating: "Approved (A)" },
+        { title: "Echoes from Mustang", submitted: "Nov 15, 2024", approvedBy: "Heritage Committee", published: "Jan 18, 2025", rating: "Open Archive (A)" }
+    ];
+
+    // ---- Render workflow stages ----
+
+    var stageGrid = document.getElementById("stageGrid");
+
+    for (var i = 0; i < stages.length; i++) {
+        var s = stages[i];
+
+        var card = document.createElement("div");
+        card.className = "stage-card" + (s.isActive ? " active-stage" : "");
+        card.innerHTML =
+            '<div class="stage-dot" style="background-color:' + s.dotColor + ';"></div>' +
+            '<div class="stage-number">Stage ' + s.num + '</div>' +
+            '<div class="stage-name">' + s.name + '</div>' +
+            '<div class="stage-desc">' + s.desc + '</div>' +
+            '<div class="stage-active-row">' +
+            '<span>Active:</span>' +
+            (s.isActive
+                ? '<span class="highlight-count">' + s.active + (s.active === 1 ? " work" : " works") + '</span>'
+                : '<strong>' + s.active + (s.active === 1 ? " work" : " works") + '</strong>') +
+            '</div>';
+
+        stageGrid.appendChild(card);
+    }
+
+    // ---- Render active manuscripts ----
+
+    var manuscriptList = document.getElementById("manuscriptList");
+    document.getElementById("activeCount").textContent = "Showing " + manuscripts.length + " active submissions & drafts";
+
+    for (var i = 0; i < manuscripts.length; i++) {
+        var m = manuscripts[i];
+        var isDraft = m.type === "draft";
+
+        var card = document.createElement("div");
+        card.className = "manuscript-card" + (isDraft ? " draft" : "");
+
+        var iconHtml = '<div class="manuscript-icon' + (isDraft ? " draft-icon" : "") + '">' + (isDraft ? "📄" : "🪶") + '</div>';
+
+        var buttonsHtml = "";
+        for (var b = 0; b < m.buttons.length; b++) {
+            var isPrimary = b === m.buttons.length - 1;
+            buttonsHtml += '<button class="btn' + (isPrimary ? " btn-dark" : "") + '">' + m.buttons[b] + '</button>';
+        }
+
+        var noteHtml = m.note
+            ? '<div class="curator-note">' +
+            '<span class="note-icon">⚠</span>' +
+            '<div><strong>Curator Note (' + m.note.date + '):</strong>"' + m.note.text + '"</div>' +
+            '</div>'
+            : "";
+
+        var progressHtml = m.progress
+            ? '<div class="progress-row"><span>Manuscript Readiness: <strong>' + m.progress + '% complete</strong></span><span>Estimated completion: ' + m.remaining + '</span></div>' +
+            '<div class="progress-track"><div class="progress-fill" style="width:' + m.progress + '%;"></div></div>'
+            : "";
+
+        card.innerHTML =
+            '<div class="manuscript-top">' +
+            '<div class="manuscript-info">' +
+            iconHtml +
+            '<div>' +
+            '<span class="manuscript-name">' + m.title + '</span>' +
+            '<span class="pill-status ' + m.type + '">' + m.status + '</span>' +
+            '<div class="manuscript-meta">' + m.meta + '</div>' +
+            '</div>' +
+            '</div>' +
+            '<div class="manuscript-actions">' + buttonsHtml + '</div>' +
+            '</div>' +
+            '<div class="manuscript-details">' +
+            '<div class="detail-box"><div class="detail-label">Submission Date:</div><div class="detail-value">' + m.submissionDate + '</div></div>' +
+            '<div class="detail-box"><div class="detail-label">Assigned Editor:</div><div class="detail-value">' + m.editor + '</div></div>' +
+            '<div class="detail-box"><div class="detail-label">Last Editorial Update:</div><div class="detail-value">' + m.lastUpdate + '</div></div>' +
+            '<div class="detail-box ' + m.actionType + '"><div class="detail-label">Required Author Action:</div><div class="detail-value">' + m.action + '</div></div>' +
+            '</div>' +
+            noteHtml +
+            progressHtml;
+
+        manuscriptList.appendChild(card);
+    }
+
+    // ---- Render completed submissions table ----
+
+    var completedRows = document.getElementById("completedRows");
+    document.getElementById("completedCount").textContent = completedSubmissions.length + " manuscripts successfully published";
+
+    for (var i = 0; i < completedSubmissions.length; i++) {
+        var c = completedSubmissions[i];
+
+        var row = document.createElement("tr");
+        row.innerHTML =
+            '<td><strong>' + c.title + '</strong></td>' +
+            '<td>' + c.submitted + '</td>' +
+            '<td>' + c.approvedBy + '</td>' +
+            '<td>' + c.published + '</td>' +
+            '<td><span class="rating-badge">' + c.rating + '</span></td>' +
+            '<td><a href="#">📄 View Record</a></td>';
+
+        completedRows.appendChild(row);
+    }
+</script>
+</body>
+</html>

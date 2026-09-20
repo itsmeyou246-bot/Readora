@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authors · READORA Admin</title>
+
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --forest: #1b3022;
+            --dark: #122017;
+            --gold: #c5a059;
+            --ivory: #fcf9f8;
+            --sand: #f6f3f2;
+            --border: #e5ded9;
+            --text: #211f1d;
+            --muted: #706b67;
+        }
+
+        body {
+            background: var(--ivory);
+            color: var(--text);
+            font-family: "Plus Jakarta Sans", sans-serif;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        a { color: inherit; text-decoration: none; }
+        button { font-family: inherit; cursor: pointer; }
+
+        /* ================= HEADER ================= */
+        .header { height: 64px; background: var(--ivory); border-bottom: 1px solid var(--border); }
+        .header-inner { max-width: 1400px; height: 100%; margin: auto; padding: 0 28px; display: flex; align-items: center; gap: 32px; }
+        .logo-group { display: flex; align-items: center; gap: 10px; }
+        .logo { font-family: "Playfair Display", serif; font-size: 19px; font-weight: 700; color: var(--forest); letter-spacing: 0.3px; }
+        .admin-badge { background: var(--forest); color: white; font-size: 10px; font-weight: 700; letter-spacing: 0.5px; padding: 4px 9px; border-radius: 5px; }
+        .nav-links { display: flex; align-items: center; gap: 26px; flex: 1; }
+        .nav-links a { font-size: 13.5px; color: var(--muted); padding: 22px 0 20px; }
+        .nav-links a:hover { color: var(--forest); }
+        .nav-links a.nav-active { color: var(--forest); font-weight: 600; border-bottom: 2px solid var(--forest); }
+        .header-search { display: flex; align-items: center; gap: 9px; background: var(--sand); border: 1px solid var(--border); border-radius: 8px; padding: 9px 14px; width: 260px; color: var(--muted); font-size: 12.5px; }
+        .header-search i { font-size: 12px; }
+        .header-actions { display: flex; align-items: center; gap: 14px; }
+        .reader-view-btn { display: flex; align-items: center; gap: 8px; background: var(--sand); border: 1px solid var(--border); border-radius: 8px; padding: 9px 14px; font-size: 12.5px; font-weight: 600; color: var(--text); white-space: nowrap; }
+        .bell { position: relative; color: var(--muted); font-size: 15px; }
+        .bell .dot { position: absolute; top: -3px; right: -3px; width: 7px; height: 7px; background: #c0503f; border-radius: 50%; }
+        .profile { display: flex; align-items: center; gap: 10px; }
+        .profile-avatar { width: 34px; height: 34px; border-radius: 50%; background: var(--forest); color: white; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; }
+        .profile-info { line-height: 1.3; }
+        .profile-info strong { display: block; font-size: 12.5px; }
+        .profile-info small { color: var(--muted); font-size: 9.5px; letter-spacing: 0.4px; }
+
+        /* ================= MAIN ================= */
+        .container { max-width: 1400px; margin: auto; padding: 30px 28px 70px; }
+        .page-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 1px; color: var(--muted); margin-bottom: 6px; }
+        .page-head { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 28px; gap: 20px; }
+        .page-head h1 { font-family: "Playfair Display", serif; font-size: 34px; color: var(--dark); margin-bottom: 6px; }
+        .page-head p { color: var(--muted); font-size: 13.5px; }
+        .page-actions { display: flex; gap: 10px; }
+        .btn { display: flex; align-items: center; gap: 8px; padding: 11px 18px; border-radius: 8px; font-size: 13px; font-weight: 600; border: 1px solid var(--border); white-space: nowrap; background: white; color: var(--text); }
+        .btn-primary { background: var(--forest); color: white; border-color: var(--forest); }
+
+        /* ================= STAT CARDS ================= */
+        .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 20px; }
+        .stat-card { background: white; border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; align-items: center; justify-content: space-between; }
+        .stat-label { font-size: 10.5px; font-weight: 700; letter-spacing: 0.6px; color: var(--muted); text-transform: uppercase; margin-bottom: 10px; }
+        .stat-value { font-family: "Playfair Display", serif; font-size: 26px; color: var(--dark); }
+        .stat-icon { width: 38px; height: 38px; border-radius: 10px; background: var(--sand); display: flex; align-items: center; justify-content: center; color: var(--forest); font-size: 16px; flex-shrink: 0; }
+
+        /* ================= FILTER PANEL ================= */
+        .filter-panel { background: var(--sand); border: 1px solid var(--border); border-radius: 12px; padding: 18px; margin-bottom: 22px; }
+        .filter-row { display: grid; grid-template-columns: 1fr 190px 40px; gap: 10px; }
+        .filter-row select { width: 100%; padding: 11px 14px; border-radius: 8px; border: 1px solid var(--border); background: white; font-size: 12.5px; font-family: inherit; color: var(--text); }
+        .filter-row .search-input { display: flex; align-items: center; gap: 10px; padding: 0 14px; background: white; border: 1px solid var(--border); border-radius: 8px; }
+        .filter-row .search-input i { color: var(--muted); font-size: 12px; }
+        .filter-row .search-input input { border: none; padding: 11px 0; flex: 1; font-family: inherit; font-size: 12.5px; background: transparent; outline: none; }
+        .filter-reset { display: flex; align-items: center; justify-content: center; background: white; border: 1px solid var(--border); border-radius: 8px; color: var(--muted); }
+        .filter-reset:hover { background: white; opacity: 0.8; }
+
+        /* ================= TABLE ================= */
+        .table-card { background: white; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+        table { width: 100%; border-collapse: collapse; }
+        thead th { text-align: left; font-size: 10.5px; font-weight: 700; letter-spacing: 0.5px; color: var(--muted); padding: 14px 16px; border-bottom: 1px solid var(--border); background: var(--sand); }
+        tbody td { padding: 16px; border-bottom: 1px solid var(--border); vertical-align: middle; font-size: 13px; }
+        tbody tr:last-child td { border-bottom: none; }
+
+        .author-cell { display: flex; align-items: center; gap: 10px; }
+        .avatar { width: 34px; height: 34px; border-radius: 50%; background: var(--forest); color: white; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; text-transform: uppercase; flex-shrink: 0; }
+        .author-cell strong { display: block; font-size: 13.5px; }
+        .author-cell small { color: var(--muted); font-size: 11px; }
+
+        .status-pill { display: inline-flex; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 600; padding: 5px 10px; border-radius: 20px; }
+        .status-pill i { font-size: 6px; }
+        .status-ACTIVE { background: #e7f2e9; color: #3f7a4e; }
+        .status-UNDER_REVIEW { background: #fbf1de; color: #a87a2c; }
+        .status-SUSPENDED { background: #fbe7e4; color: #c0503f; }
+
+        .row-actions { display: flex; gap: 8px; justify-content: flex-end; }
+        .row-actions button { padding: 7px 12px; border-radius: 6px; border: 1px solid var(--border); background: white; color: var(--text); font-size: 11px; font-weight: 600; }
+        .row-actions button:hover { background: var(--sand); }
+        .row-actions button.primary { background: var(--forest); color: white; border-color: var(--forest); }
+
+        /* ================= TABLE FOOTER / PAGINATION ================= */
+        .table-footer { display: flex; justify-content: space-between; align-items: center; padding: 16px 18px; font-size: 12.5px; color: var(--muted); }
+        .pagination { display: flex; align-items: center; gap: 6px; }
+        .pagination button { padding: 7px 12px; border-radius: 6px; font-size: 12.5px; color: var(--muted); border: 1px solid var(--border); background: white; }
+        .pagination button:hover:not(:disabled) { background: var(--sand); }
+        .pagination button:disabled { opacity: 0.45; cursor: default; }
+        .pagination button.current { background: var(--forest); color: white; font-weight: 700; border-color: var(--forest); }
+
+        .empty-state { display: none; text-align: center; padding: 60px 20px; color: var(--muted); }
+        .empty-state i { font-size: 34px; margin-bottom: 12px; display: block; }
+
+        /* ================= MODALS ================= */
+        .modal-overlay { position: fixed; inset: 0; background: rgba(18, 32, 23, 0.45); display: flex; align-items: center; justify-content: center; padding: 16px; z-index: 50; }
+        .modal-overlay.hidden { display: none; }
+        .modal-box { background: white; border-radius: 12px; max-width: 640px; width: 100%; box-shadow: 0 20px 50px rgba(18, 32, 23, 0.25); overflow: hidden; }
+        .modal-box.narrow { max-width: 460px; padding: 26px; }
+
+        .catalog-head { background: var(--sand); padding: 22px 24px; display: flex; justify-content: space-between; align-items: flex-start; }
+        .catalog-head span.eyebrow { font-size: 10px; letter-spacing: 0.6px; color: var(--muted); text-transform: uppercase; font-weight: 700; display: block; margin-bottom: 4px; }
+        .catalog-head h3 { font-family: "Playfair Display", serif; font-size: 20px; color: var(--forest); margin-top: 2px; }
+        .catalog-head p { font-size: 12px; color: var(--muted); margin-top: 2px; }
+        .modal-close { border: none; background: none; color: var(--muted); font-size: 16px; }
+
+        .catalog-body { padding: 20px 24px; max-height: 60vh; overflow-y: auto; }
+        .catalog-book { display: flex; gap: 14px; padding: 14px; background: var(--sand); border-radius: 10px; margin-bottom: 10px; align-items: center; }
+        .catalog-book:last-child { margin-bottom: 0; }
+        .catalog-book .cover { width: 44px; height: 58px; border-radius: 4px; background: var(--forest); flex-shrink: 0; }
+        .catalog-book strong { display: block; font-size: 13.5px; }
+        .catalog-book small { color: var(--muted); font-size: 11.5px; }
+
+        .catalog-footer { padding: 14px 24px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; }
+
+        .modal-head { display: flex; justify-content: space-between; align-items: flex-start; padding-bottom: 16px; border-bottom: 1px solid var(--border); margin-bottom: 18px; }
+        .modal-eyebrow { font-size: 10px; letter-spacing: 0.6px; color: var(--muted); text-transform: uppercase; font-weight: 700; display: block; margin-bottom: 4px; }
+        .modal-head h3 { font-family: "Playfair Display", serif; font-size: 20px; color: var(--forest); }
+        .modal-head p { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+        .status-option { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 8px; background: var(--sand); margin-bottom: 8px; cursor: pointer; }
+        .status-option div strong { display: block; font-size: 12.5px; }
+        .status-option div small { color: var(--muted); font-size: 11px; }
+
+        .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 18px; }
+
+        @media (max-width: 1100px) {
+            .stats { grid-template-columns: repeat(1, 1fr); }
+            .filter-row { grid-template-columns: 1fr; }
+            .nav-links, .header-search { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ================= HEADER ================= -->
+<header class="header">
+    <div class="header-inner">
+        <div class="logo-group">
+            <a class="logo" th:href="@{/admin-dashboard}">READORA</a>
+            <span class="admin-badge">ADMIN</span>
+        </div>
+
+        <nav class="nav-links">
+            <a th:href="@{/admin-dashboard}">Dashboard</a>
+            <a th:href="@{/admin/users}">Users</a>
+            <a th:href="@{/admin/books}">Content</a>
+            <a class="nav-active" th:href="@{/admin/authors}">Authors</a>
+            <a th:href="@{/admin/subscriptions}">Subscriptions</a>
+            <a th:href="@{/admin/analytics}">Analytics</a>
+        </nav>
+
+        <div class="header-search">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            Search catalog, users, records.
+        </div>
+
+        <div class="header-actions">
+            <a class="reader-view-btn" th:href="@{/dashboard}">
+                <i class="fa-solid fa-book-open"></i>
+                Reader View
+            </a>
+            <span class="bell">
+                <i class="fa-solid fa-bell"></i>
+                <span class="dot"></span>
+            </span>
+            <div class="profile">
+                <div class="profile-avatar"><i class="fa-solid fa-user"></i></div>
+                <div class="profile-info">
+                    <strong>Admin</strong>
+                    <small>SUPER ADMIN</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- ================= MAIN ================= -->
+<main class="container">
+
+    <div class="page-eyebrow">CONTRIBUTOR REGISTRY</div>
+
+    <div class="page-head">
+        <div>
+            <h1>Authors</h1>
+            <p>Manage authors and the content they publish on READORA.</p>
+        </div>
+        <div class="page-actions">
+            <button class="btn" id="refreshBtn">
+                <i class="fa-solid fa-rotate"></i>
+                Refresh
+            </button>
+        </div>
+    </div>
+
+    <!-- ================= STATS ================= -->
+    <div class="stats">
+        <div class="stat-card">
+            <div>
+                <div class="stat-label">Total Authors</div>
+                <div class="stat-value" id="statTotal">0</div>
+            </div>
+            <div class="stat-icon"><i class="fa-solid fa-user"></i></div>
+        </div>
+        <div class="stat-card">
+            <div>
+                <div class="stat-label">Published Content</div>
+                <div class="stat-value" id="statPublished">0</div>
+            </div>
+            <div class="stat-icon"><i class="fa-solid fa-book"></i></div>
+        </div>
+        <div class="stat-card">
+            <div>
+                <div class="stat-label">Active Authors</div>
+                <div class="stat-value" id="statActive">0</div>
+            </div>
+            <div class="stat-icon"><i class="fa-solid fa-user-check"></i></div>
+        </div>
+    </div>
+
+    <!-- ================= FILTERS ================= -->
+    <div class="filter-panel">
+        <div class="filter-row">
+            <div class="search-input">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="searchInput" placeholder="Search authors by name or email...">
+            </div>
+            <select id="statusFilter">
+                <option value="ALL">All Statuses</option>
+                <option value="ACTIVE">Active</option>
+                <option value="UNDER_REVIEW">Under Review</option>
+                <option value="SUSPENDED">Suspended</option>
+            </select>
+            <button class="filter-reset" id="clearFiltersBtn" title="Reset filters">
+                <i class="fa-solid fa-filter-circle-xmark"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- ================= TABLE ================= -->
+    <div class="table-card">
+        <table>
+            <thead>
+            <tr>
+                <th>Author</th>
+                <th style="text-align:center;">Content</th>
+                <th style="text-align:center;">Published</th>
+                <th>Joined</th>
+                <th>Status</th>
+                <th style="text-align:right;">Actions</th>
+            </tr>
+            </thead>
+            <tbody id="authorsTableBody">
+            <tr><td colspan="6" style="text-align:center;padding:30px;color:var(--muted);">Loading authors…</td></tr>
+            </tbody>
+        </table>
+
+        <div class="empty-state" id="emptyState">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            No authors match this filter.
+        </div>
+
+        <div class="table-footer">
+            <span id="tableFooterText">Loading…</span>
+            <div class="pagination" id="paginationControls"></div>
+        </div>
+    </div>
+
+</main>
+
+<!-- ================= CATALOG MODAL ================= -->
+<div class="modal-overlay hidden" id="catalogModal">
+    <div class="modal-box">
+        <div class="catalog-head">
+            <div>
+                <span class="eyebrow">Catalog Manifest</span>
+                <h3 id="modalAuthorName">—</h3>
+                <p id="modalAuthorMeta">—</p>
+            </div>
+            <button class="modal-close" id="closeCatalogModal"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+
+        <div class="catalog-body" id="catalogBody">
+            <p style="color:var(--muted);font-size:13px;">Loading catalog…</p>
+        </div>
+
+        <div class="catalog-footer">
+            <button class="btn" id="dismissCatalogBtn">Close</button>
+        </div>
+    </div>
+</div>
+
+<!-- ================= STATUS MODAL ================= -->
+<div class="modal-overlay hidden" id="statusModal">
+    <div class="modal-box narrow">
+        <div class="modal-head">
+            <div>
+                <span class="modal-eyebrow">Manage Status</span>
+                <h3 id="statusModalName">—</h3>
+                <p>Updates publishing rights immediately.</p>
+            </div>
+            <button class="modal-close" id="closeStatusModal"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+
+        <label class="status-option">
+            <input type="radio" name="newStatus" value="ACTIVE" checked>
+            <div>
+                <strong>Active (Accredited)</strong>
+                <small>Full publishing rights, listed in the public directory</small>
+            </div>
+        </label>
+        <label class="status-option">
+            <input type="radio" name="newStatus" value="UNDER_REVIEW">
+            <div>
+                <strong>Under Review</strong>
+                <small>Manuscripts pending curatorial panel review</small>
+            </div>
+        </label>
+        <label class="status-option">
+            <input type="radio" name="newStatus" value="SUSPENDED">
+            <div>
+                <strong>Suspended</strong>
+                <small>Hold royalties, suppress storefront presence</small>
+            </div>
+        </label>
+
+        <div class="modal-actions">
+            <button class="btn" id="cancelStatusBtn">Dismiss</button>
+            <button class="btn btn-primary" id="confirmStatusBtn">Commit Changes</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const PAGE_SIZE = 10;
+
+    let allAuthors = [];
+    let currentPage = 1;
+    let activeAuthorId = null;
+
+    document.addEventListener("DOMContentLoaded", function () {
+        loadStats();
+        loadAuthors();
+
+        document.getElementById("searchInput").addEventListener("input", function () {
+            currentPage = 1;
+            renderTable();
+        });
+        document.getElementById("statusFilter").addEventListener("change", function () {
+            currentPage = 1;
+            renderTable();
+        });
+        document.getElementById("clearFiltersBtn").addEventListener("click", function () {
+            document.getElementById("searchInput").value = "";
+            document.getElementById("statusFilter").value = "ALL";
+            currentPage = 1;
+            renderTable();
+        });
+        document.getElementById("refreshBtn").addEventListener("click", function () {
+            loadStats();
+            loadAuthors();
+        });
+
+        document.getElementById("closeCatalogModal").addEventListener("click", hideCatalog);
+        document.getElementById("dismissCatalogBtn").addEventListener("click", hideCatalog);
+        document.getElementById("catalogModal").addEventListener("click", function (e) {
+            if (e.target === this) hideCatalog();
+        });
+
+        document.getElementById("closeStatusModal").addEventListener("click", hideStatusModal);
+        document.getElementById("cancelStatusBtn").addEventListener("click", hideStatusModal);
+        document.getElementById("statusModal").addEventListener("click", function (e) {
+            if (e.target === this) hideStatusModal();
+        });
+        document.getElementById("confirmStatusBtn").addEventListener("click", submitStatusChange);
+
+        window.addEventListener("keydown", function (e) {
+            if (e.key === "Escape") { hideCatalog(); hideStatusModal(); }
+        });
+    });
+
+    function handleAuthErrors(res) {
+        if (res.status === 401 || res.status === 403) {
+            window.location.href = "/login";
+            throw new Error("Not authorized.");
+        }
+        if (!res.ok) throw new Error("Request failed.");
+        return res;
+    }
+
+    // ============================================================
+    // DATA LOADING
+    // ============================================================
+
+    function loadStats() {
+        fetch("/api/admin/authors/stats", { credentials: "include" })
+            .then(handleAuthErrors)
+            .then(res => res.json())
+            .then(renderStats)
+            .catch(err => console.error("Could not load author stats.", err));
+    }
+
+    function loadAuthors() {
+        fetch("/api/admin/authors", { credentials: "include" })
+            .then(handleAuthErrors)
+            .then(res => res.json())
+            .then(function (data) {
+                allAuthors = data;
+                renderTable();
+            })
+            .catch(function (err) {
+                console.error(err);
+                document.getElementById("authorsTableBody").innerHTML =
+                    '<tr><td colspan="6" style="text-align:center;padding:30px;color:#c0503f;">Could not load authors.</td></tr>';
+            });
+    }
+
+    function renderStats(stats) {
+        document.getElementById("statTotal").textContent = stats.totalAuthors;
+        document.getElementById("statPublished").textContent = stats.publishedContentCount;
+        document.getElementById("statActive").textContent = stats.activeAuthors;
+    }
+
+    // ============================================================
+    // RENDERING
+    // ============================================================
+
+    function getFiltered() {
+        const search = document.getElementById("searchInput").value.toLowerCase();
+        const status = document.getElementById("statusFilter").value;
+
+        return allAuthors.filter(function (a) {
+            const matchesSearch = !search ||
+                (a.name || "").toLowerCase().includes(search) ||
+                (a.email || "").toLowerCase().includes(search);
+            const matchesStatus = status === "ALL" || a.authorStatus === status;
+            return matchesSearch && matchesStatus;
+        });
+    }
+
+    function renderTable() {
+        const filtered = getFiltered();
+        const tbody = document.getElementById("authorsTableBody");
+        const emptyState = document.getElementById("emptyState");
+
+        const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+        if (currentPage > totalPages) currentPage = totalPages;
+
+        const start = (currentPage - 1) * PAGE_SIZE;
+        const pageItems = filtered.slice(start, start + PAGE_SIZE);
+
+        document.getElementById("tableFooterText").textContent =
+            "Showing " + pageItems.length + " of " + filtered.length + " authors (" + allAuthors.length + " total)";
+
+        if (pageItems.length === 0) {
+            tbody.innerHTML = "";
+            emptyState.style.display = "block";
+            renderPagination(totalPages);
+            return;
+        }
+        emptyState.style.display = "none";
+
+        tbody.innerHTML = pageItems.map(function (a) {
+            const initials = (a.name || "U").split(" ").map(w => w[0]).slice(0, 2).join("").toUpperCase();
+            const statusLabel = (a.authorStatus || "ACTIVE").replace("_", " ");
+
+            return `
+                <tr>
+                    <td>
+                        <div class="author-cell">
+                            <div class="avatar">${initials}</div>
+                            <div>
+                                <strong>${escapeHtml(a.name || "Unknown")}</strong>
+                                <small>${escapeHtml(a.email || "—")}</small>
+                            </div>
+                        </div>
+                    </td>
+                    <td style="text-align:center;">${a.totalBooks}</td>
+                    <td style="text-align:center;">${a.publishedBooks}</td>
+                    <td>${formatDate(a.joinedAt)}</td>
+                    <td><span class="status-pill status-${a.authorStatus}"><i class="fa-solid fa-circle"></i>${statusLabel}</span></td>
+                    <td class="row-actions">
+                        <button onclick="openCatalog(${a.id})">View Content</button>
+                        <button class="primary" onclick="openStatusModal(${a.id})">Manage</button>
+                    </td>
+                </tr>
+            `;
+        }).join("");
+
+        renderPagination(totalPages);
+    }
+
+    function renderPagination(totalPages) {
+        const container = document.getElementById("paginationControls");
+        let html = `<button ${currentPage === 1 ? "disabled" : ""} onclick="goToPage(${currentPage - 1})">Previous</button>`;
+
+        for (let i = 1; i <= totalPages; i++) {
+            if (i === 1 || i === totalPages || Math.abs(i - currentPage) <= 1) {
+                html += `<button class="${i === currentPage ? "current" : ""}" onclick="goToPage(${i})">${i}</button>`;
+            } else if (Math.abs(i - currentPage) === 2) {
+                html += `<span>…</span>`;
+            }
+        }
+
+        html += `<button ${currentPage === totalPages ? "disabled" : ""} onclick="goToPage(${currentPage + 1})">Next</button>`;
+        container.innerHTML = html;
+    }
+
+    function goToPage(page) {
+        currentPage = page;
+        renderTable();
+    }
+
+    // ============================================================
+    // CATALOG MODAL (real books fetched from the backend)
+    // ============================================================
+
+    function openCatalog(authorId) {
+        const author = allAuthors.find(a => a.id === authorId);
+        if (!author) return;
+
+        document.getElementById("modalAuthorName").textContent = author.name || "Author";
+        document.getElementById("modalAuthorMeta").textContent =
+            author.totalBooks + " title" + (author.totalBooks === 1 ? "" : "s") + " in this author's catalog";
+
+        const body = document.getElementById("catalogBody");
+        body.innerHTML = '<p style="color:var(--muted);font-size:13px;">Loading catalog…</p>';
+        document.getElementById("catalogModal").classList.remove("hidden");
+
+        fetch("/api/admin/authors/" + authorId + "/books", { credentials: "include" })
+            .then(handleAuthErrors)
+            .then(res => res.json())
+            .then(function (books) {
+                if (books.length === 0) {
+                    body.innerHTML = '<p style="color:var(--muted);font-size:13px;">This author has not published any titles yet.</p>';
+                    return;
+                }
+                body.innerHTML = books.map(function (b) {
+                    const priceLabel = b.premium ? "Rs. " + (b.price || 0) : "Free / Open Access";
+                    return `
+                        <div class="catalog-book">
+                            <div class="cover"></div>
+                            <div>
+                                <strong>${escapeHtml(b.title || "Untitled")}</strong>
+                                <small>${escapeHtml(b.category || "General")} · ${b.pageCount || 0} pages · ${priceLabel}</small><br>
+                                <small>Status: ${escapeHtml(b.status || "draft")} · Rating: ${b.averageRating ? b.averageRating.toFixed(1) : "—"} / 5.0</small>
+                            </div>
+                        </div>
+                    `;
+                }).join("");
+            })
+            .catch(function () {
+                body.innerHTML = '<p style="color:#c0503f;font-size:13px;">Could not load this author\'s catalog.</p>';
+            });
+    }
+
+    function hideCatalog() {
+        document.getElementById("catalogModal").classList.add("hidden");
+    }
+
+    // ============================================================
+    // STATUS MODAL
+    // ============================================================
+
+    function openStatusModal(authorId) {
+        const author = allAuthors.find(a => a.id === authorId);
+        if (!author) return;
+
+        activeAuthorId = authorId;
+        document.getElementById("statusModalName").textContent = author.name || "Author";
+
+        document.querySelectorAll('input[name="newStatus"]').forEach(function (input) {
+            input.checked = input.value === (author.authorStatus || "ACTIVE");
+        });
+
+        document.getElementById("statusModal").classList.remove("hidden");
+    }
+
+    function hideStatusModal() {
+        document.getElementById("statusModal").classList.add("hidden");
+        activeAuthorId = null;
+    }
+
+    function submitStatusChange() {
+        if (!activeAuthorId) return;
+
+        const selected = document.querySelector('input[name="newStatus"]:checked').value;
+        const btn = document.getElementById("confirmStatusBtn");
+        const originalText = btn.textContent;
+        btn.textContent = "Processing...";
+        btn.disabled = true;
+
+        fetch("/api/admin/authors/" + activeAuthorId + "/status", {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+            body: JSON.stringify({ status: selected })
+        })
+            .then(handleAuthErrors)
+            .then(res => res.json())
+            .then(function (updated) {
+                const idx = allAuthors.findIndex(a => a.id === updated.id);
+                if (idx !== -1) allAuthors[idx] = updated;
+                renderTable();
+                loadStats();
+                hideStatusModal();
+            })
+            .catch(function (err) {
+                alert("Could not update author status. " + err.message);
+            })
+            .finally(function () {
+                btn.textContent = originalText;
+                btn.disabled = false;
+            });
+    }
+
+    // ============================================================
+    // HELPERS
+    // ============================================================
+
+    function formatDate(isoDate) {
+        if (!isoDate) return "—";
+        const d = new Date(isoDate);
+        if (isNaN(d.getTime())) return isoDate;
+        return d.toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" });
+    }
+
+    function escapeHtml(str) {
+        return String(str)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;");
+    }
+</script>
+
+</body>
+</html>
