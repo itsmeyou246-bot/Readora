@@ -2,259 +2,846 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
     <title>Books - Readora</title>
+
     <link
-        href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=Inter:wght@400;500;600&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" th:href="@{/css/book.css}">
+            href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=Inter:wght@400;500;600&display=swap"
+            rel="stylesheet">
+
+    <link rel="stylesheet"
+          th:href="@{/css/Book.css}">
+
 </head>
+
 
 <body>
 
-    <!-- HEADER -->
-    <th:block th:replace="~{fragments/chrome :: header}"></th:block>
-    <header class="header legacy-chrome-header">
-        <div class="header-inner">
-            <a th:href="@{/index}" class="logo">READORA</a>
 
-            <nav class="nav-links">
-                <a th:href="@{/index}">Discover</a>
-                <a th:href="@{/Book}" class="nav-active">Books</a>
-                <a th:href="@{/newspapers}">Newspapers</a>
-                <a th:href="@{/magazines}">Magazines</a>
-                <a th:href="@{/read-nepal}">Read Nepal</a>
-                <a th:href="@{/library}">My Library</a>
-            </nav>
+<header th:replace="~{fragments/header :: readerHeader('books')}"></header>
 
-            <div class="profile-icon"><i class="fa-solid fa-user"></i></div>
+
+
+<section class="page-intro">
+
+    <div class="container">
+
+        <h1 class="page-title">
+            Books
+        </h1>
+
+        <p class="page-subtitle">
+            Browse books, magazines, and newspapers from the Readora library.
+        </p>
+
+    </div>
+
+</section>
+
+
+
+<section class="filter-section">
+
+    <div class="container">
+
+        <div class="filter-tabs">
+
+            <button
+                    class="filter-tab filter-active"
+                    data-filter="all"
+                    type="button">
+
+                All
+
+            </button>
+
+
+            <button
+                    class="filter-tab"
+                    data-filter="books"
+                    type="button">
+
+                Books
+
+            </button>
+
+
+            <button
+                    class="filter-tab"
+                    data-filter="magazines"
+                    type="button">
+
+                Magazines
+
+            </button>
+
+
+            <button
+                    class="filter-tab"
+                    data-filter="newspapers"
+                    type="button">
+
+                Newspapers
+
+            </button>
+
         </div>
-    </header>
 
-    <!-- PAGE TITLE -->
-    <section class="page-intro">
-        <div class="container">
-            <h1 class="page-title">Books</h1>
-            <p class="page-subtitle">Browse books, magazines, and newspapers from the Readora library.</p>
-        </div>
-    </section>
+    </div>
 
-    <!-- FILTER TABS -->
-    <section class="filter-section">
-        <div class="container">
-            <div class="filter-tabs">
-                <button class="filter-tab filter-active" data-filter="all">All</button>
-                <button class="filter-tab" data-filter="books">Books</button>
-                <button class="filter-tab" data-filter="magazines">Magazines</button>
-                <button class="filter-tab" data-filter="newspapers">Newspapers</button>
-            </div>
-        </div>
-    </section>
+</section>
 
-    <!-- BOOK GRID -->
-    <section class="library-section">
-        <div class="container">
-            <div class="library-grid">
 
-                <div class="book-card" data-category="books">
-                    <img th:src="@{/img/what you leave behind.jpg}" alt="What You Leave Behind">
-                    <h3>What You Leave Behind</h3>
-                    <p>Demo Author</p>
-                    <span class="book-tag">Fiction</span>
-                </div>
 
-                <div class="book-card" data-category="books">
-                    <img th:src="@{/img/TheStoryofnewname.png}" alt="The Story of a New Name">
-                    <h3>The Story of a New Name</h3>
-                    <p>Elena Ferrante</p>
-                    <span class="book-tag">Fiction</span>
-                </div>
+<section class="library-section">
 
-                <div class="book-card" data-category="books">
-                    <img th:src="@{/img/TheSilentSpring.png}" alt="The Silent Spring">
-                    <h3>The Silent Spring</h3>
-                    <p>Rachel Carson</p>
-                    <span class="book-tag">Science &amp; Nature</span>
-                </div>
+    <div class="container">
 
-                <div class="book-card" data-category="books">
-                    <img th:src="@{/img/The-Silent-Patient-.webp}" alt="The Silent Patient">
-                    <h3>The Silent Patient</h3>
-                    <p>Alex Michaelides</p>
-                    <span class="book-tag">Thriller</span>
-                </div>
+        <div class="library-grid"
+             id="libraryGrid">
 
-                <div class="book-card" data-category="books">
-                    <img th:src="@{/img/the-hunger-games.jpg}" alt="The Hunger Games">
-                    <h3>The Hunger Games</h3>
-                    <p>Suzanne Collins</p>
-                    <span class="book-tag">Fiction</span>
-                </div>
 
-                <div class="book-card" data-category="books">
-                    <img th:src="@{/img/The Secret Life of Bees.jpg}" alt="The Secret Life of Bees">
-                    <h3>The Secret Life of Bees</h3>
-                    <p>Sue Monk Kidd</p>
-                    <span class="book-tag">Fiction</span>
-                </div>
+            <!-- DATABASE BOOKS ARE INSERTED HERE -->
 
-                <div class="book-card" data-category="books">
-                    <img th:src="@{/img/StructuresOfLight.png}" alt="Structures of Light">
-                    <h3>Structures of Light</h3>
-                    <p>Hiroshi Sugimoto</p>
-                    <span class="book-tag">Architecture</span>
-                </div>
 
-                <div class="book-card" data-category="books">
-                    <img th:src="@{/img/Outerliers.jpg}" alt="Outliers">
-                    <h3>Outliers</h3>
-                    <p>Malcolm Gladwell</p>
-                    <span class="book-tag">Non-fiction</span>
-                </div>
+            <!-- ============================= -->
+            <!-- MAGAZINES -->
+            <!-- ============================= -->
 
-                <div class="book-card" data-category="books">
-                    <img th:src="@{/img/Night tiger.png}" alt="The Night Tiger">
-                    <h3>The Night Tiger</h3>
-                    <p>Yangsze Choo</p>
-                    <span class="book-tag">Fiction</span>
-                </div>
 
-                <div class="book-card" data-category="books">
-                    <img th:src="@{/img/seto dharti.png}" alt="Seto Dharti">
-                    <h3>सेतो धरती</h3>
-                    <p>Amar Neupane</p>
-                    <span class="book-tag">Read Nepal</span>
-                </div>
+            <div class="book-card"
+                 data-category="magazines">
 
-                <div class="book-card" data-category="books">
-                    <img th:src="@{/img/nilo-prem.jpg}" alt="Nilo Prem">
-                    <h3>निलो प्रेम</h3>
-                    <p>Demo Author</p>
-                    <span class="book-tag">Read Nepal</span>
-                </div>
+                <img
+                        th:src="@{/img/fashion.png}"
+                        alt="Fashion Weekly">
 
-                <div class="book-card" data-category="magazines">
-                    <img th:src="@{/img/fashion.png}" alt="Fashion Weekly">
-                    <h3>Fashion Weekly</h3>
-                    <p>Style &amp; Culture</p>
-                    <span class="book-tag">Magazine</span>
-                </div>
+                <h3>
+                    Fashion Weekly
+                </h3>
 
-                <div class="book-card" data-category="magazines">
-                    <img th:src="@{/img/wired.png}" alt="Wired">
-                    <h3>Wired</h3>
-                    <p>Technology &amp; Ideas</p>
-                    <span class="book-tag">Magazine</span>
-                </div>
+                <p>
+                    Style &amp; Culture
+                </p>
 
-                <div class="book-card" data-category="magazines">
-                    <img th:src="@{/img/travel.png}" alt="Travel & Leisure">
-                    <h3>Travel &amp; Leisure</h3>
-                    <p>Places &amp; Journeys</p>
-                    <span class="book-tag">Magazine</span>
-                </div>
-
-                <div class="book-card" data-category="magazines">
-                    <img th:src="@{/img/timesMagazines.png}" alt="Times Magazine">
-                    <h3>Times Magazine</h3>
-                    <p>Weekly Digest</p>
-                    <span class="book-tag">Magazine</span>
-                </div>
-
-                <div class="book-card" data-category="magazines">
-                    <img th:src="@{/img/newyorker.png}" alt="The New Yorker">
-                    <h3>The New Yorker</h3>
-                    <p>Arts &amp; Commentary</p>
-                    <span class="book-tag">Magazine</span>
-                </div>
-
-                <div class="book-card" data-category="newspapers">
-                    <img th:src="@{/img/Reuters.png}" alt="Reuters">
-                    <h3>Reuters</h3>
-                    <p>Today's Edition</p>
-                    <span class="book-tag">Newspaper</span>
-                </div>
-
-                <div class="book-card" data-category="newspapers">
-                    <img th:src="@{/img/news15th.png}" alt="Morning Edition">
-                    <h3>Morning Edition</h3>
-                    <p>15th Edition</p>
-                    <span class="book-tag">Newspaper</span>
-                </div>
+                <span class="book-tag">
+                    Magazine
+                </span>
 
             </div>
 
-            <!-- shown by js when a filter has no matching items -->
-            <p class="empty-message" id="emptyMessage">No items in this category yet.</p>
 
-        </div>
-    </section>
 
-    <!-- FOOTER -->
-    <footer class="footer legacy-chrome-footer">
-        <div class="footer-inner">
-            <div class="footer-logo">READORA</div>
-            <div class="footer-copyright">© 2024 Readora. Cultivating intellectual clarity.</div>
-            <div class="footer-links">
-                <a href="#">Archives</a>
-                <a href="#">Authors</a>
-                <a href="#">Terms</a>
-                <a href="#">Privacy</a>
-                <a href="#">Support</a>
+            <div class="book-card"
+                 data-category="magazines">
+
+                <img
+                        th:src="@{/img/wired.png}"
+                        alt="Wired">
+
+                <h3>
+                    Wired
+                </h3>
+
+                <p>
+                    Technology &amp; Ideas
+                </p>
+
+                <span class="book-tag">
+                    Magazine
+                </span>
+
             </div>
+
+
+
+            <div class="book-card"
+                 data-category="magazines">
+
+                <img
+                        th:src="@{/img/travel.png}"
+                        alt="Travel & Leisure">
+
+                <h3>
+                    Travel &amp; Leisure
+                </h3>
+
+                <p>
+                    Places &amp; Journeys
+                </p>
+
+                <span class="book-tag">
+                    Magazine
+                </span>
+
+            </div>
+
+
+
+            <div class="book-card"
+                 data-category="magazines">
+
+                <img
+                        th:src="@{/img/timesMagazines.png}"
+                        alt="Times Magazine">
+
+                <h3>
+                    Times Magazine
+                </h3>
+
+                <p>
+                    Weekly Digest
+                </p>
+
+                <span class="book-tag">
+                    Magazine
+                </span>
+
+            </div>
+
+
+
+            <div class="book-card"
+                 data-category="magazines">
+
+                <img
+                        th:src="@{/img/newyorker.png}"
+                        alt="The New Yorker">
+
+                <h3>
+                    The New Yorker
+                </h3>
+
+                <p>
+                    Arts &amp; Commentary
+                </p>
+
+                <span class="book-tag">
+                    Magazine
+                </span>
+
+            </div>
+
+
+
+            <!-- ============================= -->
+            <!-- NEWSPAPERS -->
+            <!-- ============================= -->
+
+
+            <div class="book-card"
+                 data-category="newspapers">
+
+                <img
+                        th:src="@{/img/Reuters.png}"
+                        alt="Reuters">
+
+                <h3>
+                    Reuters
+                </h3>
+
+                <p>
+                    Today's Edition
+                </p>
+
+                <span class="book-tag">
+                    Newspaper
+                </span>
+
+            </div>
+
+
+
+            <div class="book-card"
+                 data-category="newspapers">
+
+                <img
+                        th:src="@{/img/news15th.png}"
+                        alt="Morning Edition">
+
+                <h3>
+                    Morning Edition
+                </h3>
+
+                <p>
+                    15th Edition
+                </p>
+
+                <span class="book-tag">
+                    Newspaper
+                </span>
+
+            </div>
+
+
         </div>
-    </footer>
-    <th:block th:replace="~{fragments/chrome :: footer}"></th:block>
 
-    <script th:src="@{/js/cart-utils.js}"></script>
-    <script>
-        // grab all the filter buttons and all the book cards
-        var filterButtons = document.querySelectorAll('.filter-tab');
-        var bookCards = document.querySelectorAll('.book-card');
-        var emptyMessage = document.getElementById('emptyMessage');
 
-        // run this whenever a filter button is clicked
-        function handleFilterClick() {
-            var selectedFilter = this.getAttribute('data-filter');
+        <p class="empty-message"
+           id="emptyMessage">
 
-            // update which button looks active
-            for (var i = 0; i < filterButtons.length; i++) {
-                filterButtons[i].classList.remove('filter-active');
+            No items in this category yet.
+
+        </p>
+
+    </div>
+
+</section>
+
+
+
+<footer class="footer legacy-chrome-footer">
+
+    <div class="footer-inner">
+
+        <div class="footer-logo">
+            READORA
+        </div>
+
+        <div class="footer-copyright">
+            © 2024 Readora. Cultivating intellectual clarity.
+        </div>
+
+        <div class="footer-links">
+
+            <a href="#">
+                Archives
+            </a>
+
+            <a href="#">
+                Authors
+            </a>
+
+            <a href="#">
+                Terms
+            </a>
+
+            <a href="#">
+                Privacy
+            </a>
+
+            <a href="#">
+                Support
+            </a>
+
+        </div>
+
+    </div>
+
+</footer>
+
+
+
+<script th:src="@{/js/cart-utils.js}"></script>
+
+<script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const filterButtons =
+            document.querySelectorAll(".filter-tab");
+
+        const emptyMessage =
+            document.getElementById("emptyMessage");
+
+        const libraryGrid =
+            document.getElementById("libraryGrid");
+
+        let currentFilter = "all";
+
+
+        // =====================================================
+        // CHECK PREMIUM
+        // =====================================================
+
+        function isPremiumBook(book) {
+
+            if (!book) {
+                return false;
             }
-            this.classList.add('filter-active');
 
-            // show or hide each card based on its category
-            var visibleCount = 0;
+            const premium =
+                book.premium === true ||
+                String(book.premium).toLowerCase() === "true";
 
-            for (var j = 0; j < bookCards.length; j++) {
-                var card = bookCards[j];
-                var cardCategory = card.getAttribute('data-category');
+            const price =
+                Number(book.price || 0);
 
-                var shouldShow = (selectedFilter === 'all') || (cardCategory === selectedFilter);
+            return premium && price > 0;
+        }
 
-                if (shouldShow) {
-                    card.classList.remove('hidden');
-                    visibleCount = visibleCount + 1;
-                } else {
-                    card.classList.add('hidden');
-                }
+
+        // =====================================================
+        // GET BOOK IMAGE
+        // =====================================================
+
+        function getBookImage(book) {
+
+            if (!book) {
+                return "";
             }
 
-            // if nothing matched, show the "no items" message
-            if (visibleCount === 0) {
-                emptyMessage.style.display = 'block';
+            let image =
+                book.image ||
+                book.coverImage ||
+                book.cover ||
+                "";
+
+            if (!image) {
+                return "";
+            }
+
+            image =
+                String(image).trim();
+
+            image =
+                image.replace(/\\/g, "/");
+
+            image =
+                image.replace(
+                    /^\/?static\//i,
+                    ""
+                );
+
+            if (image.startsWith("/images/")) {
+
+                image =
+                    "/img/" +
+                    image.substring(
+                        "/images/".length
+                    );
+            }
+
+            if (!image.startsWith("/")) {
+
+                image =
+                    "/" + image;
+            }
+
+            return encodeURI(image);
+        }
+
+
+        // =====================================================
+        // CREATE DATABASE BOOK CARD
+        // =====================================================
+
+        function createBookCard(book) {
+
+            const card =
+                document.createElement("div");
+
+            card.className =
+                "book-card";
+
+            card.setAttribute(
+                "data-category",
+                "books"
+            );
+
+            card.setAttribute(
+                "data-id",
+                book.id
+            );
+
+
+            const image =
+                document.createElement("img");
+
+            const imagePath =
+                getBookImage(book);
+
+            if (imagePath) {
+                image.src = imagePath;
+            }
+
+            image.alt =
+                book.title || "Book";
+
+            image.loading =
+                "lazy";
+
+            image.onerror =
+                function () {
+                    this.style.visibility =
+                        "hidden";
+                };
+
+            card.appendChild(image);
+
+
+            const title =
+                document.createElement("h3");
+
+            title.textContent =
+                book.title ||
+                "Untitled Book";
+
+            card.appendChild(title);
+
+
+            const author =
+                document.createElement("p");
+
+            author.textContent =
+                book.author ||
+                "Unknown Author";
+
+            card.appendChild(author);
+
+
+            const tag =
+                document.createElement("span");
+
+            tag.className =
+                "book-tag";
+
+            tag.textContent =
+                book.category ||
+                "Book";
+
+            card.appendChild(tag);
+
+
+            // =================================================
+            // FREE / PREMIUM
+            // =================================================
+
+            const status =
+                document.createElement("span");
+
+            status.className =
+                "readora-book-status";
+
+            const premium =
+                isPremiumBook(book);
+
+            if (premium) {
+
+                status.textContent =
+                    "PREMIUM";
+
+                status.classList.add(
+                    "premium"
+                );
+
             } else {
-                emptyMessage.style.display = 'none';
+
+                status.textContent =
+                    "FREE";
+
+                status.classList.add(
+                    "free"
+                );
+            }
+
+            card.appendChild(status);
+
+
+            // =================================================
+            // PREMIUM ONLY - ADD TO CART
+            // =================================================
+
+            if (premium) {
+
+                const cartButton =
+                    document.createElement("button");
+
+                cartButton.type =
+                    "button";
+
+                cartButton.className =
+                    "readora-add-cart";
+
+                cartButton.innerHTML =
+                    '<i class="fa-solid fa-cart-plus"></i> Add to Cart';
+
+                cartButton.addEventListener(
+                    "click",
+                    function (event) {
+
+                        event.preventDefault();
+                        event.stopPropagation();
+
+                        if (
+                            typeof window.addToCart ===
+                            "function"
+                        ) {
+
+                            window.addToCart(book);
+
+                        } else {
+
+                            console.error(
+                                "READORA: addToCart() function not found."
+                            );
+                        }
+                    }
+                );
+
+                card.appendChild(
+                    cartButton
+                );
+            }
+
+
+            // =================================================
+            // OPEN BOOK
+            // =================================================
+
+            card.addEventListener(
+                "click",
+                function (event) {
+
+                    if (
+                        event.target.closest(
+                            ".readora-add-cart"
+                        )
+                    ) {
+                        return;
+                    }
+
+
+                    /*
+                     * PREMIUM
+                     *
+                     * Go to premium book details.
+                     */
+                    if (premium) {
+
+                        window.location.href =
+                            "/book-details?id=" +
+                            encodeURIComponent(
+                                book.id
+                            );
+
+                        return;
+                    }
+
+
+                    /*
+                     * FREE
+                     *
+                     * Go directly to reader.
+                     *
+                     * No unlock page.
+                     * No cart.
+                     * No purchase.
+                     */
+                    window.location.href =
+                        "/book-reader?bookId=" +
+                        encodeURIComponent(
+                            book.id
+                        );
+                }
+            );
+
+
+            return card;
+        }
+
+
+        // =====================================================
+        // LOAD BOOKS FROM DATABASE
+        // =====================================================
+
+        async function loadBooksFromDatabase() {
+
+            try {
+
+                const response =
+                    await fetch(
+                        "/api/books",
+                        {
+                            method: "GET",
+                            headers: {
+                                "Accept":
+                                    "application/json"
+                            },
+                            cache: "no-cache"
+                        }
+                    );
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        "Book API returned HTTP " +
+                        response.status
+                    );
+                }
+
+                const data =
+                    await response.json();
+
+                if (!Array.isArray(data)) {
+
+                    throw new Error(
+                        "Book API did not return an array."
+                    );
+                }
+
+
+                libraryGrid
+                    .querySelectorAll(
+                        '.book-card[data-category="books"]'
+                    )
+                    .forEach(
+                        function (card) {
+                            card.remove();
+                        }
+                    );
+
+
+                const firstOther =
+                    libraryGrid.querySelector(
+                        '.book-card[data-category="magazines"], ' +
+                        '.book-card[data-category="newspapers"]'
+                    );
+
+
+                data.forEach(
+                    function (book) {
+
+                        const card =
+                            createBookCard(book);
+
+                        if (firstOther) {
+
+                            libraryGrid.insertBefore(
+                                card,
+                                firstOther
+                            );
+
+                        } else {
+
+                            libraryGrid.appendChild(
+                                card
+                            );
+                        }
+                    }
+                );
+
+                applyFilter();
+
+            } catch (error) {
+
+                console.error(
+                    "READORA book loading error:",
+                    error
+                );
+
+                applyFilter();
             }
         }
 
-        // attach the click event to every filter button
-        for (var k = 0; k < filterButtons.length; k++) {
-            filterButtons[k].addEventListener('click', handleFilterClick);
+
+        // =====================================================
+        // FILTER
+        // =====================================================
+
+        function applyFilter() {
+
+            const cards =
+                document.querySelectorAll(
+                    ".book-card"
+                );
+
+            let visibleCount =
+                0;
+
+            cards.forEach(
+                function (card) {
+
+                    const category =
+                        card.getAttribute(
+                            "data-category"
+                        );
+
+                    const shouldShow =
+                        currentFilter === "all" ||
+                        category === currentFilter;
+
+                    if (shouldShow) {
+
+                        card.classList.remove(
+                            "hidden"
+                        );
+
+                        visibleCount++;
+
+                    } else {
+
+                        card.classList.add(
+                            "hidden"
+                        );
+                    }
+                }
+            );
+
+            if (emptyMessage) {
+
+                emptyMessage.style.display =
+                    visibleCount === 0
+                        ? "block"
+                        : "none";
+            }
         }
-    </script>
+
+
+        // =====================================================
+        // FILTER BUTTONS
+        // =====================================================
+
+        filterButtons.forEach(
+            function (button) {
+
+                button.addEventListener(
+                    "click",
+                    function () {
+
+                        filterButtons.forEach(
+                            function (btn) {
+
+                                btn.classList.remove(
+                                    "filter-active"
+                                );
+                            }
+                        );
+
+                        this.classList.add(
+                            "filter-active"
+                        );
+
+                        currentFilter =
+                            this.getAttribute(
+                                "data-filter"
+                            );
+
+                        applyFilter();
+                    }
+                );
+            }
+        );
+
+
+        // =====================================================
+        // START
+        // =====================================================
+
+        loadBooksFromDatabase();
+
+    });
+
+</script>
+
 
 </body>
 

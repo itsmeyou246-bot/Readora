@@ -1,10 +1,263 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <title>Readora Studio · Royalties & Sales</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/RoyalitiesandSales.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
-$END$
+
+<!-- ===== HEADER (same as Dashboard & Pipeline) ===== -->
+
+<header th:replace="~{fragments/header :: authorHeader('royalties')}"></header>
+
+<div class="container">
+
+    <!-- ===== SUB NAV ===== -->
+    <div class="subnav">
+        <a th:href="@{/AuthorDashboard}" class="subnav-tab">Overview</a>
+        <a th:href="@{/SubmissionandPipeline}" class="subnav-tab">Manuscript Pipeline · 5</a>
+        <button class="subnav-tab subnav-active">Royalties & Earnings</button>
+        <button class="subnav-tab">Reader Reviews & Ratings</button>
+        <button class="subnav-tab">Publication Analytics</button>
+        <button class="subnav-tab">Author Profile & Bio</button>
+        <span class="subnav-spacer"></span>
+        <button class="subnav-tab">Drafts (3)</button>
+        <button class="new-pub-btn">Download Statement</button>
+    </div>
+
+    <!-- ===== PAGE TITLE ===== -->
+    <section class="page-intro">
+        <div class="breadcrumb">Author Studio / Royalties & Sales</div>
+        <div class="page-title-row">
+            <div>
+                <h1 class="page-title">Royalties, Book Sales & Payouts</h1>
+                <p class="page-subtitle">Review verified sales volumes, contractual royalty splits (15–20%), and automated bank disbursements.</p>
+            </div>
+            <button class="btn btn-dark">Download Royalty Report</button>
+        </div>
+    </section>
+
+    <!-- ===== TOP METRIC CARDS ===== -->
+    <section class="card-section">
+        <div class="metric-grid" id="metricGrid"></div>
+    </section>
+
+    <!-- ===== BALANCE / TIMETABLE / PAYMENT INFO ===== -->
+    <section class="card-section">
+        <div class="info-grid">
+
+            <div class="card">
+                <div class="info-head">
+                    <span class="section-label">Current Balance</span>
+                    <span class="badge-verified">Verified</span>
+                </div>
+                <div class="big-value" id="availableBalance">Rs. 0</div>
+                <div class="value-note">Available for standard cycle disbursement</div>
+                <div class="divider"></div>
+                <div class="kv-row"><span>Clearance Status:</span><strong id="clearanceStatus">Ready</strong></div>
+            </div>
+
+            <div class="card">
+                <div class="info-head">
+                    <span class="section-label">Payout Timetable</span>
+                    <span><i class="fa-solid fa-calendar-days"></i></span>
+                </div>
+                <div class="kv-row"><span>Last Payout:</span><strong id="lastPayout">—</strong></div>
+                <div class="kv-row"><span>Next Payout:</span><strong class="text-green" id="nextPayout">Monthly cycle</strong></div>
+                <div class="divider"></div>
+                <div class="kv-row"><span>Cycle:</span><strong>Monthly Automated Batch</strong></div>
+            </div>
+
+            <div class="card">
+                <div class="info-head">
+                    <span class="section-label">Payment Information</span>
+                    <a href="#" class="edit-link">Edit</a>
+                </div>
+                <div class="bank-name">Nepal Rastra Bank Direct Clearing</div>
+                <div class="bank-detail">Author payout account on file</div>
+                <div class="bank-detail" id="payeeName">Payee: —</div>
+                <div class="divider"></div>
+                <div class="kv-row"><span>Auto-Deposit:</span><strong class="text-green">Active</strong></div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ===== SALES LOG TABLE ===== -->
+    <section class="card-section">
+        <div class="card">
+            <div class="card-head">
+                <div>
+                    <h3>Book Sales & Accrued Royalties Log</h3>
+                    <p class="card-subtitle" style="margin-top:4px;">Itemized audit of recent institutional and reader purchases.</p>
+                </div>
+                <div class="table-controls">
+                    <select class="select-box">
+                        <option>All Publications</option>
+                    </select>
+                    <button class="btn">Filter</button>
+                </div>
+            </div>
+
+            <table>
+                <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Publication</th>
+                    <th>Units Sold</th>
+                    <th>Sale Amount</th>
+                    <th>Author Royalty (15%)</th>
+                    <th>Payout Status</th>
+                    <th>Invoice</th>
+                </tr>
+                </thead>
+                <tbody id="salesRows"></tbody>
+            </table>
+
+            <div class="table-footer">
+                <span id="tableFooterNote"></span>
+                <div class="pagination">
+                    <button class="page-btn">Previous</button>
+                    <button class="page-btn active">1</button>
+                    <button class="page-btn">2</button>
+                    <button class="page-btn">Next</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+    <div class="footer-inner">
+        <div>
+            <div class="footer-logo">READORA</div>
+            <div class="footer-copyright" style="margin-top:4px;">Author Studio v2.4 (Advanced Java / Spring Boot Architecture)</div>
+        </div>
+        <div class="footer-links">
+            <a href="#editorial">Editorial Guidelines</a>
+            <a th:href="@{/RoyalitiesandSales}">Author Payout Terms</a>
+            <a href="#">Developer REST APIs</a>
+            <a href="#">Support</a>
+        </div>
+    </div>
+</footer>
+
+<script>
+    function getLoggedInUser() {
+        try {
+            return JSON.parse(localStorage.getItem("readoraUser") || "null");
+        } catch (e) {
+            return null;
+        }
+    }
+
+    function getAuthHeaders() {
+        var headers = { "Content-Type": "application/json" };
+        try {
+            var user = getLoggedInUser();
+            var token = user && (user.token || user.jwt);
+            if (token) headers["Authorization"] = "Bearer " + token;
+        } catch (e) { /* cookie auth */ }
+        return headers;
+    }
+
+    var statusLabel = {
+        paid: "Paid",
+        pending: "Pending Payout"
+    };
+
+    function renderMetrics(metrics) {
+        var metricGrid = document.getElementById("metricGrid");
+        metricGrid.innerHTML = "";
+        for (var i = 0; i < metrics.length; i++) {
+            var m = metrics[i];
+            var card = document.createElement("div");
+            card.className = "metric-card";
+            card.innerHTML =
+                '<div class="metric-head">' +
+                '<span class="section-label">' + m.label + '</span>' +
+                '<span>' + m.icon + '</span>' +
+                '</div>' +
+                '<div class="metric-value">' + m.value + '</div>' +
+                '<div class="metric-note ' + (m.noteType || "") + '">' + m.note + '</div>';
+            metricGrid.appendChild(card);
+        }
+    }
+
+    function renderSales(sales) {
+        var salesRows = document.getElementById("salesRows");
+        salesRows.innerHTML = "";
+
+        if (!sales.length) {
+            salesRows.innerHTML =
+                '<tr><td colspan="7" style="text-align:center;padding:24px;color:#948d78;">' +
+                'No sales recorded yet for your publications.</td></tr>';
+            document.getElementById("tableFooterNote").innerHTML =
+                "Showing <strong>0</strong> transactions";
+            return;
+        }
+
+        for (var i = 0; i < sales.length; i++) {
+            var s = sales[i];
+            var row = document.createElement("tr");
+            row.innerHTML =
+                '<td>' + s.date + '</td>' +
+                '<td><strong>' + s.pub + '</strong></td>' +
+                '<td>' + s.units + '</td>' +
+                '<td>' + s.amount + '</td>' +
+                '<td><strong>' + s.royalty + '</strong></td>' +
+                '<td><span class="status-pill ' + s.status + '">' + (statusLabel[s.status] || s.status) + '</span></td>' +
+                '<td><a href="#"><i class="fa-regular fa-file-lines"></i> ' + s.invoice + '</a></td>';
+            salesRows.appendChild(row);
+        }
+
+        document.getElementById("tableFooterNote").innerHTML =
+            "Showing recent <strong>" + sales.length + " transactions</strong>";
+    }
+
+    async function loadRoyalties() {
+        try {
+            var resp = await fetch("/api/author/royalties", {
+                method: "GET",
+                headers: getAuthHeaders(),
+                credentials: "same-origin"
+            });
+            if (resp.status === 401 || resp.status === 403) {
+                document.getElementById("salesRows").innerHTML =
+                    '<tr><td colspan="7" style="text-align:center;padding:24px;">Please <a href="/login.html">log in</a> as an author.</td></tr>';
+                return;
+            }
+            if (!resp.ok) throw new Error("Failed");
+            var data = await resp.json();
+            renderMetrics(data.metrics || []);
+            renderSales(data.sales || []);
+
+            if (document.getElementById("availableBalance")) {
+                document.getElementById("availableBalance").textContent = data.availableBalance || "Rs. 0";
+            }
+            if (document.getElementById("lastPayout")) {
+                document.getElementById("lastPayout").textContent = data.lastPayout || "—";
+            }
+            if (document.getElementById("payeeName")) {
+                document.getElementById("payeeName").textContent = "Payee: " + (data.authorName || "Author");
+            }
+            if (document.getElementById("clearanceStatus")) {
+                document.getElementById("clearanceStatus").textContent =
+                    (data.pendingRoyalties && data.pendingRoyalties > 0) ? "Pending cycle" : "Ready";
+            }
+        } catch (e) {
+            console.error(e);
+            document.getElementById("salesRows").innerHTML =
+                '<tr><td colspan="7" style="text-align:center;color:#a33b3b;padding:24px;">Could not load royalties.</td></tr>';
+        }
+    }
+
+    loadRoyalties();
+</script>
 </body>
 </html>

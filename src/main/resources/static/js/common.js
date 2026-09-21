@@ -774,8 +774,9 @@ function showConfirmModal(options) {
 function initHeaderUI() {
     const profileBtn = document.getElementById('headerProfileBtn');
     const profileDropdown = document.getElementById('headerProfileDropdown');
-    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-    const mobileNavDrawer = document.getElementById('mobileNavDrawer');
+    const mobileMenuBtns = document.querySelectorAll('.mobile-menu-btn, #mobileMenuBtn');
+    const mobileNavDrawer = document.querySelector('.mobile-nav-drawer, #mobileNavDrawer');
+    const mobileMenuClose = document.querySelector('.mobile-menu-close');
 
     if (profileBtn && profileDropdown) {
         profileBtn.addEventListener('click', (e) => {
@@ -790,17 +791,32 @@ function initHeaderUI() {
         });
     }
 
-    if (mobileMenuBtn && mobileNavDrawer) {
-        mobileMenuBtn.addEventListener('click', () => {
-            mobileNavDrawer.classList.toggle('open');
-            const icon = mobileMenuBtn.querySelector('i');
-            if (icon) {
-                if (mobileNavDrawer.classList.contains('open')) {
-                    icon.className = 'fa-solid fa-xmark';
-                } else {
-                    icon.className = 'fa-solid fa-bars';
-                }
+    if (mobileNavDrawer) {
+        mobileMenuBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                mobileNavDrawer.hidden = false;
+                mobileNavDrawer.classList.toggle('open');
+            });
+        });
+
+        if (mobileMenuClose) {
+            mobileMenuClose.addEventListener('click', () => {
+                mobileNavDrawer.classList.remove('open');
+            });
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                mobileNavDrawer.classList.remove('open');
             }
+        });
+
+        const drawerLinks = mobileNavDrawer.querySelectorAll('a');
+        drawerLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileNavDrawer.classList.remove('open');
+            });
         });
     }
 

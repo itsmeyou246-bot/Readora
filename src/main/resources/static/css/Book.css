@@ -26,7 +26,11 @@ a {
 
 .header {
   border-bottom: 1px solid #ddd4c0;
-  padding: 20px 0;
+  padding: 0;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background-color: #faf6ee;
 }
 
 .header-inner {
@@ -139,6 +143,38 @@ a {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 30px 26px;
+}
+
+/* FREE / PREMIUM BOOK STATUS */
+
+.book-card {
+  position: relative;
+}
+
+.readora-book-status {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 5;
+  display: inline-block;
+  padding: 5px 9px;
+  font-family: 'Inter', sans-serif;
+  font-size: 9px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+}
+
+.readora-book-status.premium {
+  background: #2f4a3a;
+  color: #faf6ee;
+}
+
+.readora-book-status.free {
+  background: #faf6ee;
+  color: #2f4a3a;
+  border: 1px solid #2f4a3a;
 }
 
 .book-card img {

@@ -7,21 +7,7 @@
     <link rel="stylesheet" th:href="@{/css/magazine-details.css}">
 </head>
 <body>
-    <th:block th:replace="~{fragments/chrome :: header}"></th:block>
-    <header class="header legacy-chrome-header">
-        <div class="header-inner">
-            <a th:href="@{/index}" class="logo">READORA</a>
-            <nav class="nav-links">
-                <a th:href="@{/index}">Discover</a>
-                <a th:href="@{/Book}">Books</a>
-                <a th:href="@{/newspapers}">Newspapers</a>
-                <a th:href="@{/magazines}">Magazines</a>
-                <a th:href="@{/read-nepal}">Read Nepal</a>
-                <a th:href="@{/library}">My Library</a>
-            </nav>
-            <div class="profile-icon">👤</div>
-        </div>
-    </header>
+    <header th:replace="~{fragments/header :: readerHeader('magazines')}"></header>
 
     <main class="main-content">
         <div class="container">
@@ -72,8 +58,6 @@
             <div class="footer-copyright">© 2026 READORA. All rights reserved.</div>
         </div>
     </footer>
-    <th:block th:replace="~{fragments/chrome :: footer}"></th:block>
-
     <div id="toast" class="toast"></div>
 
     <script>

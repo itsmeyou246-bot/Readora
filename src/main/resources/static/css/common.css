@@ -86,7 +86,7 @@ img {
   background-color: var(--color-bg);
   position: sticky;
   top: 0;
-  z-index: 100;
+  z-index: 1000;
 }
 
 .header-inner {
@@ -151,28 +151,23 @@ img {
 .header-actions {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 24px;
 }
 
 .header-icon-btn {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  border: 1px solid var(--color-border);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   color: var(--color-text-secondary);
   background-color: transparent;
-  font-size: 13px;
+  border: none;
+  font-size: 16px;
   position: relative;
   transition: var(--transition-smooth);
 }
 
 .header-icon-btn:hover {
   color: var(--color-text);
-  border-color: var(--color-text);
-  background-color: var(--color-surface);
 }
 
 .header-badge {
@@ -246,6 +241,164 @@ img {
   width: 14px;
   font-size: 12px;
   color: var(--color-text-muted);
+}
+
+/* ==========================================================================
+   HEADER BUTTONS & MOBILE NAV DRAWER
+   ========================================================================== */
+.profile-icon-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--color-border);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text);
+  background-color: var(--color-surface);
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.btn-create-publication {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background-color: var(--color-text);
+  color: #fff !important;
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  padding: 8px 14px;
+  border-radius: 4px;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+}
+
+.btn-create-publication:hover {
+  background-color: #333;
+}
+
+.logo-sub-admin {
+  color: #c92a2a;
+  border-color: #f8d7da;
+  background-color: #fff5f5;
+}
+
+.mobile-menu-btn {
+  display: none;
+  background: transparent;
+  border: 1px solid var(--color-border);
+  width: 36px;
+  height: 36px;
+  border-radius: 4px;
+  font-size: 16px;
+  color: var(--color-text);
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+}
+
+.mobile-nav-drawer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--color-bg);
+  z-index: 9999;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  transform: translateX(100%);
+  transition: transform 0.3s ease-in-out;
+}
+
+.mobile-nav-drawer.open {
+  transform: translateX(0);
+}
+
+.mobile-drawer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--color-border);
+  margin-bottom: 16px;
+}
+
+.mobile-menu-close {
+  background: transparent;
+  border: 0;
+  font-size: 22px;
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.mobile-nav-links {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.mobile-nav-links a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--color-text);
+  text-decoration: none;
+  padding: 10px 12px;
+  border-radius: 6px;
+  transition: background-color 0.15s ease;
+}
+
+.mobile-nav-links a:hover,
+.mobile-nav-links a.nav-active {
+  background-color: var(--color-surface);
+  font-weight: 600;
+}
+
+.mobile-nav-links a i {
+  width: 20px;
+  text-align: center;
+  color: var(--color-text-secondary);
+}
+
+.drawer-divider {
+  border: 0;
+  border-top: 1px solid var(--color-border);
+  margin: 12px 0;
+}
+
+/* ==========================================================================
+   RESPONSIVE HEADER MEDIA QUERIES
+   ========================================================================== */
+@media (max-width: 992px) {
+  .desktop-nav {
+    display: none !important;
+  }
+
+  .mobile-menu-btn {
+    display: inline-flex !important;
+  }
+}
+
+@media (max-width: 576px) {
+  .header-inner {
+    padding: 0 16px;
+  }
+
+  .logo {
+    font-size: 18px;
+  }
+
+  .btn-create-publication span {
+    display: none;
+  }
 }
 
 .dropdown-item:hover {

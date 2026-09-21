@@ -1,79 +1,321 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title th:text="${bookTitle} + ' - Readora'">Reader - Readora</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <link rel="stylesheet" th:href="@{/css/reader.css}">
+
+    <title th:text="${bookTitle} + ' - Readora'">
+        Reader - Readora
+    </title>
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <link rel="stylesheet"
+          th:href="@{/css/reader.css}">
 </head>
+
 <body th:attr="data-book-id=${bookId}">
+
 <header class="reader-header">
-    <a class="back-button" th:href="@{/library}"><i class="fa-solid fa-arrow-left"></i><span>Library</span></a>
+
+    <a class="back-button"
+       th:href="@{/Book}">
+        <i class="fa-solid fa-arrow-left"></i>
+        <span>Books</span>
+    </a>
+
     <div class="reader-book">
-        <strong th:text="${bookTitle}">The Mountain Path</strong>
-        <span>Chapter 4 · The Ascent</span>
+
+        <strong th:text="${bookTitle}">
+            The Mountain Path
+        </strong>
+
+        <span>
+            Chapter 4 · The Ascent
+        </span>
+
     </div>
+
     <div class="reader-actions">
-        <button id="bookmark" type="button" aria-label="Bookmark this page"><i class="fa-regular fa-bookmark"></i></button>
-        <button id="readerMenu" type="button" aria-label="Reader settings"><i class="fa-solid fa-sliders"></i></button>
+
+        <button id="bookmark"
+                type="button"
+                aria-label="Bookmark this page">
+
+            <i class="fa-regular fa-bookmark"></i>
+
+        </button>
+
+        <button id="readerMenu"
+                type="button"
+                aria-label="Reader settings">
+
+            <i class="fa-solid fa-sliders"></i>
+
+        </button>
+
     </div>
+
 </header>
 
+
 <main class="reader-main">
-    <div id="lockedState" class="reader-state" hidden>
+
+    <!-- LOCKED STATE -->
+    <div id="lockedState"
+         class="reader-state"
+         hidden>
+
         <h1>Book locked</h1>
-        <p>This book is available after purchase.</p>
-        <a href="/Book">Explore Books</a>
+
+        <p>
+            This book is available after purchase.
+        </p>
+
+        <a href="/Book">
+            Explore Books
+        </a>
+
     </div>
-    <div id="loadingState" class="reader-state">Loading your book...</div>
-    <article id="bookContent" class="book-content" hidden>
-        <div class="content-page" data-page="1">
-            <div class="chapter-kicker">Chapter 4</div>
-            <h1>The Ascent</h1>
-            <p class="lead">The air grew noticeably thinner as we passed the tree line. The dense pines that had shadowed our journey for the past three days gave way to sparse, stubborn shrubs clinging to the rocky soil. It was here that the true scale of the mountain revealed itself, a monolithic presence that commanded silence.</p>
-            <p>Ellas stopped to adjust his pack, his breath pluming in the crisp morning air. He did not look back at me; his gaze fixed upward. “We have about four hours of daylight left,” he muttered, more to himself than to me. The path ahead was less a trail and more a suggestion, marked only by the occasional cairn built by those who had braved this route before us.</p>
-            <p>I nodded, though he could not see it. My own legs were burning, a dull ache that had become a constant companion. Yet, amidst the physical exertion, there was a profound sense of clarity. The cacophony of the city had left behind felt like a distant dream, replaced by the rhythm of crunching gravel and steady breathing.</p>
+
+
+    <!-- LOADING STATE -->
+    <div id="loadingState"
+         class="reader-state"
+         hidden>
+
+        Loading your book...
+
+    </div>
+
+
+    <!-- BOOK CONTENT -->
+    <article id="bookContent"
+             class="book-content">
+
+        <!-- PAGE 1 -->
+        <div class="content-page"
+             data-page="1">
+
+            <div class="chapter-kicker">
+                Chapter 4
+            </div>
+
+            <h1>
+                The Ascent
+            </h1>
+
+            <p class="lead">
+                The air grew noticeably thinner as we passed the tree line.
+                The dense pines that had shadowed our journey for the past
+                three days gave way to sparse, stubborn shrubs clinging to
+                the rocky soil. It was here that the true scale of the
+                mountain revealed itself, a monolithic presence that
+                commanded silence.
+            </p>
+
+            <p>
+                Ellas stopped to adjust his pack, his breath pluming in the
+                crisp morning air. He did not look back at me; his gaze fixed
+                upward. “We have about four hours of daylight left,” he
+                muttered, more to himself than to me. The path ahead was less
+                a trail and more a suggestion, marked only by the occasional
+                cairn built by those who had braved this route before us.
+            </p>
+
+            <p>
+                I nodded, though he could not see it. My own legs were
+                burning, a dull ache that had become a constant companion.
+                Yet, amidst the physical exertion, there was a profound sense
+                of clarity. The cacophony of the city had left behind felt
+                like a distant dream, replaced by the rhythm of crunching
+                gravel and steady breathing.
+            </p>
 
             <figure class="story-figure">
-                <img src="/img/StructuresOfLight.png" alt="A mountain path disappearing into the mist">
-                <figcaption>The view from the lower ridge, shortly before the storm.</figcaption>
+
+                <img src="/img/StructuresOfLight.png"
+                     alt="A mountain path disappearing into the mist">
+
+                <figcaption>
+                    The view from the lower ridge, shortly before the storm.
+                </figcaption>
+
             </figure>
+
         </div>
 
-        <div class="content-page" data-page="2">
-            <p>The stories of this place often focused on the danger—the sudden storms that could sweep in without warning, the treacherous scree slopes that threatened to send you tumbling back down. But they rarely mentioned the stillness. It was a silence so complete it felt almost heavy, a physical weight that pressed against your eardrums.</p>
-            <p>We pushed on, the incline steepening. The rhythm of our steps became a meditation. One foot in front of the other. The crunch of stone. The sharp intake of cold air. In this barren landscape, stripped of the unnecessary, only the essential remained. It was a harsh environment, yes, but in its severity, there was a strange, austere beauty.</p>
-            <p>As the afternoon wore on, shadows began to stretch across the rocky face, painting the grey stone in hues of deep violet and blue. We needed to find shelter soon. The wind had picked up, carrying with it the first faint taste of snow.</p>
+
+        <!-- PAGE 2 -->
+        <div class="content-page"
+             data-page="2">
+
+            <p>
+                The stories of this place often focused on the danger—the
+                sudden storms that could sweep in without warning, the
+                treacherous scree slopes that threatened to send you tumbling
+                back down. But they rarely mentioned the stillness. It was a
+                silence so complete it felt almost heavy, a physical weight
+                that pressed against your eardrums.
+            </p>
+
+            <p>
+                We pushed on, the incline steepening. The rhythm of our steps
+                became a meditation. One foot in front of the other. The
+                crunch of stone. The sharp intake of cold air. In this barren
+                landscape, stripped of the unnecessary, only the essential
+                remained. It was a harsh environment, yes, but in its severity,
+                there was a strange, austere beauty.
+            </p>
+
+            <p>
+                As the afternoon wore on, shadows began to stretch across the
+                rocky face, painting the grey stone in hues of deep violet
+                and blue. We needed to find shelter soon. The wind had picked
+                up, carrying with it the first faint taste of snow.
+            </p>
+
         </div>
 
-        <div class="content-page" data-page="3">
-            <div class="chapter-kicker">The high pass</div>
-            <h2>A different kind of quiet</h2>
-            <p>By dusk, we found a shallow overhang just large enough to keep the worst of the weather off our shoulders. Ellas struck a match, and for a moment the small flame made the whole mountain feel close enough to hold. We shared the last of the tea and watched the storm gather in the valley below.</p>
-            <p>“Tomorrow,” he said, “we will see the other side.”</p>
-            <p>There was no triumph in his voice. The mountain did not belong to us because we had climbed it. It had simply allowed us to pass, and the distinction mattered. I pulled my blanket tighter and listened as the first snow touched the stone like a thousand quiet fingers.</p>
+
+        <!-- PAGE 3 -->
+        <div class="content-page"
+             data-page="3">
+
+            <div class="chapter-kicker">
+                The high pass
+            </div>
+
+            <h2>
+                A different kind of quiet
+            </h2>
+
+            <p>
+                By dusk, we found a shallow overhang just large enough to keep
+                the worst of the weather off our shoulders. Ellas struck a
+                match, and for a moment the small flame made the whole
+                mountain feel close enough to hold. We shared the last of the
+                tea and watched the storm gather in the valley below.
+            </p>
+
+            <p>
+                “Tomorrow,” he said, “we will see the other side.”
+            </p>
+
+            <p>
+                There was no triumph in his voice. The mountain did not belong
+                to us because we had climbed it. It had simply allowed us to
+                pass, and the distinction mattered. I pulled my blanket tighter
+                and listened as the first snow touched the stone like a
+                thousand quiet fingers.
+            </p>
+
         </div>
 
-        <div class="content-page" data-page="4">
-            <div class="chapter-kicker">Dawn</div>
-            <h2>Where the path ends</h2>
-            <p>Morning arrived without ceremony. The clouds lifted slowly, revealing a valley filled with light. For the first time in days, I could see beyond the next ridge. The path was still there, narrow and pale, leading down toward a line of dark forests and a river that caught the sun.</p>
-            <p>We packed in silence. Some journeys change the destination; others change the person who arrives. As we began the descent, I understood that the mountain had offered no answers. It had offered something better: the space to hear my own questions clearly.</p>
+
+        <!-- PAGE 4 -->
+        <div class="content-page"
+             data-page="4">
+
+            <div class="chapter-kicker">
+                Dawn
+            </div>
+
+            <h2>
+                Where the path ends
+            </h2>
+
+            <p>
+                Morning arrived without ceremony. The clouds lifted slowly,
+                revealing a valley filled with light. For the first time in
+                days, I could see beyond the next ridge. The path was still
+                there, narrow and pale, leading down toward a line of dark
+                forests and a river that caught the sun.
+            </p>
+
+            <p>
+                We packed in silence. Some journeys change the destination;
+                others change the person who arrives. As we began the descent,
+                I understood that the mountain had offered no answers. It had
+                offered something better: the space to hear my own questions
+                clearly.
+            </p>
+
         </div>
+
     </article>
-    <section id="bookStage" class="book-stage" hidden>
-        <canvas id="pdfCanvas" aria-label="Current book page"></canvas>
+
+
+    <!-- PDF AREA - KEPT FOR YOUR EXISTING DESIGN -->
+    <section id="bookStage"
+             class="book-stage"
+             hidden>
+
+        <canvas id="pdfCanvas"
+                aria-label="Current book page">
+        </canvas>
+
     </section>
+
 </main>
 
+
+<!-- READER CONTROLS -->
 <footer class="reader-controls">
-    <button id="previousPage" type="button"><i class="fa-solid fa-chevron-left"></i><span>Previous</span></button>
-    <label>Page <input id="pageNumber" type="number" min="1" value="1"> of <span id="pageCount">4</span></label>
-    <button id="nextPage" type="button"><span>Next</span><i class="fa-solid fa-chevron-right"></i></button>
-    <span id="progressText">Page 1 of 4</span>
+
+    <button id="previousPage"
+            type="button">
+
+        <i class="fa-solid fa-chevron-left"></i>
+
+        <span>
+            Previous
+        </span>
+
+    </button>
+
+
+    <label>
+
+        Page
+
+        <input id="pageNumber"
+               type="number"
+               min="1"
+               value="1">
+
+        of
+
+        <span id="pageCount">
+            4
+        </span>
+
+    </label>
+
+
+    <button id="nextPage"
+            type="button">
+
+        <span>
+            Next
+        </span>
+
+        <i class="fa-solid fa-chevron-right"></i>
+
+    </button>
+
+
+    <span id="progressText">
+        Page 1 of 4
+    </span>
+
 </footer>
 
+
 <script th:src="@{/js/reader.js}"></script>
+
 </body>
+
 </html>

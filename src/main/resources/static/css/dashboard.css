@@ -37,103 +37,62 @@ button {
 }
 
 
-/* ================= HEADER ================= */
+/* HEADER */
 
 .header {
-    height: 72px;
-    background: #fcf9f8;
-    border-bottom: 1px solid #e5ded9;
+    border-bottom: 1px solid #ddd4c0;
+    padding: 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background-color: #faf6ee;
 }
 
 .header-inner {
-    max-width: 1250px;
-    height: 100%;
-    margin: auto;
-    padding: 0 25px;
-
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 40px;
     display: flex;
     align-items: center;
-    gap: 35px;
+    justify-content: space-between;
 }
 
 .logo {
-    font-family: "Playfair Display", serif;
-    font-size: 22px;
-    font-weight: 700;
-    color: var(--forest);
-    white-space: nowrap;
-}
-
-.logo span {
-    color: var(--gold);
-}
-
-.nav {
-    display: flex;
-    align-items: center;
-    gap: 26px;
-    flex: 1;
-}
-
-.nav a {
-    font-size: 13px;
-    color: #5f5a56;
-    padding: 25px 0 22px;
-    white-space: nowrap;
-}
-
-.nav a:hover,
-.nav a.active {
-    color: var(--forest);
-}
-
-.nav a.active {
-    border-bottom: 2px solid var(--forest);
+    font-family: 'Fraunces', serif;
+    font-size: 20px;
     font-weight: 600;
 }
 
-.user-area {
+.nav-links {
     display: flex;
-    align-items: center;
-    gap: 10px;
+    gap: 30px;
 }
 
-.notification {
-    color: #55504c;
-    margin-right: 8px;
+.nav-links a {
+    font-size: 13px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #55503f;
 }
 
-.avatar {
+.nav-links a:hover {
+    color: #201d18;
+}
+
+.nav-active {
+    color: #201d18;
+    border-bottom: 1px solid #201d18;
+    padding-bottom: 5px;
+}
+
+.profile-icon {
     width: 34px;
     height: 34px;
-
     border-radius: 50%;
-    background: var(--forest);
-    color: white;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    font-size: 11px;
-    font-weight: 600;
+    border: 1px solid #ddd4c0;
+    text-align: center;
+    line-height: 34px;
 }
-
-.user-info {
-    display: flex;
-    flex-direction: column;
-    line-height: 1.3;
-}
-
-.user-info strong {
-    font-size: 12px;
-}
-
-.user-info small {
-    color: #77716c;
-    font-size: 10px;
-}
-
 
 /* ================= CONTAINER ================= */
 
@@ -1268,6 +1227,232 @@ blockquote {
 
 .footer-links a:hover {
     color: #fff;
+}
+
+/* =========================================================
+   REAL RECOMMENDATIONS
+   KEEP ORIGINAL READORA DASHBOARD DESIGN
+   ========================================================= */
+
+.recommendations {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+    align-items: start;
+}
+
+.recommend.card {
+    min-width: 0;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.recommend.card:hover {
+    transform: translateY(-2px);
+    transition: transform .18s ease;
+}
+
+
+/* BOOK COVER */
+
+.recommend-cover {
+    position: relative;
+    width: 100%;
+    height: 270px;
+
+    overflow: hidden;
+    border-radius: 6px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+
+    padding: 20px;
+
+    margin-bottom: 12px;
+}
+
+
+/*
+ * REAL DATABASE BOOK COVER
+ */
+.recommend-cover img {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    border-radius: 6px;
+}
+
+
+/*
+ * Keep placeholder covers looking like
+ * the original hardcoded design.
+ */
+.recommend-cover.light {
+    background: #f2f1ef;
+}
+
+.recommend-cover.black {
+    background: #1e1c1b;
+    color: white;
+}
+
+
+/* BOOK INFORMATION */
+
+.recommend > h3 {
+    font-family: "Playfair Display", serif;
+    font-size: 16px;
+    line-height: 1.35;
+
+    margin: 7px 0 4px;
+
+    color: var(--ink);
+}
+
+.recommend > p {
+    color: #77716c;
+    font-size: 11px;
+
+    margin: 0;
+}
+
+
+/* MATCH / PERSONALIZATION LABEL */
+
+.recommend .match {
+    display: inline-block;
+
+    color: #277147;
+    background: #eaf5ed;
+
+    padding: 3px 6px;
+    border-radius: 4px;
+
+    font-size: 9px;
+    font-weight: 600;
+
+    margin-bottom: 2px;
+}
+
+.recommend .match span {
+    color: #999;
+    margin-left: 5px;
+    font-weight: 400;
+}
+
+
+/* FOOTER */
+
+.recommend .book-footer {
+    border-top: 1px solid var(--border);
+
+    margin-top: 12px;
+    padding-top: 10px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    gap: 10px;
+}
+
+.recommend .book-footer strong {
+    font-size: 11px;
+    color: var(--ink);
+}
+
+.recommend .book-footer button {
+    border: none;
+    background: transparent;
+
+    padding: 0;
+
+    color: var(--forest);
+
+    font-size: 11px;
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+.recommend .book-footer button:hover {
+    text-decoration: underline;
+}
+
+
+/* =========================================================
+   MOOD BUTTONS
+   ========================================================= */
+
+.moods {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.moods .mood {
+    border: 1px solid #ded4c4;
+
+    border-radius: 20px;
+
+    padding: 8px 14px;
+
+    background: #eee9df;
+
+    color: #574f47;
+
+    cursor: pointer;
+
+    transition:
+            background .18s ease,
+            color .18s ease,
+            border-color .18s ease,
+            transform .18s ease;
+}
+
+.moods .mood:hover {
+    transform: translateY(-1px);
+}
+
+.moods .mood.active {
+    background: var(--forest);
+    border-color: var(--forest);
+    color: #fff;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+    .recommendations {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+}
+
+
+@media (max-width: 600px) {
+
+    .recommendations {
+        grid-template-columns: 1fr;
+    }
+
+    .recommend-cover {
+        height: 320px;
+    }
+
 }
 
 @media (max-width: 1000px) {

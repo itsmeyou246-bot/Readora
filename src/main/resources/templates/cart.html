@@ -9,8 +9,7 @@
 	<link rel="stylesheet" th:href="@{/css/cart.css}">
 </head>
 <body>
-	<th:block th:replace="~{fragments/chrome :: header}"></th:block>
-	<header class="site-header legacy-chrome-header"><div class="header-inner"><a class="logo" th:href="@{/index}">READORA</a><nav><a th:href="@{/index}">Discover</a><a th:href="@{/Book}">Books</a><a th:href="@{/library}">My Library</a><a class="cart-link" th:href="@{/cart}"><i class="fa-solid fa-cart-shopping"></i> Cart <span data-cart-count hidden>0</span></a></nav></div></header>
+	<header th:replace="~{fragments/header :: readerHeader('books')}"></header>
 	<main class="page-shell"><div class="eyebrow">YOUR CART</div><h1>Your Cart</h1><div id="cartContent" class="cart-layout"></div></main>
 	<script th:src="@{/js/cart-utils.js}"></script>
 	<script th:src="@{/js/cart.js}"></script>

@@ -7,7 +7,7 @@
     <title>READORA Dashboard</title>
 
     <link rel="stylesheet"
-            href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap">
+          href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap">
 
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -17,29 +17,8 @@
 
 
 <!-- ================= HEADER ================= -->
+<header th:replace="~{fragments/header :: readerHeader('dashboard')}"></header>
 
-<th:block th:replace="~{fragments/chrome :: header}"></th:block>
-<header class="header legacy-chrome-header">
-    <div class="header-inner">
-
-        <a class="logo" th:href="@{/index}">READORA</a>
-
-        <nav class="nav-links">
-            <a class="nav-active" th:href="@{/dashboard}">Dashboard</a>
-            <a th:href="@{/index}">Discover</a>
-            <a th:href="@{/Book}">Books</a>
-            <a th:href="@{/newspapers}">Newspapers</a>
-            <a th:href="@{/magazines}">Magazines</a>
-            <a th:href="@{/read-nepal}">Read Nepal</a>
-            <a th:href="@{/library}">My Library</a>
-        </nav>
-
-        <div class="profile-icon" aria-label="Laxmi Sapkota profile">
-            <i class="fa-solid fa-user"></i>
-        </div>
-
-    </div>
-</header>
 
 
 <!-- ================= MAIN ================= -->
@@ -83,10 +62,10 @@
         </div>
 
         <div class="location">
-            <b>Laxmi Sapkota</b>
+            <b id="userDisplayName">Reader</b>
             <span>·</span>
-            <strong>Premium</strong>
-            <small>Kathmandu (NPT)</small>
+            <strong id="userRoleBadge">Reader</strong>
+            <small id="userLocation">Kathmandu (NPT)</small>
         </div>
 
     </div>
@@ -99,39 +78,37 @@
         <div class="welcome">
 
             <div>
-                <div class="session">
+                <div class="session" id="activeSessionHeader">
                     ACTIVE SESSION
                     <span>•</span>
-                    Friday, March 2026
+                    <span id="sessionDate">Today</span>
                     <span>•</span>
-                    <b>Daily Goal Met (78m)</b>
+                    <b id="sessionGoalStatus">Daily Reading Active</b>
                 </div>
 
-                <h1>
-                    Good evening,
-                    <i>Laxmi</i>.
-                    Continue your reading journey.
+                <h1 id="welcomeGreeting">
+                        <span id="timeGreeting"></span>,
+                        <em id="userFirstName">Reader</em>.
+                        Continue your reading journey.
                 </h1>
 
-                <p>
-                    You have completed 3 books this month.
-                    Your intellectual immersion is pacing 24%
-                    ahead of schedule.
+                <p id="welcomeSummary">
+                    Track your reading progress, explore your library, and immerse in curated intellectual works.
                 </p>
             </div>
 
             <div class="welcome-buttons">
-                <button class="primary">
+                <button class="primary" id="welcomeContinueBtn">
                     <i class="fa-solid fa-play"></i>
                     Continue Reading
                 </button>
 
-                <button>
+                <button onclick="window.location.href='/library'">
                     <i class="fa-solid fa-book"></i>
                     My Library
                 </button>
 
-                <button>
+                <button onclick="window.location.href='/bookmarks'">
                     <i class="fa-solid fa-bookmark"></i>
                     Bookmarks
                 </button>
@@ -150,10 +127,10 @@
                     <i class="fa-solid fa-book"></i>
                 </div>
 
-                <strong>24</strong>
-                <span>/ 32 target</span>
+                <strong id="statBooksRead">0</strong>
+                <span id="statBooksTarget">/ 50 target</span>
 
-                <p>75% of yearly quota</p>
+                <p id="statBooksQuota">0% of yearly goal</p>
             </div>
 
 
@@ -163,10 +140,10 @@
                     <i class="fa-solid fa-hourglass-half"></i>
                 </div>
 
-                <strong>3</strong>
+                <strong id="statInProgress">0</strong>
                 <span>active volumes</span>
 
-                <p>Avg 68% progress</p>
+                <p id="statInProgressSub">Current reading</p>
             </div>
 
 
@@ -176,9 +153,9 @@
                     <i class="fa-solid fa-clock"></i>
                 </div>
 
-                <strong>18h 42m</strong>
+                <strong id="statReadingTime">0m</strong>
 
-                <p>Recorded this month</p>
+                <p>Recorded to date</p>
             </div>
 
 
@@ -188,10 +165,10 @@
                     <i class="fa-solid fa-fire"></i>
                 </div>
 
-                <strong class="green">12</strong>
+                <strong class="green" id="statReadingStreak">0</strong>
                 <span>days active</span>
 
-                <p>Personal best 42 days</p>
+                <p id="statStreakBest">Daily reading streak</p>
             </div>
 
         </div>
@@ -210,77 +187,75 @@
                 Continue Reading
             </h2>
 
-            <span>3 works in active memory</span>
+            <span id="continueSubTitle">0 works in active memory</span>
         </div>
 
 
         <div class="reading-card card">
 
-            <div class="main-book">
+            <div class="main-book" id="mainBookContainer">
 
                 <!-- Book Cover -->
 
-                <div class="book-cover">
+                <div class="book-cover" id="mainBookCover">
 
-                    <small>READORA EDITION</small>
+                    <small id="mainBookEdition">READORA EDITION</small>
 
                     <div class="book-middle">
-                        <i class="fa-solid fa-mountain"></i>
+                        <i class="fa-solid fa-book-open" id="mainBookIcon"></i>
 
-                        <h3>The Mountain Path</h3>
+                        <h3 id="mainBookTitle">No active book</h3>
 
-                        <em>Tenzing Norbu</em>
+                        <em id="mainBookAuthor">Unknown Author</em>
                     </div>
 
-                    <small>Chapter 8: The Ascent</small>
+                    <small id="mainBookChapter">Current progress</small>
 
                 </div>
 
 
                 <!-- Book information -->
 
-                <div class="book-details">
+                <div class="book-details" id="mainBookDetails">
 
-                    <div class="category">
-                        HIMALAYAN MEMOIRS
+                    <div class="category" id="mainBookCategory">
+                        GENERAL
                         <span>•</span>
-                        Last opened 2h ago
+                        Last opened recently
                     </div>
 
-                    <h3>The Mountain Path</h3>
+                    <h3 id="mainBookDetailsTitle">No active book</h3>
 
-                    <em>
-                        By Tenzing Norbu · Himalayan Memoirs, 2024
+                    <em id="mainBookDetailsMeta">
+                        Pick a book from the catalog to start reading
                     </em>
 
-                    <blockquote>
-                        "The air grew noticeably thinner as we passed
-                        the tree line. In this barren landscape,
-                        only the essential remained..."
+                    <blockquote id="mainBookQuote">
+                        "A reader lives a thousand lives before he dies."
                     </blockquote>
 
-                    <div class="progress-info">
-                        <span>Chapter 8 of 12 · Page 124 of 480</span>
-                        <b>68% completed</b>
+                    <div class="progress-info" id="mainBookProgressInfo">
+                        <span id="mainBookPageText">Page 0 of 0</span>
+                        <b id="mainBookPercentText">0% completed</b>
                     </div>
 
                     <div class="progress">
-                        <div style="width:68%"></div>
+                        <div id="mainBookProgressBar" style="width:0%"></div>
                     </div>
 
                     <div class="buttons">
 
-                        <button class="primary">
+                        <button class="primary" id="mainBookContinueBtn">
                             <i class="fa-solid fa-play"></i>
                             Continue Reading
                         </button>
 
-                        <button>
+                        <button id="mainBookNotesBtn" onclick="window.location.href='/notes'">
                             <i class="fa-solid fa-highlighter"></i>
-                            14 Notes
+                            <span id="mainBookNotesCount">0 Notes</span>
                         </button>
 
-                        <button class="more">...</button>
+                        <button class="more" onclick="window.location.href='/library'">...</button>
 
                     </div>
 
@@ -289,51 +264,10 @@
             </div>
 
 
-            <!-- Other books -->
+            <!-- Other books (filled dynamically by loadOtherBooks()) -->
 
-            <div class="other-books">
-
-                <div class="small-book">
-
-                    <div class="mini-cover">RC</div>
-
-                    <div class="small-info">
-                        <strong>The Silent Spring</strong>
-                        <small>Rachel Carson · Ch. 5</small>
-
-                        <div class="mini-progress">
-                            <div style="width:42%"></div>
-                        </div>
-                    </div>
-
-                    <div class="percentage">
-                        42%
-                        <small>Resume</small>
-                    </div>
-
-                </div>
-
-
-                <div class="small-book">
-
-                    <div class="mini-cover dark">HS</div>
-
-                    <div class="small-info">
-                        <strong>Structures of Light</strong>
-                        <small>Hiroshi Sugimoto · Ch. 2</small>
-
-                        <div class="mini-progress gold">
-                            <div style="width:18%"></div>
-                        </div>
-                    </div>
-
-                    <div class="percentage">
-                        18%
-                        <small>Resume</small>
-                    </div>
-
-                </div>
-
+            <div class="other-books" id="otherBooksList">
+                <p style="color:#888;padding:10px 0;">Loading your other in-progress books...</p>
             </div>
 
         </div>
@@ -358,24 +292,23 @@
             </div>
 
             <div class="goal-number">
-                <strong>32</strong>
-                <span>/ 50 books</span>
+                <strong id="goalBooksCompleted">0</strong>
+                <span id="goalTarget">/ 50 books</span>
 
-                <b>64% Completed</b>
+                <b id="goalPercent">0% Completed</b>
             </div>
 
             <div class="progress">
-                <div style="width:64%"></div>
+                <div id="goalProgressBar" style="width:0%"></div>
             </div>
 
-            <p>
-                18 books remaining to fulfill your 2026
-                intellectual reading pledge.
+            <p id="goalRemainingText">
+                50 books remaining to fulfill your 2026 intellectual reading pledge.
             </p>
 
             <div class="goal-bottom">
-                <span>This Month: <b>4 books</b></span>
-                <span>Last Month: <b>3 books</b></span>
+                <span>In Progress: <b id="goalThisMonth">0 books</b></span>
+                <span>Completed: <b id="goalLastMonth">0 books</b></span>
             </div>
 
         </div>
@@ -391,24 +324,24 @@
                     Reading Activity
                 </h3>
 
-                <span>Avg 45m / day</span>
+                <span id="activityAvg">This Week</span>
             </div>
 
-            <div class="chart">
+            <div class="chart" id="activityChart">
 
-                <div><i style="height:48%"></i><span>M</span></div>
-                <div><i style="height:65%"></i><span>T</span></div>
-                <div><i style="height:35%"></i><span>W</span></div>
-                <div><i style="height:60%"></i><span>T</span></div>
-                <div><i style="height:80%"></i><span>F</span></div>
-                <div><i class="gold-bar" style="height:100%"></i><span>S</span></div>
-                <div><i class="light-bar" style="height:25%"></i><span>S</span></div>
+                <div><i style="height:5%"></i><span>M</span></div>
+                <div><i style="height:5%"></i><span>T</span></div>
+                <div><i style="height:5%"></i><span>W</span></div>
+                <div><i style="height:5%"></i><span>T</span></div>
+                <div><i style="height:5%"></i><span>F</span></div>
+                <div><i style="height:5%"></i><span>S</span></div>
+                <div><i style="height:5%"></i><span>S</span></div>
 
             </div>
 
             <div class="chart-footer">
-                <span>Peak reading: <b>Saturday (78 min)</b></span>
-                <strong>Weekly target on track</strong>
+                <span id="activityPeak">Peak reading: <b>No activity yet</b></span>
+                <strong id="activityStatus">Keep reading daily</strong>
             </div>
 
         </div>
@@ -479,119 +412,22 @@
                 Recommended For You
             </h2>
 
-            <a href="#">Browse catalog →</a>
+            <a th:href="@{/Book}">
+                Browse catalog
+                <i class="fa-solid fa-arrow-right"></i>
+            </a>
 
         </div>
 
 
-        <div class="recommendations">
+        <div class="recommendations" id="recommendationsContainer">
 
-
-            <!-- Book 1 -->
-
-            <div class="recommend card">
-
-                <div class="recommend-cover light">
-
-                    <i class="fa-solid fa-feather-pointed"></i>
-
-                    <small>PHILOSOPHY</small>
-
-                    <h3>On Clarity</h3>
-
-                    <em>John Berger</em>
-
-                </div>
-
-                <div class="match">
-                    96% AI Match
-                    <span>3h 10m</span>
-                </div>
-
-                <h3>On Clarity</h3>
-
-                <p>
-                    Because you read Philosophy & Aesthetics.
-                </p>
-
-                <div class="book-footer">
-                    <strong>Rs. 420</strong>
-                    <button>Read Sample →</button>
-                </div>
-
-            </div>
-
-
-            <!-- Book 2 -->
-
-            <div class="recommend card">
-
-                <div class="recommend-cover light">
-
-                    <i class="fa-solid fa-mountain-sun"></i>
-
-                    <small>NEPALI FICTION</small>
-
-                    <h3>Seto Dharti</h3>
-
-                    <p>सेतो धरती</p>
-
-                    <em>Amar Neupane</em>
-
-                </div>
-
-                <div class="match">
-                    98% AI Match
-                    <span>6h 15m</span>
-                </div>
-
-                <h3>Seto Dharti (सेतो धरती)</h3>
-
-                <p>
-                    Modern Nepali classic depicting social courage.
-                </p>
-
-                <div class="book-footer">
-                    <strong>Rs. 499</strong>
-                    <button>Unlock →</button>
-                </div>
-
-            </div>
-
-
-            <!-- Book 3 -->
-
-            <div class="recommend card">
-
-                <div class="recommend-cover black">
-
-                    <i class="fa-solid fa-lines-leaning"></i>
-
-                    <small>MODERN CLASSIC</small>
-
-                    <h3>The Story of the New Name</h3>
-
-                    <em>Elena Ferrante</em>
-
-                </div>
-
-                <div class="match">
-                    92% AI Match
-                    <span>8h 40m</span>
-                </div>
-
-                <h3>The Story of the New Name</h3>
-
-                <p>
-                    Acclaimed Neapolitan literary journey.
-                </p>
-
-                <div class="book-footer">
-                    <strong>In Subscription</strong>
-                    <button>Read Now →</button>
-                </div>
-
-            </div>
+            <!-- Recommendation cards are rendered from live data by
+                 renderRecommendations(). Free books open straight in the
+                 reader; premium books route to the details page first. -->
+            <p class="recommend-loading" style="padding:20px;color:#888;">
+                Loading your recommendations...
+            </p>
 
         </div>
 
@@ -612,33 +448,14 @@
                     Recent Bookmarks
                 </h3>
 
-                <a href="#">View all</a>
+                <a th:href="@{/bookmarks}">
+                    View all
+                </a>
 
             </div>
 
-            <div class="note">
-
-                <small>The Silent Spring · Ch. 5 · p. 84</small>
-
-                <p>
-                    "Nature has its own balance,
-                    untouched by sudden machinery."
-                </p>
-
-                <a href="#">Jump to page →</a>
-
-            </div>
-
-            <div class="note">
-
-                <small>Muna Madan · मुनामदन · Ch. 2</small>
-
-                <p>
-                    "मानिस ठूलो दिलले हुन्छ जातले हुँदैन..."
-                </p>
-
-                <a href="#">Jump to page →</a>
-
+            <div id="bookmarksList">
+                <p style="color:#77716c;font-size:12px;padding:16px 0;">Loading bookmarks...</p>
             </div>
 
         </div>
@@ -653,34 +470,14 @@
                     Notes & Marginalia
                 </h3>
 
-                <a href="#">14 Notes</a>
+                <a th:href="@{/notes}">
+                    All Notes
+                </a>
 
             </div>
 
-            <div class="note">
-
-                <small>The Mountain Path · Ch. 4 · Yesterday</small>
-
-                <p>
-                    "The cacophony of the city we had left
-                    behind felt like a distant dream..."
-                </p>
-
-                <a href="#">Reflections on silence →</a>
-
-            </div>
-
-            <div class="note">
-
-                <small>Meditations · Book IV · 3 days ago</small>
-
-                <p>
-                    "The soul becomes dyed with the color
-                    of its thoughts."
-                </p>
-
-                <a href="#">#stoicism #mind →</a>
-
+            <div id="notesList">
+                <p style="color:#77716c;font-size:12px;padding:16px 0;">Loading notes...</p>
             </div>
 
         </div>
@@ -701,19 +498,17 @@
                 Subscription Status
             </h3>
 
-            <div class="status">
-                ● READORA Premium Active
+            <div id="subscriptionContent">
+                <div class="status">
+                    <i class="fa-solid fa-circle"></i>
+                    Loading status...
+                </div>
             </div>
 
-            <p>
-                Renews on <b>Sept 28, 2026</b>
-            </p>
-
-            <span class="tag">
-                Unlimited Cloud Access & AI Synthesis
-            </span>
-
-            <a href="#">Manage Subscription →</a>
+            <a th:href="@{/subscription}">
+                Manage Subscription
+                <i class="fa-solid fa-arrow-right"></i>
+            </a>
 
         </div>
 
@@ -727,20 +522,23 @@
 
             <div class="analytics-row">
                 <span>Pages Read:</span>
-                <b>2,840</b>
+                <b id="analyticsPagesRead">0</b>
             </div>
 
             <div class="analytics-row">
                 <span>Avg Session:</span>
-                <b>32 min</b>
+                <b id="analyticsAvgSession">0 min</b>
             </div>
 
             <div class="analytics-row">
                 <span>Top Category:</span>
-                <b>Philosophy & Fiction</b>
+                <b id="analyticsTopCategory">—</b>
             </div>
 
-            <a href="#">View Full Analytics →</a>
+            <a href="#goals">
+                View Goals
+                <i class="fa-solid fa-arrow-right"></i>
+            </a>
 
         </div>
 
@@ -752,19 +550,14 @@
                 Recent Purchases
             </h3>
 
-            <div class="purchase">
-                <b>The Silent Spring</b>
-                <strong>Rs. 450</strong>
-                <small>Aug 28 · Khalti Gateway</small>
+            <div id="purchasesList">
+                <p style="color:#77716c;font-size:12px;padding:16px 0;">Loading purchases...</p>
             </div>
 
-            <div class="purchase">
-                <b>Seto Dharti</b>
-                <strong>Rs. 499</strong>
-                <small>Jul 15 · eSewa Gateway</small>
-            </div>
-
-            <a href="#">Purchase History →</a>
+            <a th:href="@{/purchase-history}">
+                Purchase History
+                <i class="fa-solid fa-arrow-right"></i>
+            </a>
 
         </div>
 
@@ -783,26 +576,12 @@
                 Recent Notifications
             </h3>
 
-            <span>3 unread updates</span>
+            <span id="notificationsUnreadCount">0 unread updates</span>
 
         </div>
 
-        <div class="notification-row">
-            <span>●</span>
-            AI match: New essay uploaded in Philosophy & Aesthetics
-            <small>1h ago</small>
-        </div>
-
-        <div class="notification-row">
-            <span>●</span>
-            Weekly reading goal badge reached
-            <small>Yesterday</small>
-        </div>
-
-        <div class="notification-row">
-            <span>●</span>
-            Read Nepal Digitization: 12 manuscripts added
-            <small>2d ago</small>
+        <div id="notificationsList">
+            <p style="color:#77716c;font-size:12px;padding:12px 0;">Loading notifications...</p>
         </div>
 
     </section>
@@ -826,61 +605,14 @@
         </div>
     </div>
 </footer>
-<th:block th:replace="~{fragments/chrome :: footer}"></th:block>
+<script th:src="@{/js/cart-utils.js}"></script>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.min.js"></script>
 
-<script >// ================= MOOD BUTTONS =================
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 
-const moodButtons = document.querySelectorAll(".mood");
-const moodStatus = document.getElementById("moodStatus");
+<script src="/js/notifications-realtime.js"></script>
 
-moodButtons.forEach(function(button) {
-
-    button.addEventListener("click", function() {
-
-        // Remove active from all buttons
-        moodButtons.forEach(function(btn) {
-            btn.classList.remove("active");
-        });
-
-        // Add active to clicked button
-        this.classList.add("active");
-
-        // Change text
-        const mood = this.getAttribute("data-mood");
-
-        moodStatus.textContent = "Showing: " + mood;
-
-    });
-
-});
-
-
-// ================= SMOOTH SCROLL =================
-
-const links = document.querySelectorAll('a[href^="#"]');
-
-links.forEach(function(link) {
-
-    link.addEventListener("click", function(event) {
-
-        const target = document.querySelector(
-            this.getAttribute("href")
-        );
-
-        if (target) {
-
-            event.preventDefault();
-
-            target.scrollIntoView({
-                behavior: "smooth"
-            });
-
-        }
-
-    });
-
-});</script>
-
+<script th:src="@{/js/dashboard.js}"></script>
 </body>
 </html>

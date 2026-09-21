@@ -160,46 +160,7 @@
 <body>
 
 <!-- ================= HEADER ================= -->
-<header class="header">
-    <div class="header-inner">
-        <div class="logo-group">
-            <a class="logo" th:href="@{/admin-dashboard}">READORA</a>
-            <span class="admin-badge">ADMIN</span>
-        </div>
-
-        <nav class="nav-links">
-            <a th:href="@{/admin-dashboard}">Dashboard</a>
-            <a th:href="@{/admin/users}">Users</a>
-            <a th:href="@{/admin/books}">Content</a>
-            <a class="nav-active" th:href="@{/admin/authors}">Authors</a>
-            <a th:href="@{/admin/subscriptions}">Subscriptions</a>
-            <a th:href="@{/admin/analytics}">Analytics</a>
-        </nav>
-
-        <div class="header-search">
-            <i class="fa-solid fa-magnifying-glass"></i>
-            Search catalog, users, records.
-        </div>
-
-        <div class="header-actions">
-            <a class="reader-view-btn" th:href="@{/dashboard}">
-                <i class="fa-solid fa-book-open"></i>
-                Reader View
-            </a>
-            <span class="bell">
-                <i class="fa-solid fa-bell"></i>
-                <span class="dot"></span>
-            </span>
-            <div class="profile">
-                <div class="profile-avatar"><i class="fa-solid fa-user"></i></div>
-                <div class="profile-info">
-                    <strong>Admin</strong>
-                    <small>SUPER ADMIN</small>
-                </div>
-            </div>
-        </div>
-    </div>
-</header>
+<header th:replace="~{fragments/header :: adminHeader('authors')}"></header>
 
 <!-- ================= MAIN ================= -->
 <main class="container">

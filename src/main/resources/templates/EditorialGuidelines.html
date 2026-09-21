@@ -1,10 +1,450 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <title>Readora Studio · Editorial Guidelines</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" th:href="@{/css/EditorialGuidelines.css}">
+
+    <!-- Iconify icon runtime -->
+    <script src="https://code.iconify.design/3/3.1.1/iconify.min.js"></script>
 </head>
+
 <body>
-$END$
+
+<!-- ============ HEADER (shared with Author Dashboard) ============ -->
+<header th:replace="~{fragments/header :: authorHeader('guidelines')}"></header>
+
+
+<div class="container">
+
+    <!-- SUB NAV -->
+    <div class="subnav">
+
+        <a th:href="@{/AuthorDashboard}" class="subnav-tab">
+            Overview
+        </a>
+
+        <a th:href="@{/SubmissionandPipeline}" class="subnav-tab">
+            Manuscript Pipeline · <span th:text="${pipelineCount} ?: '5'">5</span>
+        </a>
+
+        <a th:href="@{/RoyalitiesandSales}" class="subnav-tab">
+            Royalties & Earnings
+        </a>
+
+        <a href="#reviews" class="subnav-tab">
+            Reader Reviews & Ratings
+        </a>
+
+        <a th:href="@{/ReaderAnalytics}" class="subnav-tab">
+            Publication Analytics
+        </a>
+
+        <a href="#profile" class="subnav-tab">
+            Author Profile & Bio
+        </a>
+
+        <span class="subnav-spacer"></span>
+
+        <!-- Download the guidelines as PDF -->
+        <a th:href="@{/EditorialGuidelines/download}" class="download-btn">
+            <span class="iconify" data-icon="mdi:tray-arrow-down" data-width="15"></span>
+            Download PDF Guidelines
+        </a>
+
+    </div>
+
+
+    <!-- BREADCRUMB -->
+    <div class="breadcrumb">
+        <a th:href="@{/AuthorDashboard}">Author Studio</a>
+        &nbsp;/&nbsp;
+        <span class="current">Editorial Guidelines</span>
+    </div>
+
+
+    <!-- PAGE HEAD -->
+    <section class="page-head">
+
+        <div>
+            <h1 class="page-title">
+                Manuscript & Editorial Guidelines
+            </h1>
+
+            <p class="page-subtitle">
+                Complete standards for author submissions, typography formatting,
+                copyright compliance, and peer appraisal on READORA.
+            </p>
+        </div>
+
+        <span class="status-badge">
+            <span class="iconify" data-icon="mdi:check-circle" data-width="15"></span>
+            <span th:text="${standardsLabel} ?: '2026 Revised Standards Active'">2026 Revised Standards Active</span>
+        </span>
+
+    </section>
+
+
+    <!-- PROTOCOL NOTICE -->
+    <div class="protocol-notice">
+        <span class="iconify notice-icon" data-icon="mdi:alert-outline" data-width="20"></span>
+        <p>
+            <strong>Important Submission Protocol:</strong> All manuscripts submitted to
+            READORA Studio undergo preliminary intake appraisal by the Senior Literary
+            Curator followed by peer evaluation. Ensure all citations and translated
+            excerpts comply with the copyright guidelines below before submitting.
+        </p>
+    </div>
+
+
+    <!-- MAIN GRID -->
+    <div class="guidelines-grid">
+
+        <!-- ============ MAIN COLUMN ============ -->
+        <div class="guidelines-main">
+
+            <!-- 1. MANUSCRIPT REQUIREMENTS -->
+            <div class="card">
+
+                <div class="section-head">
+                    <div class="section-num">1</div>
+                    <h3>Manuscript Requirements</h3>
+                </div>
+
+                <div class="section-body">
+                    <p>
+                        READORA accepts original monographs, anthologies, academic
+                        dissertations, and literary collections. Every submission must
+                        represent a complete work rather than fragmented chapter drafts.
+                    </p>
+
+                    <ul class="check-list">
+                        <li>
+                            <span class="iconify" data-icon="mdi:check" data-width="15"></span>
+                            <span><strong>Minimum Length:</strong> Works must exceed 60 standard pages (15,000 words) for full volumes, or 25 pages for poetry collections.</span>
+                        </li>
+                        <li>
+                            <span class="iconify" data-icon="mdi:check" data-width="15"></span>
+                            <span><strong>Supported Formats:</strong> Uploads must be compiled in clean PDF/A standard or validated EPUB 3.0.</span>
+                        </li>
+                        <li>
+                            <span class="iconify" data-icon="mdi:check" data-width="15"></span>
+                            <span><strong>Structure:</strong> Include a title page, frontispiece/epigraph (optional), structured table of contents, and numbered chapters.</span>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <!-- 2. FORMATTING GUIDELINES -->
+            <div class="card">
+
+                <div class="section-head">
+                    <div class="section-num">2</div>
+                    <h3>Formatting Guidelines</h3>
+                </div>
+
+                <div class="section-body">
+                    <p>
+                        To preserve aesthetic legibility in the READORA Reader interface,
+                        your digital file must follow baseline typographic consistency.
+                    </p>
+
+                    <div class="two-up">
+                        <div class="mini-box">
+                            <div class="mini-box-title">Typography & Body:</div>
+                            <p>Standard serif fonts (Georgia, Playfair, Garamond) at 11–12pt body text with 1.4–1.6 line height.</p>
+                        </div>
+                        <div class="mini-box">
+                            <div class="mini-box-title">Margins & Layout:</div>
+                            <p>Minimum 1-inch (2.54 cm) page borders with mirrored gutters for dual-page viewing modes.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- 3. LANGUAGE & QUALITY STANDARDS -->
+            <div class="card">
+
+                <div class="section-head">
+                    <div class="section-num">3</div>
+                    <h3>Language & Quality Standards</h3>
+                </div>
+
+                <div class="section-body">
+                    <p>
+                        Submissions in English, standard Nepali (Devanagari script), and
+                        authorized bilingual formats are accepted.
+                    </p>
+
+                    <ul class="dot-list">
+                        <li>
+                            <span class="dot"></span>
+                            <span><strong>Nepali Texts:</strong> Must use UTF-8 standard Unicode Devanagari fonts (Preeti or legacy non-Unicode fonts are strictly rejected).</span>
+                        </li>
+                        <li>
+                            <span class="dot"></span>
+                            <span><strong>Proofreading:</strong> Works must undergo thorough spelling and syntax proofing prior to stage-two editorial review.</span>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <!-- 4. COPYRIGHT & ORIGINALITY -->
+            <div class="card">
+
+                <div class="section-head">
+                    <div class="section-num">4</div>
+                    <h3>Copyright & Originality</h3>
+                </div>
+
+                <div class="section-body">
+                    <p>
+                        Authors retain 100% intellectual property rights. Submitting your
+                        work to READORA grants non-exclusive digital distribution licensing
+                        under Nepal Copyright Act 2059 and South Asian Berne Convention
+                        protocols.
+                    </p>
+
+                    <div class="note-box">
+                        Plagiarism detection scans are automatically executed across all
+                        uploaded PDFs. Works with uncredited third-party content will be
+                        flagged and rejected immediately.
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- 5. COVER IMAGE & METADATA STANDARDS -->
+            <div class="card">
+
+                <div class="section-head">
+                    <div class="section-num">5</div>
+                    <h3>Cover Image & Metadata Standards</h3>
+                </div>
+
+                <div class="section-body">
+                    <div class="two-up-plain">
+                        <div>
+                            <div class="plain-col-title">Cover Artwork Specifications:</div>
+                            <ul class="dot-list">
+                                <li><span class="dot"></span><span>Dimensions: 1600 x 2400 px (2:3 aspect ratio)</span></li>
+                                <li><span class="dot"></span><span>Color Profile: RGB / sRGB, min 300 DPI</span></li>
+                                <li><span class="dot"></span><span>File Format: High-quality JPG or PNG (&lt; 5MB)</span></li>
+                                <li><span class="dot"></span><span>Title & Author Name must match metadata exactly</span></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <div class="plain-col-title">Mandatory Metadata:</div>
+                            <ul class="dot-list">
+                                <li><span class="dot"></span><span>Exact book title and secondary subtitle</span></li>
+                                <li><span class="dot"></span><span>150–250 word curated synopsis / abstract</span></li>
+                                <li><span class="dot"></span><span>Category selection (e.g., Himalayan Memoirs, Philosophy)</span></li>
+                                <li><span class="dot"></span><span>Valid ISBN-10/13 or READORA Digital ID assignment</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- 6. EDITORIAL REVIEW & SIGNOFF PROCESS -->
+            <div class="card">
+
+                <div class="section-head">
+                    <div class="section-num">6</div>
+                    <h3>Editorial Review & Signoff Process</h3>
+                </div>
+
+                <div class="section-body">
+                    <p>Once submitted, your work progresses through 6 standardized review milestones:</p>
+
+                    <div class="step-grid" id="reviewSteps"></div>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ============ SIDEBAR ============ -->
+        <div class="guidelines-side">
+
+            <!-- BEFORE SUBMITTING -->
+            <div class="card">
+
+                <div class="side-title">
+                    <span class="iconify" data-icon="mdi:format-list-checks" data-width="18"></span>
+                    <h3>Before Submitting</h3>
+                </div>
+
+                <p class="side-desc">
+                    Verify each prerequisite item before triggering an editorial
+                    submission:
+                </p>
+
+                <div class="checklist" id="preflightChecklist"></div>
+
+                <button class="btn-primary-full" type="button">
+                    <span class="iconify" data-icon="mdi:cloud-upload-outline" data-width="16"></span>
+                    Go to Submit Manuscript
+                </button>
+
+                <button class="btn-outline-full" type="button">
+                    Save Checklist Progress
+                </button>
+
+            </div>
+
+            <!-- NEED EDITORIAL GUIDANCE -->
+            <div class="guidance-card">
+                <h4>Need Editorial Guidance?</h4>
+                <p>
+                    Have questions regarding ISBN assignment, bilingual formatting, or
+                    royalty tier placement?
+                </p>
+                <a th:href="@{/contact-curator}" class="guidance-link">
+                    Contact Senior Curator Desk
+                    <span class="iconify" data-icon="mdi:arrow-right" data-width="14"></span>
+                </a>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ============ FOOTER (shared with Author Dashboard) ============ -->
+<footer class="footer">
+
+    <div class="footer-inner">
+
+        <div>
+
+            <div class="footer-logo">
+                READORA
+            </div>
+
+            <div class="footer-copyright" style="margin-top:4px;">
+                Author Studio v2.4 (Advanced Java / Spring Boot Architecture)
+            </div>
+
+        </div>
+
+
+        <div class="footer-links">
+
+            <a th:href="@{/EditorialGuidelines}">
+                Editorial Guidelines
+            </a>
+
+            <!-- Existing purchase page -->
+            <a th:href="@{/purchase-history}">
+                Author Payout Terms
+            </a>
+
+            <!-- Search page reused as API reference entry point -->
+            <a th:href="@{/search}">
+                Developer REST APIs
+            </a>
+
+            <!-- Support -->
+            <a th:href="@{/support}">
+                Support
+            </a>
+
+        </div>
+
+
+        <div class="footer-copyright">
+            © 2026 READORA Publishing Inc. All rights reserved.
+        </div>
+
+    </div>
+
+</footer>
+
+
+<script>
+    function getLoggedInUser() {
+        try {
+            return JSON.parse(localStorage.getItem("readoraUser") || "null");
+        } catch (e) {
+            return null;
+        }
+    }
+
+    function getAuthHeaders() {
+        var headers = { "Content-Type": "application/json" };
+        try {
+            var user = getLoggedInUser();
+            var token = user && (user.token || user.jwt);
+            if (token) headers["Authorization"] = "Bearer " + token;
+        } catch (e) { /* cookie auth */ }
+        return headers;
+    }
+
+    function renderReviewSteps(reviewSteps) {
+        var reviewStepsEl = document.getElementById("reviewSteps");
+        reviewStepsEl.innerHTML = "";
+        for (var i = 0; i < reviewSteps.length; i++) {
+            var s = reviewSteps[i];
+            var div = document.createElement("div");
+            div.className = "step-box";
+            div.innerHTML =
+                '<div class="step-box-title">' + s.title + '</div>' +
+                '<p>' + s.desc + '</p>';
+            reviewStepsEl.appendChild(div);
+        }
+    }
+
+    function renderPreflight(preflightItems) {
+        var checklistEl = document.getElementById("preflightChecklist");
+        checklistEl.innerHTML = "";
+        for (var i = 0; i < preflightItems.length; i++) {
+            var item = preflightItems[i];
+            var div = document.createElement("div");
+            div.className = "checklist-item" + (item.checked ? " checked" : "");
+            var icon = item.checked ? "mdi:checkbox-marked" : "mdi:checkbox-blank-outline";
+            div.innerHTML =
+                '<span class="iconify" data-icon="' + icon + '" data-width="17"></span>' +
+                '<span class="label">' + item.label + '</span>';
+            checklistEl.appendChild(div);
+        }
+    }
+
+    async function loadGuidelines() {
+        try {
+            var resp = await fetch("/api/editorial-guidelines", {
+                method: "GET",
+                headers: getAuthHeaders(),
+                credentials: "same-origin"
+            });
+            if (resp.status === 401 || resp.status === 403) {
+                document.getElementById("reviewSteps").innerHTML =
+                    '<div style="padding:12px;color:#948d78;">Please <a href="/login.html">log in</a> as an author to load guidelines.</div>';
+                return;
+            }
+            if (!resp.ok) throw new Error("Failed");
+            var data = await resp.json();
+            renderReviewSteps(data.reviewSteps || []);
+            renderPreflight(data.preflightItems || []);
+        } catch (e) {
+            console.error(e);
+            // Keep page usable: fallback empty message
+            document.getElementById("reviewSteps").innerHTML =
+                '<div style="padding:12px;color:#a33b3b;">Could not load editorial guidelines from server.</div>';
+        }
+    }
+
+    loadGuidelines();
+</script>
+
 </body>
 </html>

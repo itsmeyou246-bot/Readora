@@ -1,10 +1,3881 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Analytics · READORA Admin</title>
+
+
+    <!-- Google Fonts -->
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap">
+
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+
+    <style>
+        /* =========================================================
+   READORA ADMIN ANALYTICS
+   Same visual language as Admin Books
+========================================================= */
+
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        :root {
+
+            --forest: #1b3022;
+
+            --dark: #122017;
+
+            --gold: #c5a059;
+
+            --ivory: #fcf9f8;
+
+            --sand: #f6f3f2;
+
+            --border: #e5ded9;
+
+            --text: #211f1d;
+
+            --muted: #706b67;
+
+            --green-soft: #e7f2e9;
+
+            --red: #c0503f;
+
+        }
+
+
+        body {
+
+            background: var(--ivory);
+
+            color: var(--text);
+
+            font-family:
+                    "Plus Jakarta Sans",
+                    sans-serif;
+
+            font-size: 14px;
+
+            line-height: 1.5;
+
+            min-height: 100vh;
+
+        }
+
+
+        a {
+
+            color: inherit;
+
+            text-decoration: none;
+
+        }
+
+
+        button,
+        input {
+
+            font-family: inherit;
+
+        }
+
+
+        /* =========================================================
+           HEADER
+        ========================================================= */
+
+        .header {
+
+            height: 64px;
+
+            background: var(--ivory);
+
+            border-bottom:
+                    1px solid var(--border);
+
+        }
+
+
+        .header-inner {
+
+            max-width: 1400px;
+
+            height: 100%;
+
+            margin: auto;
+
+            padding: 0 28px;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 32px;
+
+        }
+
+
+        .logo-group {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            flex-shrink: 0;
+
+        }
+
+
+        .logo {
+
+            font-family:
+                    "Playfair Display",
+                    serif;
+
+            font-size: 19px;
+
+            font-weight: 700;
+
+            color: var(--forest);
+
+            letter-spacing: .3px;
+
+        }
+
+
+        .admin-badge {
+
+            background: var(--forest);
+
+            color: white;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            letter-spacing: .5px;
+
+            padding: 4px 9px;
+
+            border-radius: 5px;
+
+        }
+
+
+        .nav-links {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 26px;
+
+            flex: 1;
+
+            height: 100%;
+
+        }
+
+
+        .nav-links a {
+
+            height: 100%;
+
+            display: flex;
+
+            align-items: center;
+
+            font-size: 13.5px;
+
+            color: var(--muted);
+
+            position: relative;
+
+        }
+
+
+        .nav-links a:hover {
+
+            color: var(--forest);
+
+        }
+
+
+        .nav-links a.active {
+
+            color: var(--forest);
+
+            font-weight: 600;
+
+        }
+
+
+        .nav-links a.active::after {
+
+            content: "";
+
+            position: absolute;
+
+            left: 0;
+
+            right: 0;
+
+            bottom: 0;
+
+            height: 2px;
+
+            background: var(--forest);
+
+        }
+
+
+        .header-search {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 9px;
+
+            background: var(--sand);
+
+            border: 1px solid var(--border);
+
+            border-radius: 8px;
+
+            padding: 9px 14px;
+
+            width: 260px;
+
+            color: var(--muted);
+
+            font-size: 12px;
+
+        }
+
+
+        .header-search input {
+
+            width: 100%;
+
+            border: 0;
+
+            outline: none;
+
+            background: transparent;
+
+            color: var(--text);
+
+            font-size: 12px;
+
+        }
+
+
+        .header-actions {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 14px;
+
+            flex-shrink: 0;
+
+        }
+
+
+        .reader-view-btn {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            background: var(--sand);
+
+            border: 1px solid var(--border);
+
+            border-radius: 8px;
+
+            padding: 9px 14px;
+
+            font-size: 12.5px;
+
+            font-weight: 600;
+
+            color: var(--text);
+
+            white-space: nowrap;
+
+        }
+
+
+        .reader-view-btn:hover {
+
+            background: white;
+
+        }
+
+
+        .bell {
+
+            position: relative;
+
+            color: var(--muted);
+
+            font-size: 15px;
+
+        }
+
+
+        .bell .dot {
+
+            position: absolute;
+
+            top: -3px;
+
+            right: -3px;
+
+            width: 7px;
+
+            height: 7px;
+
+            background: var(--red);
+
+            border-radius: 50%;
+
+        }
+
+
+        .profile {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+        }
+
+
+        .profile-avatar {
+
+            width: 34px;
+
+            height: 34px;
+
+            border-radius: 50%;
+
+            background: var(--forest);
+
+            color: white;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+        }
+
+
+        .profile-info {
+
+            line-height: 1.3;
+
+        }
+
+
+        .profile-info strong {
+
+            display: block;
+
+            font-size: 12.5px;
+
+        }
+
+
+        .profile-info small {
+
+            color: var(--muted);
+
+            font-size: 9.5px;
+
+            letter-spacing: .4px;
+
+        }
+
+
+        /* =========================================================
+           MAIN
+        ========================================================= */
+
+        .container {
+
+            max-width: 1400px;
+
+            margin: auto;
+
+            padding: 30px 28px 70px;
+
+        }
+
+
+        .page-head {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: flex-end;
+
+            gap: 20px;
+
+            margin-bottom: 28px;
+
+        }
+
+
+        .page-eyebrow {
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            letter-spacing: 1px;
+
+            color: var(--muted);
+
+            margin-bottom: 6px;
+
+        }
+
+
+        .page-head h1 {
+
+            font-family:
+                    "Playfair Display",
+                    serif;
+
+            font-size: 34px;
+
+            color: var(--dark);
+
+            margin-bottom: 6px;
+
+        }
+
+
+        .page-head p {
+
+            color: var(--muted);
+
+            font-size: 13.5px;
+
+        }
+
+
+        .page-actions {
+
+            display: flex;
+
+            gap: 10px;
+
+        }
+
+
+        .btn {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 8px;
+
+            padding: 10px 16px;
+
+            min-height: 40px;
+
+            border-radius: 8px;
+
+            font-size: 12px;
+
+            font-weight: 600;
+
+            border: 1px solid var(--border);
+
+            cursor: pointer;
+
+        }
+
+
+        .btn-ghost {
+
+            background: white;
+
+            color: var(--text);
+
+        }
+
+
+        .btn-ghost:hover {
+
+            background: var(--sand);
+
+        }
+
+
+        .btn-primary {
+
+            background: var(--forest);
+
+            border-color: var(--forest);
+
+            color: white;
+
+        }
+
+
+        /* =========================================================
+           STATS
+        ========================================================= */
+
+        .stats {
+
+            display: grid;
+
+            grid-template-columns:
+        repeat(4, 1fr);
+
+            gap: 16px;
+
+            margin-bottom: 20px;
+
+        }
+
+
+        .stat-card {
+
+            background: white;
+
+            border: 1px solid var(--border);
+
+            border-radius: 12px;
+
+            padding: 20px;
+
+            min-height: 150px;
+
+        }
+
+
+        .stat-top {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            font-size: 10.5px;
+
+            font-weight: 700;
+
+            letter-spacing: .6px;
+
+            color: var(--muted);
+
+            margin-bottom: 14px;
+
+        }
+
+
+        .stat-top i {
+
+            color: var(--gold);
+
+            font-size: 14px;
+
+        }
+
+
+        .stat-value {
+
+            font-family:
+                    "Playfair Display",
+                    serif;
+
+            font-size: 30px;
+
+            color: var(--dark);
+
+            margin-bottom: 8px;
+
+        }
+
+
+        .stat-sub {
+
+            font-size: 11.5px;
+
+            color: var(--muted);
+
+        }
+
+
+        /* =========================================================
+           MAIN ANALYTICS GRID
+        ========================================================= */
+
+        .analytics-grid {
+
+            display: grid;
+
+            grid-template-columns:
+        1.55fr 1fr;
+
+            gap: 20px;
+
+            margin-bottom: 20px;
+
+        }
+
+
+        .analytics-card {
+
+            background: white;
+
+            border: 1px solid var(--border);
+
+            border-radius: 12px;
+
+            padding: 22px;
+
+            min-width: 0;
+
+        }
+
+
+        .card-heading {
+
+            display: flex;
+
+            align-items: flex-start;
+
+            justify-content: space-between;
+
+            gap: 15px;
+
+            margin-bottom: 20px;
+
+        }
+
+
+        .card-heading h2 {
+
+            font-family:
+                    "Playfair Display",
+                    serif;
+
+            font-size: 21px;
+
+            color: var(--dark);
+
+            margin-bottom: 4px;
+
+        }
+
+
+        .card-heading p {
+
+            color: var(--muted);
+
+            font-size: 11.5px;
+
+        }
+
+
+        .card-icon {
+
+            width: 34px;
+
+            height: 34px;
+
+            flex-shrink: 0;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 8px;
+
+            background: var(--sand);
+
+            color: var(--forest);
+
+            font-size: 13px;
+
+        }
+
+
+        /* =========================================================
+           CHART
+        ========================================================= */
+
+        .chart-wrapper {
+
+            display: flex;
+
+            width: 100%;
+
+            min-height: 270px;
+
+        }
+
+
+        .chart-y-axis {
+
+            width: 45px;
+
+            padding: 10px 8px 45px 0;
+
+            display: flex;
+
+            flex-direction: column;
+
+            justify-content: space-between;
+
+            text-align: right;
+
+            color: var(--muted);
+
+            font-size: 9px;
+
+        }
+
+
+        .chart-area {
+
+            flex: 1;
+
+            min-width: 0;
+
+            position: relative;
+
+        }
+
+
+        #activityChart {
+
+            display: block;
+
+            width: 100%;
+
+            height: 225px;
+
+            overflow: visible;
+
+        }
+
+
+        .chart-labels {
+
+            height: 35px;
+
+            display: flex;
+
+            align-items: flex-start;
+
+            justify-content: space-between;
+
+            gap: 5px;
+
+            border-top: 1px solid var(--border);
+
+            padding-top: 8px;
+
+            color: var(--muted);
+
+            font-size: 9px;
+
+        }
+
+
+        .chart-label {
+
+            text-align: center;
+
+            flex: 1;
+
+            min-width: 0;
+
+        }
+
+
+        .chart-label strong {
+
+            display: block;
+
+            color: var(--forest);
+
+            font-size: 9px;
+
+            margin-top: 2px;
+
+        }
+
+
+        .chart-empty {
+
+            min-height: 230px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            align-items: center;
+
+            justify-content: center;
+
+            color: var(--muted);
+
+            gap: 8px;
+
+            font-size: 11px;
+
+        }
+
+
+        .chart-empty i {
+
+            font-size: 24px;
+
+        }
+
+
+        /* =========================================================
+           DISTRIBUTION
+        ========================================================= */
+
+        .distribution-list {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 18px;
+
+        }
+
+
+        .distribution-item {
+
+            width: 100%;
+
+        }
+
+
+        .distribution-top {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 15px;
+
+            margin-bottom: 7px;
+
+        }
+
+
+        .distribution-name {
+
+            font-size: 12px;
+
+            font-weight: 600;
+
+        }
+
+
+        .distribution-value {
+
+            color: var(--muted);
+
+            font-size: 10.5px;
+
+            white-space: nowrap;
+
+        }
+
+
+        .distribution-track {
+
+            width: 100%;
+
+            height: 7px;
+
+            background: var(--sand);
+
+            border-radius: 10px;
+
+            overflow: hidden;
+
+        }
+
+
+        .distribution-fill {
+
+            height: 100%;
+
+            background: var(--forest);
+
+            border-radius: 10px;
+
+            transition: width .5s ease;
+
+        }
+
+
+        /* =========================================================
+           BOTTOM GRID
+        ========================================================= */
+
+        .bottom-grid {
+
+            display: grid;
+
+            grid-template-columns:
+        1fr 1fr;
+
+            gap: 20px;
+
+        }
+
+
+        /* =========================================================
+           POPULAR CONTENT
+        ========================================================= */
+
+        .content-list {
+
+            display: flex;
+
+            flex-direction: column;
+
+        }
+
+
+        .popular-item {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 15px;
+
+            padding: 14px 0;
+
+            border-bottom: 1px solid var(--border);
+
+        }
+
+
+        .popular-item:last-child {
+
+            border-bottom: 0;
+
+        }
+
+
+        .popular-left {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 13px;
+
+            min-width: 0;
+
+        }
+
+
+        .rank {
+
+            width: 30px;
+
+            font-family:
+                    "Playfair Display",
+                    serif;
+
+            color: var(--forest);
+
+            font-size: 16px;
+
+            font-weight: 700;
+
+        }
+
+
+        .popular-info {
+
+            min-width: 0;
+
+        }
+
+
+        .popular-title {
+
+            color: var(--dark);
+
+            font-size: 12.5px;
+
+            font-weight: 700;
+
+            white-space: nowrap;
+
+            overflow: hidden;
+
+            text-overflow: ellipsis;
+
+        }
+
+
+        .popular-meta {
+
+            margin-top: 3px;
+
+            color: var(--muted);
+
+            font-size: 10.5px;
+
+            white-space: nowrap;
+
+            overflow: hidden;
+
+            text-overflow: ellipsis;
+
+        }
+
+
+        .popular-right {
+
+            text-align: right;
+
+            flex-shrink: 0;
+
+        }
+
+
+        .readers {
+
+            color: var(--forest);
+
+            font-size: 10.5px;
+
+            font-weight: 700;
+
+        }
+
+
+        .rating {
+
+            margin-top: 3px;
+
+            color: var(--gold);
+
+            font-size: 10px;
+
+        }
+
+
+        .completion {
+
+            margin-top: 3px;
+
+            color: var(--muted);
+
+            font-size: 9.5px;
+
+        }
+
+
+        /* =========================================================
+           RECENT ACTIVITY
+        ========================================================= */
+
+        .activity-item {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 12px;
+
+            padding: 14px 0;
+
+            border-bottom: 1px solid var(--border);
+
+        }
+
+
+        .activity-item:last-child {
+
+            border-bottom: 0;
+
+        }
+
+
+        .activity-left {
+
+            display: flex;
+
+            align-items: flex-start;
+
+            gap: 12px;
+
+            min-width: 0;
+
+        }
+
+
+        .activity-icon {
+
+            width: 32px;
+
+            height: 32px;
+
+            flex-shrink: 0;
+
+            border-radius: 7px;
+
+            background: var(--sand);
+
+            color: var(--forest);
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 12px;
+
+        }
+
+
+        .activity-info {
+
+            min-width: 0;
+
+        }
+
+
+        .activity-text {
+
+            color: var(--dark);
+
+            font-size: 11.5px;
+
+            font-weight: 600;
+
+            overflow: hidden;
+
+            text-overflow: ellipsis;
+
+            white-space: nowrap;
+
+        }
+
+
+        .activity-subtext {
+
+            color: var(--muted);
+
+            font-size: 10px;
+
+            margin-top: 3px;
+
+        }
+
+
+        .activity-time {
+
+            color: var(--muted);
+
+            font-size: 9.5px;
+
+            white-space: nowrap;
+
+            flex-shrink: 0;
+
+        }
+
+
+        /* =========================================================
+           EMPTY
+        ========================================================= */
+
+        .empty-content {
+
+            min-height: 180px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            align-items: center;
+
+            justify-content: center;
+
+            color: var(--muted);
+
+            gap: 9px;
+
+            font-size: 11px;
+
+        }
+
+
+        .empty-content i {
+
+            font-size: 24px;
+
+            color: #aaa39e;
+
+        }
+
+
+        /* =========================================================
+           DATA NOTE
+        ========================================================= */
+
+        .data-note {
+
+            margin-top: 20px;
+
+            padding: 12px 15px;
+
+            background: var(--sand);
+
+            border: 1px solid var(--border);
+
+            border-radius: 8px;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 9px;
+
+            color: var(--muted);
+
+            font-size: 10px;
+
+        }
+
+
+        .data-note i {
+
+            color: var(--forest);
+
+        }
+
+
+        #lastUpdated {
+
+            margin-left: auto;
+
+            white-space: nowrap;
+
+        }
+
+
+        /* =========================================================
+           LOADING
+        ========================================================= */
+
+        .state-message {
+
+            min-height: 300px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 10px;
+
+            color: var(--muted);
+
+            font-size: 12px;
+
+        }
+
+
+        .loading-spinner {
+
+            width: 27px;
+
+            height: 27px;
+
+            border: 3px solid var(--border);
+
+            border-top-color: var(--forest);
+
+            border-radius: 50%;
+
+            animation:
+                    analyticsSpin .7s linear infinite;
+
+        }
+
+
+        @keyframes analyticsSpin {
+
+            to {
+                transform: rotate(360deg);
+            }
+
+        }
+
+
+        .error-state {
+
+            color: var(--red);
+
+        }
+
+
+        .error-state i {
+
+            font-size: 28px;
+
+        }
+
+
+        .error-state strong {
+
+            color: var(--dark);
+
+        }
+
+
+        .error-state span {
+
+            color: var(--muted);
+
+        }
+
+
+        .error-state .btn {
+
+            margin-top: 5px;
+
+        }
+
+
+        .hidden {
+
+            display: none !important;
+
+        }
+
+
+        /* =========================================================
+           REFRESH ANIMATION
+        ========================================================= */
+
+        .refreshing {
+
+            animation:
+                    analyticsSpin .7s linear infinite;
+
+        }
+
+
+        /* =========================================================
+           FOOTER
+        ========================================================= */
+
+        .footer {
+
+            background: var(--sand);
+
+            border-top:
+                    1px solid var(--border);
+
+        }
+
+
+        .footer-inner {
+
+            max-width: 1400px;
+
+            margin: auto;
+
+            padding: 25px 28px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+        }
+
+
+        .footer p {
+
+            color: var(--muted);
+
+            font-size: 10px;
+
+        }
+
+
+        /* =========================================================
+           RESPONSIVE
+        ========================================================= */
+
+        @media (max-width: 1200px) {
+
+            .header-search {
+
+                display: none;
+
+            }
+
+            .nav-links {
+
+                gap: 18px;
+
+            }
+
+            .stats {
+
+                grid-template-columns:
+            repeat(2, 1fr);
+
+            }
+
+        }
+
+
+        @media (max-width: 1000px) {
+
+            .header {
+
+                height: auto;
+
+            }
+
+            .header-inner {
+
+                padding: 15px 20px;
+
+                flex-wrap: wrap;
+
+            }
+
+            .nav-links {
+
+                order: 3;
+
+                width: 100%;
+
+                height: 42px;
+
+                overflow-x: auto;
+
+            }
+
+            .nav-links a {
+
+                white-space: nowrap;
+
+            }
+
+            .analytics-grid {
+
+                grid-template-columns: 1fr;
+
+            }
+
+        }
+
+
+        @media (max-width: 700px) {
+
+            .container {
+
+                padding:
+                        25px 16px 50px;
+
+            }
+
+            .page-head {
+
+                align-items: flex-start;
+
+                flex-direction: column;
+
+            }
+
+            .page-actions {
+
+                width: 100%;
+
+            }
+
+            .page-actions .btn {
+
+                width: 100%;
+
+            }
+
+            .stats {
+
+                grid-template-columns: 1fr;
+
+            }
+
+            .bottom-grid {
+
+                grid-template-columns: 1fr;
+
+            }
+
+            .profile-info {
+
+                display: none;
+
+            }
+
+            .reader-view-btn {
+
+                display: none;
+
+            }
+
+            .header-actions {
+
+                margin-left: auto;
+
+            }
+
+            .chart-labels {
+
+                font-size: 8px;
+
+            }
+
+            .popular-right {
+
+                display: none;
+
+            }
+
+            .data-note {
+
+                align-items: flex-start;
+
+                flex-wrap: wrap;
+
+            }
+
+            #lastUpdated {
+
+                width: 100%;
+
+                margin-left: 0;
+
+            }
+
+        }
+    </style>
+
 </head>
+
+
 <body>
-$END$
+
+
+<!-- =========================================================
+     HEADER
+     SAME STYLE / STRUCTURE AS ADMIN BOOKS
+========================================================= -->
+
+<header th:replace="~{fragments/header :: adminHeader('analytics')}"></header>
+
+
+
+<!-- =========================================================
+     MAIN
+========================================================= -->
+
+<main class="container">
+
+
+    <!-- PAGE HEADER -->
+
+    <div class="page-head">
+
+        <div>
+
+            <div class="page-eyebrow">
+                PLATFORM INSIGHTS
+            </div>
+
+
+            <h1>
+                Analytics
+            </h1>
+
+
+            <p>
+                Understand reading activity, content usage
+                and platform engagement.
+            </p>
+
+        </div>
+
+
+        <div class="page-actions">
+
+            <button
+                    type="button"
+                    class="btn btn-ghost"
+                    id="refreshButton">
+
+                <i class="fa-solid fa-rotate-right"
+                   id="refreshIcon"></i>
+
+                Refresh
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         LOADING MESSAGE
+    ====================================================== -->
+
+    <div id="loadingState"
+         class="state-message">
+
+        <div class="loading-spinner"></div>
+
+        <span>
+            Loading analytics...
+        </span>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         ERROR MESSAGE
+    ====================================================== -->
+
+    <div id="errorState"
+         class="state-message error-state hidden">
+
+        <i class="fa-solid fa-circle-exclamation"></i>
+
+        <strong>
+            Analytics could not be loaded.
+        </strong>
+
+        <span id="errorMessage">
+            Please try again.
+        </span>
+
+
+        <button
+                type="button"
+                class="btn btn-primary"
+                id="retryButton">
+
+            Try Again
+
+        </button>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         ANALYTICS CONTENT
+    ====================================================== -->
+
+    <div id="analyticsContent"
+         class="hidden">
+
+
+        <!-- =================================================
+             STATISTICS
+        ================================================== -->
+
+        <section class="stats">
+
+
+            <!-- Total Users -->
+
+            <div class="stat-card">
+
+                <div class="stat-top">
+
+                    TOTAL USERS
+
+                    <i class="fa-solid fa-users"></i>
+
+                </div>
+
+
+                <div class="stat-value"
+                     id="statTotalUsers">
+
+                    0
+
+                </div>
+
+
+                <div class="stat-sub">
+
+                    Registered READORA accounts
+
+                </div>
+
+            </div>
+
+
+
+            <!-- Total Books -->
+
+            <div class="stat-card">
+
+                <div class="stat-top">
+
+                    TOTAL BOOKS &amp; ASSETS
+
+                    <i class="fa-solid fa-book-open"></i>
+
+                </div>
+
+
+                <div class="stat-value"
+                     id="statTotalBooks">
+
+                    0
+
+                </div>
+
+
+                <div class="stat-sub">
+
+                    Available content in catalog
+
+                </div>
+
+            </div>
+
+
+
+            <!-- Purchases -->
+
+            <div class="stat-card">
+
+                <div class="stat-top">
+
+                    TOTAL PURCHASES
+
+                    <i class="fa-solid fa-bag-shopping"></i>
+
+                </div>
+
+
+                <div class="stat-value"
+                     id="statTotalPurchases">
+
+                    0
+
+                </div>
+
+
+                <div class="stat-sub">
+
+                    Recorded purchase transactions
+
+                </div>
+
+            </div>
+
+
+
+            <!-- Subscriptions -->
+
+            <div class="stat-card">
+
+                <div class="stat-top">
+
+                    ACTIVE SUBSCRIPTIONS
+
+                    <i class="fa-solid fa-circle-check"></i>
+
+                </div>
+
+
+                <div class="stat-value"
+                     id="statTotalSubscriptions">
+
+                    0
+
+                </div>
+
+
+                <div class="stat-sub">
+
+                    Subscription records reported by backend
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             READING ACTIVITY + CONTENT OVERVIEW
+        ================================================== -->
+
+        <section class="analytics-grid">
+
+
+            <!-- READING ACTIVITY -->
+
+            <div class="analytics-card reading-card">
+
+
+                <div class="card-heading">
+
+                    <div>
+
+                        <h2>
+                            Reading Activity
+                        </h2>
+
+                        <p>
+                            Daily pages read over the last 7 days
+                        </p>
+
+                    </div>
+
+
+                    <span class="card-icon">
+
+                        <i class="fa-solid fa-chart-line"></i>
+
+                    </span>
+
+                </div>
+
+
+
+                <!-- Chart -->
+
+                <div class="chart-wrapper">
+
+                    <div class="chart-y-axis"
+                         id="chartYAxis">
+
+                    </div>
+
+
+                    <div class="chart-area">
+
+
+                        <svg
+                                id="activityChart"
+                                viewBox="0 0 700 260"
+                                preserveAspectRatio="none"
+                                aria-label="Reading activity chart">
+
+                        </svg>
+
+
+                        <div
+                                id="activityLabels"
+                                class="chart-labels">
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- No data -->
+
+                <div id="activityEmpty"
+                     class="chart-empty hidden">
+
+                    <i class="fa-solid fa-chart-line"></i>
+
+                    <span>
+                        No reading activity recorded yet.
+                    </span>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- CONTENT OVERVIEW -->
+
+            <div class="analytics-card">
+
+
+                <div class="card-heading">
+
+                    <div>
+
+                        <h2>
+                            Content Overview
+                        </h2>
+
+                        <p>
+                            Distribution by category
+                        </p>
+
+                    </div>
+
+
+                    <span class="card-icon">
+
+                        <i class="fa-solid fa-layer-group"></i>
+
+                    </span>
+
+                </div>
+
+
+                <div id="contentDistribution"
+                     class="distribution-list">
+
+                </div>
+
+
+                <div id="distributionEmpty"
+                     class="empty-content hidden">
+
+                    <i class="fa-solid fa-layer-group"></i>
+
+                    <span>
+                        No catalog data available.
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             POPULAR + RECENT
+        ================================================== -->
+
+        <section class="bottom-grid">
+
+
+            <!-- POPULAR CONTENT -->
+
+            <div class="analytics-card">
+
+
+                <div class="card-heading">
+
+                    <div>
+
+                        <h2>
+                            Popular Content
+                        </h2>
+
+                        <p>
+                            Most actively read publications
+                        </p>
+
+                    </div>
+
+
+                    <span class="card-icon">
+
+                        <i class="fa-solid fa-fire"></i>
+
+                    </span>
+
+                </div>
+
+
+                <div id="popularContent"
+                     class="content-list">
+
+                </div>
+
+
+                <div id="popularEmpty"
+                     class="empty-content hidden">
+
+                    <i class="fa-solid fa-book-open"></i>
+
+                    <span>
+                        No reading activity recorded yet.
+                    </span>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- RECENT ACTIVITY -->
+
+            <div class="analytics-card">
+
+
+                <div class="card-heading">
+
+                    <div>
+
+                        <h2>
+                            Recent Reading Activity
+                        </h2>
+
+                        <p>
+                            Latest engagement recorded by READORA
+                        </p>
+
+                    </div>
+
+
+                    <span class="card-icon">
+
+                        <i class="fa-solid fa-clock-rotate-left"></i>
+
+                    </span>
+
+                </div>
+
+
+                <div id="recentActivity"
+                     class="content-list">
+
+                </div>
+
+
+                <div id="recentEmpty"
+                     class="empty-content hidden">
+
+                    <i class="fa-solid fa-clock"></i>
+
+                    <span>
+                        No recent activity yet.
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- DATA INFORMATION -->
+
+        <div class="data-note">
+
+            <i class="fa-solid fa-database"></i>
+
+            <span>
+                Analytics shown on this page are loaded directly
+                from the READORA admin analytics API.
+            </span>
+
+            <span id="lastUpdated">
+                —
+            </span>
+
+        </div>
+
+
+    </div>
+
+</main>
+
+
+
+<!-- =========================================================
+     FOOTER
+     SAME STYLE AS ADMIN BOOKS
+========================================================= -->
+
+<footer class="footer">
+
+    <div class="footer-inner">
+
+        <p>
+            © 2026 READORA Intelligence Platform.
+            All rights reserved.
+        </p>
+
+    </div>
+
+</footer>
+
+
+
+<!-- Analytics JS -->
+
+<script>
+    /* =========================================================
+   READORA ADMIN ANALYTICS
+   REAL BACKEND CONNECTION
+========================================================= */
+
+
+    let currentUser = null;
+
+
+    /* =========================================================
+       AUTHENTICATION
+    ========================================================= */
+
+    function getCurrentUser() {
+
+        try {
+
+            return JSON.parse(
+                localStorage.getItem("readoraUser")
+                || "null"
+            );
+
+        } catch (error) {
+
+            console.error(
+                "Could not read readoraUser:",
+                error
+            );
+
+            return null;
+
+        }
+
+    }
+
+
+    /* =========================================================
+       AUTH HEADERS
+    ========================================================= */
+
+    function authHeaders() {
+        const headers = {
+            "Content-Type": "application/json"
+        };
+        if (currentUser && currentUser.token && typeof currentUser.token === "string" && currentUser.token.trim()) {
+            headers["Authorization"] = "Bearer " + currentUser.token.trim();
+        }
+        return headers;
+    }
+
+
+    /* =========================================================
+       PAGE INITIALIZATION
+    ========================================================= */
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        function () {
+            currentUser = getCurrentUser();
+
+            /*
+             * Display administrator info safely.
+             */
+            updateAdminProfile();
+
+            /*
+             * Load real analytics.
+             */
+            loadAnalytics();
+
+            /*
+             * Refresh button.
+             */
+            const refBtn = document.getElementById("refreshButton");
+            if (refBtn) {
+                refBtn.addEventListener("click", loadAnalytics);
+            }
+
+            /*
+             * Retry button.
+             */
+            const retBtn = document.getElementById("retryButton");
+            if (retBtn) {
+                retBtn.addEventListener("click", loadAnalytics);
+            }
+        }
+    );
+
+
+    /* =========================================================
+       ADMIN PROFILE
+    ========================================================= */
+
+    function updateAdminProfile() {
+        if (!currentUser) return;
+        const name = currentUser.name || "Admin";
+        const role = currentUser.role || "ADMIN";
+
+        const nameEl = document.getElementById("adminName") || document.getElementById("adminDropdownUserName");
+        if (nameEl) nameEl.textContent = name;
+
+        const roleEl = document.getElementById("adminRole") || document.getElementById("adminDropdownUserRole");
+        if (roleEl) roleEl.textContent = role === "ADMIN" ? "SUPER ADMIN" : role;
+
+        const avatarEl = document.getElementById("adminAvatar") || document.getElementById("adminDropdownAvatarInitials");
+        if (avatarEl) avatarEl.textContent = getInitials ? getInitials(name) : (name[0] || "A");
+    }
+
+
+    /* =========================================================
+       INITIALS
+    ========================================================= */
+
+    function getInitials(name) {
+
+        return String(name)
+            .trim()
+            .split(/\s+/)
+            .map(
+                word =>
+                    word
+                        .charAt(0)
+                        .toUpperCase()
+            )
+            .join("")
+            .substring(0, 2);
+
+    }
+
+
+    /* =========================================================
+       LOAD ANALYTICS
+    =========================================================
+
+       EXISTING BACKEND:
+
+       GET /api/admin/analytics/overview
+
+    ========================================================= */
+
+    async function loadAnalytics() {
+
+
+        showLoading();
+
+
+        setRefreshing(true);
+
+
+        try {
+
+
+            const response =
+                await fetch(
+                    "/api/admin/analytics/overview",
+                    {
+                        method: "GET",
+                        headers: authHeaders(),
+                        credentials: "include"
+                    }
+                );
+
+
+            /*
+             * Existing Spring Security
+             * authorization response.
+             */
+
+            if (
+                response.status === 401
+            ) {
+
+                alert(
+                    "Your session has expired. Please log in again."
+                );
+
+
+                window.location.href =
+                    "/login";
+
+
+                return;
+
+            }
+
+
+            if (
+                response.status === 403
+            ) {
+
+                alert(
+                    "Access forbidden. This area requires ADMIN role."
+                );
+
+
+                window.location.href =
+                    "/dashboard";
+
+
+                return;
+
+            }
+
+
+            if (!response.ok) {
+
+                let errorText =
+                    "Unable to load analytics.";
+
+
+                try {
+
+                    const errorData =
+                        await response.json();
+
+
+                    if (
+                        errorData.message
+                    ) {
+
+                        errorText =
+                            errorData.message;
+
+                    }
+
+                } catch (e) {
+
+                    /*
+                     * Backend may return a
+                     * non-JSON error response.
+                     */
+
+                }
+
+
+                throw new Error(
+                    errorText
+                );
+
+            }
+
+
+            /*
+             * REAL BACKEND RESPONSE
+             */
+
+            const data =
+                await response.json();
+
+
+            console.log(
+                "READORA analytics response:",
+                data
+            );
+
+
+            /*
+             * Render the actual backend data.
+             */
+
+            renderAnalytics(
+                data
+            );
+
+
+            /*
+             * Update last refreshed time.
+             */
+
+            updateLastUpdated();
+
+
+            showAnalytics();
+
+
+        } catch (error) {
+
+
+            console.error(
+                "Analytics loading error:",
+                error
+            );
+
+
+            showError(
+                error.message ||
+                "Unable to load analytics."
+            );
+
+
+        } finally {
+
+
+            setRefreshing(false);
+
+
+        }
+
+    }
+
+
+    /* =========================================================
+       RENDER ALL ANALYTICS
+    ========================================================= */
+
+    function renderAnalytics(data) {
+
+
+        /*
+         * The backend already provides
+         * these four values.
+         */
+
+        setText(
+            "statTotalUsers",
+            formatNumber(
+                data.totalUsers
+            )
+        );
+
+
+        setText(
+            "statTotalBooks",
+            formatNumber(
+                data.totalBooks
+            )
+        );
+
+
+        setText(
+            "statTotalPurchases",
+            formatNumber(
+                data.totalPurchases
+            )
+        );
+
+
+        setText(
+            "statTotalSubscriptions",
+            formatNumber(
+                data.totalSubscriptions
+            )
+        );
+
+
+        /*
+         * Arrays supplied by backend.
+         */
+
+        renderReadingActivity(
+            Array.isArray(
+                data.readingActivity
+            )
+                ? data.readingActivity
+                : []
+        );
+
+
+        renderDistribution(
+            Array.isArray(
+                data.contentDistribution
+            )
+                ? data.contentDistribution
+                : []
+        );
+
+
+        renderPopularContent(
+            Array.isArray(
+                data.popularContent
+            )
+                ? data.popularContent
+                : []
+        );
+
+
+        renderRecentActivity(
+            Array.isArray(
+                data.recentActivity
+            )
+                ? data.recentActivity
+                : []
+        );
+
+    }
+
+
+    /* =========================================================
+       READING ACTIVITY CHART
+    =========================================================
+
+    Expected backend item:
+
+    {
+        label: "...",
+        pagesRead: number
+    }
+
+    ========================================================= */
+
+    function renderReadingActivity(days) {
+
+
+        const svg =
+            document.getElementById(
+                "activityChart"
+            );
+
+
+        const labels =
+            document.getElementById(
+                "activityLabels"
+            );
+
+
+        const yAxis =
+            document.getElementById(
+                "chartYAxis"
+            );
+
+
+        const empty =
+            document.getElementById(
+                "activityEmpty"
+            );
+
+
+        /*
+         * No backend records.
+         */
+
+        if (
+            days.length === 0
+        ) {
+
+            svg.innerHTML = "";
+
+            labels.innerHTML = "";
+
+            yAxis.innerHTML = "";
+
+            empty.classList.remove(
+                "hidden"
+            );
+
+            return;
+
+        }
+
+
+        empty.classList.add(
+            "hidden"
+        );
+
+
+        /*
+         * Make sure values are numbers.
+         */
+
+        const values =
+            days.map(
+                item =>
+                    Number(
+                        item.pagesRead
+                    ) || 0
+            );
+
+
+        const maxValue =
+            Math.max(
+                1,
+                ...values
+            );
+
+
+        /*
+         * Chart dimensions.
+         */
+
+        const width = 700;
+
+        const height = 260;
+
+        const topPadding = 20;
+
+        const bottomPadding = 15;
+
+        const chartHeight =
+            height -
+            topPadding -
+            bottomPadding;
+
+
+        const stepX =
+            days.length === 1
+                ? width / 2
+                : width /
+                (days.length - 1);
+
+
+        /*
+         * Calculate points.
+         */
+
+        const points =
+            values.map(
+                function (
+                    value,
+                    index
+                ) {
+
+                    const x =
+                        days.length === 1
+                            ? width / 2
+                            : index * stepX;
+
+
+                    const y =
+                        topPadding +
+                        (
+                            1 -
+                            (
+                                value /
+                                maxValue
+                            )
+                        ) *
+                        chartHeight;
+
+
+                    return {
+                        x,
+                        y,
+                        value
+                    };
+
+                }
+            );
+
+
+        /*
+         * Build line path.
+         */
+
+        let linePath =
+            `M ${points[0].x} ${points[0].y}`;
+
+
+        for (
+            let i = 1;
+            i < points.length;
+            i++
+        ) {
+
+            linePath +=
+                ` L ${points[i].x} ${points[i].y}`;
+
+        }
+
+
+        /*
+         * Build filled area.
+         */
+
+        const lastPoint =
+            points[
+            points.length - 1
+                ];
+
+
+        const firstPoint =
+            points[0];
+
+
+        const areaPath =
+            linePath +
+            ` L ${lastPoint.x} ${height}` +
+            ` L ${firstPoint.x} ${height}` +
+            " Z";
+
+
+        /*
+         * Grid lines.
+         */
+
+        const gridLines =
+            createChartGrid(
+                width,
+                height,
+                maxValue
+            );
+
+
+        /*
+         * Data points.
+         */
+
+        const circles =
+            points
+                .map(
+                    point => `
+
+                    <circle
+                        cx="${point.x}"
+                        cy="${point.y}"
+                        r="4"
+                        fill="#1b3022"
+                    ></circle>
+
+                    <circle
+                        cx="${point.x}"
+                        cy="${point.y}"
+                        r="7"
+                        fill="transparent"
+                        stroke="#1b3022"
+                        stroke-width="1"
+                        opacity="0.15"
+                    ></circle>
+
+                `
+                )
+                .join("");
+
+
+        /*
+         * Final SVG.
+         */
+
+        svg.innerHTML = `
+
+        <defs>
+
+            <linearGradient
+                id="analyticsAreaGradient"
+                x1="0"
+                y1="0"
+                x2="0"
+                y2="1">
+
+                <stop
+                    offset="0%"
+                    stop-color="#1b3022"
+                    stop-opacity="0.16">
+                </stop>
+
+                <stop
+                    offset="100%"
+                    stop-color="#1b3022"
+                    stop-opacity="0">
+                </stop>
+
+            </linearGradient>
+
+        </defs>
+
+
+        ${gridLines}
+
+
+        <path
+            d="${areaPath}"
+            fill="url(#analyticsAreaGradient)">
+        </path>
+
+
+        <path
+            d="${linePath}"
+            fill="none"
+            stroke="#1b3022"
+            stroke-width="3"
+            stroke-linecap="round"
+            stroke-linejoin="round">
+        </path>
+
+
+        ${circles}
+
+    `;
+
+
+        /*
+         * X-axis labels.
+         */
+
+        labels.innerHTML =
+            days
+                .map(
+                    function (day) {
+
+                        const label =
+                            escapeHtml(
+                                day.label ||
+                                ""
+                            );
+
+
+                        const value =
+                            Number(
+                                day.pagesRead
+                            ) || 0;
+
+
+                        return `
+
+                        <div class="chart-label">
+
+                            <span>
+                                ${label}
+                            </span>
+
+                            <strong>
+                                ${formatNumber(value)}
+                            </strong>
+
+                        </div>
+
+                    `;
+
+                    }
+                )
+                .join("");
+
+
+        /*
+         * Y-axis values.
+         */
+
+        const yValues = [
+            maxValue,
+            Math.round(
+                maxValue * .75
+            ),
+            Math.round(
+                maxValue * .5
+            ),
+            Math.round(
+                maxValue * .25
+            ),
+            0
+        ];
+
+
+        yAxis.innerHTML =
+            yValues
+                .map(
+                    value =>
+                        `<span>${formatNumber(value)}</span>`
+                )
+                .join("");
+
+    }
+
+
+    /* =========================================================
+       CHART GRID
+    ========================================================= */
+
+    function createChartGrid(
+        width,
+        height,
+        maxValue
+    ) {
+
+
+        const top = 20;
+
+        const bottom = 15;
+
+
+        const usableHeight =
+            height -
+            top -
+            bottom;
+
+
+        const values = [
+            maxValue,
+            maxValue * .75,
+            maxValue * .5,
+            maxValue * .25,
+            0
+        ];
+
+
+        return values
+            .map(
+                function (
+                    value
+                ) {
+
+                    const y =
+                        top +
+                        (
+                            1 -
+                            (
+                                value /
+                                maxValue
+                            )
+                        ) *
+                        usableHeight;
+
+
+                    return `
+
+                    <line
+                        x1="0"
+                        y1="${y}"
+                        x2="${width}"
+                        y2="${y}"
+                        stroke="#e5ded9"
+                        stroke-width="1">
+                    </line>
+
+                `;
+
+                }
+            )
+            .join("");
+
+    }
+
+
+    /* =========================================================
+       CONTENT DISTRIBUTION
+    =========================================================
+
+    Expected backend item:
+
+    {
+        label: "...",
+        count: number,
+        percent: number
+    }
+
+    ========================================================= */
+
+    function renderDistribution(items) {
+
+
+        const container =
+            document.getElementById(
+                "contentDistribution"
+            );
+
+
+        const empty =
+            document.getElementById(
+                "distributionEmpty"
+            );
+
+
+        if (
+            items.length === 0
+        ) {
+
+            container.innerHTML = "";
+
+            empty.classList.remove(
+                "hidden"
+            );
+
+            return;
+
+        }
+
+
+        empty.classList.add(
+            "hidden"
+        );
+
+
+        container.innerHTML =
+            items
+                .map(
+                    function (item) {
+
+                        const label =
+                            escapeHtml(
+                                item.label ||
+                                "Unknown"
+                            );
+
+
+                        const count =
+                            Number(
+                                item.count
+                            ) || 0;
+
+
+                        const percent =
+                            clampPercent(
+                                item.percent
+                            );
+
+
+                        return `
+
+                        <div class="distribution-item">
+
+                            <div class="distribution-top">
+
+                                <span
+                                    class="distribution-name">
+
+                                    ${label}
+
+                                </span>
+
+
+                                <span
+                                    class="distribution-value">
+
+                                    ${formatNumber(count)}
+                                    items
+                                    ·
+                                    ${formatPercent(percent)}
+
+                                </span>
+
+                            </div>
+
+
+                            <div class="distribution-track">
+
+                                <div
+                                    class="distribution-fill"
+                                    style="width:${percent}%">
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    `;
+
+                    }
+                )
+                .join("");
+
+    }
+
+
+    /* =========================================================
+       POPULAR CONTENT
+    =========================================================
+
+    Expected backend item:
+
+    {
+        title,
+        author,
+        category,
+        readers,
+        rating,
+        completionRate
+    }
+
+    ========================================================= */
+
+    function renderPopularContent(items) {
+
+
+        const container =
+            document.getElementById(
+                "popularContent"
+            );
+
+
+        const empty =
+            document.getElementById(
+                "popularEmpty"
+            );
+
+
+        if (
+            items.length === 0
+        ) {
+
+            container.innerHTML = "";
+
+            empty.classList.remove(
+                "hidden"
+            );
+
+            return;
+
+        }
+
+
+        empty.classList.add(
+            "hidden"
+        );
+
+
+        container.innerHTML =
+            items
+                .map(
+                    function (
+                        item,
+                        index
+                    ) {
+
+
+                        const title =
+                            escapeHtml(
+                                item.title ||
+                                "Untitled"
+                            );
+
+
+                        const author =
+                            escapeHtml(
+                                item.author ||
+                                "Unknown author"
+                            );
+
+
+                        const category =
+                            escapeHtml(
+                                item.category ||
+                                "General"
+                            );
+
+
+                        const readers =
+                            Number(
+                                item.readers
+                            ) || 0;
+
+
+                        const rating =
+                            Number(
+                                item.rating
+                            );
+
+
+                        const completionRate =
+                            Number(
+                                item.completionRate
+                            );
+
+
+                        return `
+
+                        <div class="popular-item">
+
+
+                            <div class="popular-left">
+
+
+                                <div class="rank">
+
+                                    ${String(
+                            index + 1
+                        ).padStart(
+                            2,
+                            "0"
+                        )}
+
+                                </div>
+
+
+                                <div class="popular-info">
+
+                                    <div
+                                        class="popular-title"
+                                        title="${title}">
+
+                                        ${title}
+
+                                    </div>
+
+
+                                    <div
+                                        class="popular-meta">
+
+                                        ${author}
+                                        ·
+                                        ${category}
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="popular-right">
+
+
+                                <div class="readers">
+
+                                    ${formatNumber(
+                            readers
+                        )}
+
+                                    readers
+
+                                </div>
+
+
+                                ${
+                            Number.isFinite(
+                                rating
+                            )
+                                ? `
+                                            <div class="rating">
+                                                ★
+                                                ${rating.toFixed(1)}
+                                            </div>
+                                          `
+                                : ""
+                        }
+
+
+                                ${
+                            Number.isFinite(
+                                completionRate
+                            )
+                                ? `
+                                            <div class="completion">
+                                                ${formatPercent(
+                                    completionRate
+                                )}
+                                                completion
+                                            </div>
+                                          `
+                                : ""
+                        }
+
+
+                            </div>
+
+                        </div>
+
+                    `;
+
+                    }
+                )
+                .join("");
+
+    }
+
+
+    /* =========================================================
+       RECENT ACTIVITY
+    =========================================================
+
+    Expected backend item:
+
+    {
+        icon,
+        text,
+        subtext,
+        timeAgo
+    }
+
+    ========================================================= */
+
+    function renderRecentActivity(items) {
+
+
+        const container =
+            document.getElementById(
+                "recentActivity"
+            );
+
+
+        const empty =
+            document.getElementById(
+                "recentEmpty"
+            );
+
+
+        if (
+            items.length === 0
+        ) {
+
+            container.innerHTML = "";
+
+            empty.classList.remove(
+                "hidden"
+            );
+
+            return;
+
+        }
+
+
+        empty.classList.add(
+            "hidden"
+        );
+
+
+        container.innerHTML =
+            items
+                .map(
+                    function (item) {
+
+
+                        const text =
+                            escapeHtml(
+                                item.text ||
+                                "Reading activity"
+                            );
+
+
+                        const subtext =
+                            escapeHtml(
+                                item.subtext ||
+                                ""
+                            );
+
+
+                        const timeAgo =
+                            escapeHtml(
+                                item.timeAgo ||
+                                ""
+                            );
+
+
+                        /*
+                         * icon comes from backend.
+                         *
+                         * Example:
+                         * "menu_book"
+                         *
+                         * Because this page uses
+                         * Font Awesome, map common
+                         * backend icon names safely.
+                         */
+
+                        const icon =
+                            getActivityIcon(
+                                item.icon
+                            );
+
+
+                        return `
+
+                        <div class="activity-item">
+
+
+                            <div class="activity-left">
+
+
+                                <div class="activity-icon">
+
+                                    <i class="${icon}"></i>
+
+                                </div>
+
+
+                                <div class="activity-info">
+
+                                    <div
+                                        class="activity-text"
+                                        title="${text}">
+
+                                        ${text}
+
+                                    </div>
+
+
+                                    <div
+                                        class="activity-subtext">
+
+                                        ${subtext}
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <span
+                                class="activity-time">
+
+                                ${timeAgo}
+
+                            </span>
+
+
+                        </div>
+
+                    `;
+
+                    }
+                )
+                .join("");
+
+    }
+
+
+    /* =========================================================
+       ACTIVITY ICON MAPPING
+    ========================================================= */
+
+    function getActivityIcon(icon) {
+
+
+        const iconMap = {
+
+            menu_book:
+                "fa-solid fa-book-open",
+
+            book:
+                "fa-solid fa-book",
+
+            bookmark:
+                "fa-solid fa-bookmark",
+
+            person:
+                "fa-solid fa-user",
+
+            group:
+                "fa-solid fa-users",
+
+            shopping_bag:
+                "fa-solid fa-bag-shopping",
+
+            verified_user:
+                "fa-solid fa-circle-check",
+
+            star:
+                "fa-solid fa-star",
+
+            payment:
+                "fa-solid fa-credit-card",
+
+            login:
+                "fa-solid fa-right-to-bracket",
+
+            default:
+                "fa-solid fa-clock"
+
+        };
+
+
+        return (
+            iconMap[
+                String(
+                    icon || ""
+                )
+                    .toLowerCase()
+                ]
+            ||
+            iconMap.default
+        );
+
+    }
+
+
+    /* =========================================================
+       LOADING STATE
+    ========================================================= */
+
+    function showLoading() {
+
+
+        document
+            .getElementById(
+                "loadingState"
+            )
+            .classList.remove(
+            "hidden"
+        );
+
+
+        document
+            .getElementById(
+                "errorState"
+            )
+            .classList.add(
+            "hidden"
+        );
+
+
+        document
+            .getElementById(
+                "analyticsContent"
+            )
+            .classList.add(
+            "hidden"
+        );
+
+    }
+
+
+    /* =========================================================
+       SHOW ANALYTICS
+    ========================================================= */
+
+    function showAnalytics() {
+
+
+        document
+            .getElementById(
+                "loadingState"
+            )
+            .classList.add(
+            "hidden"
+        );
+
+
+        document
+            .getElementById(
+                "errorState"
+            )
+            .classList.add(
+            "hidden"
+        );
+
+
+        document
+            .getElementById(
+                "analyticsContent"
+            )
+            .classList.remove(
+            "hidden"
+        );
+
+    }
+
+
+    /* =========================================================
+       SHOW ERROR
+    ========================================================= */
+
+    function showError(message) {
+
+
+        document
+            .getElementById(
+                "loadingState"
+            )
+            .classList.add(
+            "hidden"
+        );
+
+
+        document
+            .getElementById(
+                "analyticsContent"
+            )
+            .classList.add(
+            "hidden"
+        );
+
+
+        document
+            .getElementById(
+                "errorState"
+            )
+            .classList.remove(
+            "hidden"
+        );
+
+
+        document
+            .getElementById(
+                "errorMessage"
+            )
+            .textContent =
+            message ||
+            "Unable to load analytics.";
+
+    }
+
+
+    /* =========================================================
+       REFRESH BUTTON
+    ========================================================= */
+
+    function setRefreshing(isRefreshing) {
+
+
+        const icon =
+            document.getElementById(
+                "refreshIcon"
+            );
+
+
+        const button =
+            document.getElementById(
+                "refreshButton"
+            );
+
+
+        if (
+            isRefreshing
+        ) {
+
+            icon.classList.add(
+                "refreshing"
+            );
+
+            button.disabled =
+                true;
+
+        } else {
+
+            icon.classList.remove(
+                "refreshing"
+            );
+
+            button.disabled =
+                false;
+
+        }
+
+    }
+
+
+    /* =========================================================
+       LAST UPDATED
+    ========================================================= */
+
+    function updateLastUpdated() {
+
+
+        const now =
+            new Date();
+
+
+        document
+            .getElementById(
+                "lastUpdated"
+            )
+            .textContent =
+            "Updated " +
+            now.toLocaleTimeString(
+                "en-US",
+                {
+                    hour: "2-digit",
+                    minute: "2-digit"
+                }
+            );
+
+    }
+
+
+    /* =========================================================
+       FORMAT NUMBER
+    ========================================================= */
+
+    function formatNumber(value) {
+
+
+        const number =
+            Number(value);
+
+
+        if (
+            !Number.isFinite(number)
+        ) {
+
+            return "0";
+
+        }
+
+
+        return number.toLocaleString(
+            "en-US"
+        );
+
+    }
+
+
+    /* =========================================================
+       FORMAT PERCENT
+    ========================================================= */
+
+    function formatPercent(value) {
+
+
+        const number =
+            Number(value);
+
+
+        if (
+            !Number.isFinite(number)
+        ) {
+
+            return "0%";
+
+        }
+
+
+        return (
+            Number.isInteger(number)
+                ? number
+                : number.toFixed(1)
+        ) + "%";
+
+    }
+
+
+    /* =========================================================
+       CLAMP PERCENT
+    ========================================================= */
+
+    function clampPercent(value) {
+
+
+        const number =
+            Number(value);
+
+
+        if (
+            !Number.isFinite(number)
+        ) {
+
+            return 0;
+
+        }
+
+
+        return Math.max(
+            0,
+            Math.min(
+                100,
+                number
+            )
+        );
+
+    }
+
+
+    /* =========================================================
+       SET TEXT SAFELY
+    ========================================================= */
+
+    function setText(
+        id,
+        value
+    ) {
+
+
+        const element =
+            document.getElementById(
+                id
+            );
+
+
+        if (element) {
+
+            element.textContent =
+                value;
+
+        }
+
+    }
+
+
+    /* =========================================================
+       ESCAPE HTML
+    ========================================================= */
+
+    function escapeHtml(value) {
+
+
+        return String(
+            value ?? ""
+        )
+
+            .replace(
+                /&/g,
+                "&amp;"
+            )
+
+            .replace(
+                /</g,
+                "&lt;"
+            )
+
+            .replace(
+                />/g,
+                "&gt;"
+            )
+
+            .replace(
+                /"/g,
+                "&quot;"
+            )
+
+            .replace(
+                /'/g,
+                "&#039;"
+            );
+
+    }
+</script>
+
+
 </body>
 </html>

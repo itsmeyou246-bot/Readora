@@ -31,13 +31,13 @@ public class HomeController {
         return "dashboard";
     }
 
-    @GetMapping("/admin-dashboard")
-    public String adminDashboard() {
-        return "admin-dashboard";
+    @GetMapping("/publish-book")
+    public String publishBook() {
+        return "publish-book";
     }
 
     @GetMapping("/author-dashboard")
     public String authorDashboard() {
-        return "author-dashboard";
+        return "AuthorDashboard";
     }
 }

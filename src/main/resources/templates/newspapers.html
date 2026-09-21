@@ -14,26 +14,10 @@
 
 <body>
 
-    <!-- HEADER -->
-    <th:block th:replace="~{fragments/chrome :: header}"></th:block>
-    <header class="header legacy-chrome-header">
-        <div class="header-inner">
-            <a th:href="@{/index}" class="logo">READORA</a>
+<header th:replace="~{fragments/header :: readerHeader('newspapers')}"></header>
 
-            <nav class="nav-links">
-                <a th:href="@{/index}">Discover</a>
-                <a th:href="@{/Book}">Books</a>
-                <a th:href="@{/newspapers}" class="nav-active">Newspapers</a>
-                <a th:href="@{/magazines}">Magazines</a>
-                <a th:href="@{/read-nepal}">Read Nepal</a>
-                <a th:href="@{/library}">My Library</a>
-            </nav>
 
-            <div class="profile-icon">☺</div>
-        </div>
-    </header>
-
-    <!-- PAGE TITLE -->
+<!-- PAGE TITLE -->
     <section class="page-intro">
         <div class="container">
             <h1 class="page-title">Today's Newspapers</h1>
@@ -511,8 +495,7 @@
             </div>
         </div>
     </footer>
-    <th:block th:replace="~{fragments/chrome :: footer}"></th:block>
-
+<script th:src="@{/js/cart-utils.js}"></script>
     <script th:src="@{/js/newspapers.js}"></script>
 
 </body>

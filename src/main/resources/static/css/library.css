@@ -26,7 +26,11 @@ a {
 
 .header {
   border-bottom: 1px solid #ddd4c0;
-  padding: 20px 0;
+  padding: 0;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background-color: #faf6ee;
 }
 
 .header-inner {
@@ -62,22 +66,17 @@ a {
 
 .nav-active {
   color: #201d18;
-  font-weight: 600;
+  border-bottom: 1px solid #201d18;
+  padding-bottom: 5px;
 }
 
-.header-icons {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-
-.icon-btn {
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: #201d18;
-  display: flex;
-  align-items: center;
+.profile-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid #ddd4c0;
+  text-align: center;
+  line-height: 34px;
 }
 
 /* PAGE TITLE + TABS */

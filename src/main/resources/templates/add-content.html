@@ -1,10 +1,957 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Content · READORA Admin</title>
+    <style>
+        :root{
+            --ink:#14140f;
+            --ink-soft:#4a4a42;
+            --paper:#faf8f3;
+            --panel:#ffffff;
+            --line:#e6e2d8;
+            --line-soft:#efece3;
+            --tile:#f3f1e9;
+            --accent:#14140f;
+            --accent-2:#1e7a4c;
+            --danger:#b5432f;
+            --radius:10px;
+            font-family: "Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+        }
+        *{box-sizing:border-box;}
+        html,body{margin:0;padding:0;background:var(--paper);color:var(--ink);}
+        body{
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            font-size:14px;
+            line-height:1.5;
+        }
+
+        /* Minimized header */
+        header.topbar{
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            padding:10px 24px;
+            background:var(--panel);
+            border-bottom:1px solid var(--line);
+        }
+        .brand{
+            font-family: "Iowan Old Style","Palatino Linotype",Georgia,serif;
+            font-weight:700;
+            font-size:17px;
+            letter-spacing:0.02em;
+            display:flex;
+            align-items:center;
+            gap:8px;
+        }
+        .brand .tag{
+            font-family:-apple-system,sans-serif;
+            font-size:10px;
+            font-weight:700;
+            letter-spacing:0.06em;
+            background:var(--ink);
+            color:#fff;
+            padding:2px 7px;
+            border-radius:4px;
+        }
+        .topbar-right{
+            display:flex;
+            align-items:center;
+            gap:14px;
+        }
+        .avatar{
+            width:28px;height:28px;border-radius:50%;
+            background:var(--ink);
+            display:flex;align-items:center;justify-content:center;
+            color:#fff;font-size:12px;font-weight:600;
+        }
+        .user-name{font-size:12.5px;color:var(--ink-soft);}
+
+        /* Page body */
+        main{
+            max-width:1050px;
+            margin:0 auto;
+            padding:28px 24px 60px;
+        }
+        .crumbs{
+            font-size:11px;
+            letter-spacing:0.06em;
+            color:#8a8577;
+            text-transform:uppercase;
+            margin-bottom:10px;
+        }
+        .page-head{
+            display:flex;
+            align-items:flex-start;
+            justify-content:space-between;
+            gap:20px;
+            margin-bottom:22px;
+            flex-wrap:wrap;
+        }
+        .page-head h1{
+            font-family:"Iowan Old Style","Palatino Linotype",Georgia,serif;
+            font-size:28px;
+            margin:0 0 6px;
+            font-weight:600;
+        }
+        .page-head p{
+            margin:0;
+            color:var(--ink-soft);
+            font-size:13.5px;
+        }
+        .head-actions{display:flex; gap:10px;}
+        button{
+            font-family:inherit;
+            cursor:pointer;
+        }
+        .btn{
+            display:inline-flex;
+            align-items:center;
+            gap:7px;
+            padding:9px 16px;
+            border-radius:7px;
+            font-size:13px;
+            font-weight:600;
+            border:1px solid var(--line);
+            background:var(--panel);
+            color:var(--ink);
+            transition:background .15s ease, transform .05s ease;
+        }
+        .btn:hover{background:#f4f2ec;}
+        .btn:active{transform:translateY(1px);}
+        .btn-dark{
+            background:var(--ink);
+            color:#fff;
+            border-color:var(--ink);
+        }
+        .btn-dark:hover{background:#2a2a22;}
+
+        .card{
+            background:var(--panel);
+            border:1px solid var(--line);
+            border-radius:14px;
+            padding:30px;
+        }
+
+        .format-row{
+            margin-bottom:34px;
+        }
+        .format-row .label{
+            font-size:11px;
+            letter-spacing:0.07em;
+            text-transform:uppercase;
+            color:#8a8577;
+            margin-bottom:12px;
+        }
+        .chip-group{
+            display:flex;
+            flex-wrap:wrap;
+            gap:10px;
+        }
+        .chip{
+            padding:10px 16px;
+            border-radius:8px;
+            border:1px solid var(--line);
+            background:var(--tile);
+            font-size:13.5px;
+            color:var(--ink);
+            font-weight:500;
+        }
+        .chip.active{
+            background:var(--ink);
+            color:#fff;
+            border-color:var(--ink);
+            font-weight:600;
+        }
+
+        section.block{
+            margin-bottom:36px;
+        }
+        .block-head{
+            display:flex;
+            align-items:flex-start;
+            gap:14px;
+            margin-bottom:22px;
+        }
+        .block-num{
+            width:26px;height:26px;
+            flex:0 0 26px;
+            border-radius:6px;
+            background:var(--tile);
+            display:flex;align-items:center;justify-content:center;
+            font-size:12.5px;
+            font-weight:700;
+            color:var(--ink-soft);
+            margin-top:4px;
+        }
+        .block-head h2{
+            font-family:"Iowan Old Style","Palatino Linotype",Georgia,serif;
+            font-size:21px;
+            margin:0 0 4px;
+            font-weight:600;
+        }
+        .block-head span{
+            color:var(--ink-soft);
+            font-size:13px;
+        }
+
+        .field-grid{
+            display:grid;
+            grid-template-columns:1fr 1fr;
+            gap:20px;
+            margin-bottom:20px;
+        }
+        .field{display:flex; flex-direction:column;}
+        .field.full{grid-column:1 / -1;}
+        .field label{
+            font-size:11px;
+            letter-spacing:0.06em;
+            text-transform:uppercase;
+            color:#8a8577;
+            margin-bottom:8px;
+        }
+        .field label .req{color:var(--danger); margin-left:2px;}
+        .field input[type=text],
+        .field input[type=number],
+        .field select,
+        .field textarea{
+            font-family:inherit;
+            font-size:14px;
+            color:var(--ink);
+            background:var(--panel);
+            border:1px solid var(--line);
+            border-radius:8px;
+            padding:11px 13px;
+            width:100%;
+            outline:none;
+            transition:border-color .15s ease, box-shadow .15s ease;
+        }
+        .field input:focus,
+        .field select:focus,
+        .field textarea:focus{
+            border-color:var(--ink);
+            box-shadow:0 0 0 3px rgba(20,20,15,0.08);
+        }
+        .field textarea{resize:vertical; min-height:78px; line-height:1.55;}
+        .select-wrap{position:relative;}
+        .select-wrap select{appearance:none; padding-right:34px;}
+        .select-wrap::after{
+            content:"";
+            position:absolute;
+            right:14px; top:50%;
+            width:8px;height:8px;
+            border-right:1.5px solid var(--ink-soft);
+            border-bottom:1.5px solid var(--ink-soft);
+            transform:translateY(-65%) rotate(45deg);
+            pointer-events:none;
+        }
+
+        /* Files & Media */
+        .media-grid{
+            display:grid;
+            grid-template-columns:1fr 1fr;
+            gap:20px;
+        }
+        .media-label{
+            font-size:11px;
+            letter-spacing:0.06em;
+            text-transform:uppercase;
+            color:#8a8577;
+            margin-bottom:10px;
+        }
+        .media-card{
+            border:1px solid var(--line);
+            border-radius:10px;
+            padding:16px;
+            display:flex;
+            gap:14px;
+            background:var(--panel);
+        }
+        .cover-thumb{
+            width:64px;height:88px;
+            border-radius:6px;
+            overflow:hidden;
+            flex:0 0 64px;
+            background:linear-gradient(160deg,#2b3a4a,#1a232d);
+            display:flex;align-items:center;justify-content:center;
+            color:#dfe6ec;
+            font-size:9px;
+            text-align:center;
+            font-weight:700;
+            letter-spacing:0.05em;
+            line-height:1.3;
+            padding:6px;
+        }
+        .file-icon{
+            width:44px;height:44px;
+            border-radius:8px;
+            background:var(--tile);
+            display:flex;align-items:center;justify-content:center;
+            flex:0 0 44px;
+            color:var(--ink-soft);
+            font-size:18px;
+        }
+        .media-info{flex:1; display:flex; flex-direction:column; gap:4px;}
+        .media-info .fname{font-weight:600; font-size:13.5px;}
+        .media-info .fmeta{font-size:12px; color:var(--ink-soft);}
+        .media-actions{
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            margin-top:8px;
+            font-size:12.5px;
+        }
+        .link-action{color:var(--ink); text-decoration:underline; cursor:pointer; font-weight:600;}
+        .link-action.danger{color:var(--danger);}
+        .badge{
+            font-size:10.5px;
+            font-weight:700;
+            letter-spacing:0.04em;
+            text-transform:uppercase;
+            color:var(--accent-2);
+            background:#e5f3ea;
+            padding:3px 8px;
+            border-radius:5px;
+        }
+        .progress-track{
+            height:4px;
+            background:var(--line-soft);
+            border-radius:3px;
+            margin:10px 0 8px;
+            overflow:hidden;
+        }
+        .progress-fill{
+            height:100%;
+            width:100%;
+            background:var(--ink);
+            border-radius:3px;
+        }
+
+        /* Access & pricing */
+        .access-grid{
+            display:grid;
+            grid-template-columns:1.3fr 1fr 1fr;
+            gap:20px;
+            align-items:start;
+        }
+        .access-options{display:flex; gap:12px;}
+        .access-option{
+            flex:1;
+            display:flex;
+            align-items:center;
+            gap:10px;
+            border:1px solid var(--line);
+            border-radius:8px;
+            padding:13px 14px;
+            font-size:13.5px;
+            font-weight:600;
+            cursor:pointer;
+        }
+        .access-option input{accent-color:var(--ink);}
+        .access-option.selected{
+            background:var(--ink);
+            color:#fff;
+            border-color:var(--ink);
+        }
+        .access-option.selected .dot{
+            width:9px;height:9px;border-radius:50%;
+            background:#5fb8ff;
+        }
+        .price-input{
+            display:flex;
+            align-items:center;
+            border:1px solid var(--line);
+            border-radius:8px;
+            padding:0 13px;
+        }
+        .price-input span{color:var(--ink-soft); font-size:13.5px; margin-right:6px;}
+        .price-input input{
+            border:none;
+            outline:none;
+            padding:11px 0;
+            font-size:14px;
+            width:100%;
+            font-family:inherit;
+        }
+
+        .notice{
+            margin-top:24px;
+            display:flex;
+            align-items:flex-start;
+            justify-content:space-between;
+            gap:20px;
+            background:var(--tile);
+            border-radius:10px;
+            padding:16px 18px;
+            font-size:12.8px;
+            color:var(--ink-soft);
+            flex-wrap:wrap;
+        }
+        .notice strong{color:var(--ink); font-weight:700;}
+        .notice-left{display:flex; gap:10px; align-items:flex-start; max-width:640px;}
+        .notice-right{
+            text-align:right;
+            text-transform:uppercase;
+            font-size:10.5px;
+            letter-spacing:0.05em;
+            font-weight:700;
+            color:#8a8577;
+        }
+
+        .bottom-bar{
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            margin-top:30px;
+        }
+        .discard{
+            color:var(--ink-soft);
+            font-size:13.5px;
+            font-weight:600;
+            cursor:pointer;
+        }
+        .bottom-actions{display:flex; gap:10px;}
+
+        @media (max-width:720px){
+            .field-grid, .media-grid, .access-grid{grid-template-columns:1fr;}
+            .page-head{flex-direction:column;}
+        }
+    </style>
 </head>
 <body>
-$END$
+
+<header th:replace="~{fragments/header :: adminHeader('books')}"></header>
+
+<main>
+    <div class="crumbs">Admin / Content / Add Content</div>
+
+    <div class="page-head">
+        <div>
+            <h1>Add Content</h1>
+            <p>Quickly publish or ingest new reading material into READORA.</p>
+        </div>
+        <div class="head-actions">
+            <button class="btn" id="saveDraftTop">Save Draft</button>
+            <button class="btn btn-dark" id="publishTop">Publish Content</button>
+        </div>
+    </div>
+
+    <div id="formStatusBanner" style="display:none; margin-bottom:18px; padding:12px 16px; border-radius:8px; font-size:13px; font-weight:600;"></div>
+
+    <div class="card">
+
+        <div class="format-row">
+            <div class="label">Select format &amp; collection</div>
+            <div class="chip-group" id="formatChips">
+                <button class="chip active" data-value="books">Books &amp; Monographs</button>
+                <button class="chip" data-value="heritage">Read Nepal Heritage</button>
+                <button class="chip" data-value="newspaper">Newspaper &amp; Gazette</button>
+                <button class="chip" data-value="magazine">Magazine</button>
+                <button class="chip" data-value="journal">Journal &amp; Research Paper</button>
+                <button class="chip" data-value="diaries">Diaries &amp; Memoirs</button>
+            </div>
+        </div>
+
+        <!-- Section 1 -->
+        <section class="block">
+            <div class="block-head">
+                <div class="block-num">1</div>
+                <div>
+                    <h2>Basic Information</h2>
+                    <span>Core bibliographic metadata for reader indexing.</span>
+                </div>
+            </div>
+
+            <div class="field-grid">
+                <div class="field full">
+                    <label>Content Title<span class="req">*</span></label>
+                    <input type="text" id="fieldTitle" value="The Mountain Path: Chronicles of Langtang">
+                </div>
+
+                <div class="field">
+                    <label>Author / Creator<span class="req">*</span></label>
+                    <input type="text" id="fieldAuthor" value="Tenzing Norbu">
+                </div>
+                <div class="field">
+                    <label>Primary Category<span class="req">*</span></label>
+                    <div class="select-wrap">
+                        <select id="fieldCategory">
+                            <option>Himalayan Memoirs &amp; Ecology</option>
+                            <option>Folklore &amp; Oral History</option>
+                            <option>Travel Writing</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label>Language<span class="req">*</span></label>
+                    <div class="select-wrap">
+                        <select id="fieldLanguage">
+                            <option>English</option>
+                            <option>Nepali</option>
+                            <option>Newari</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="field">
+                    <label>Publisher / Press</label>
+                    <input type="text" id="fieldPublisher" value="Kathmandu Heritage Books">
+                </div>
+
+                <div class="field full">
+                    <label>Short Description / Synopsis</label>
+                    <textarea id="fieldDescription">A vivid meditation on the rugged trails of Langtang valley, blending personal travelogue with ecological heritage and indigenous Sherpa and Tamang folklore.</textarea>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2 -->
+        <section class="block">
+            <div class="block-head">
+                <div class="block-num">2</div>
+                <div>
+                    <h2>Files &amp; Media</h2>
+                    <span>Upload visual cover art and manuscript file.</span>
+                </div>
+            </div>
+
+            <div class="media-grid">
+                <div>
+                    <div class="media-label">Cover Artwork</div>
+                    <div class="media-card">
+                        <div class="cover-thumb" id="coverThumb">THE<br>MOUNTAIN<br>PATH</div>
+                        <div class="media-info">
+                            <div class="fname" id="coverFileName">No cover selected yet</div>
+                            <div class="fmeta" id="coverFileMeta">Upload a JPG or PNG for the cover</div>
+                            <div class="media-actions">
+                                <span class="link-action" id="coverReplaceBtn">Replace</span>
+                                <span class="link-action danger" id="coverRemoveBtn">Remove</span>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="file" id="coverFileInput" accept="image/*" style="display:none;">
+                </div>
+
+                <div>
+                    <div class="media-label">Manuscript Document (PDF / EPUB)</div>
+                    <div class="media-card" style="flex-direction:column;">
+                        <div style="display:flex; gap:14px; width:100%;">
+                            <div class="file-icon">📄</div>
+                            <div class="media-info">
+                                <div class="fname" style="display:flex; align-items:center; gap:8px;" id="manuscriptFileName">
+                                    No manuscript selected yet <span class="badge" id="manuscriptBadge" style="display:none;">Verified</span>
+                                </div>
+                                <div class="fmeta" id="manuscriptFileMeta">Upload the finished PDF / EPUB file</div>
+                            </div>
+                        </div>
+                        <div style="width:100%;">
+                            <div class="progress-track"><div class="progress-fill" id="manuscriptProgressFill" style="width:0%;"></div></div>
+                            <div class="media-actions">
+                                <span style="color:var(--ink-soft);" id="manuscriptStatusText">No file uploaded</span>
+                                <span class="link-action" id="manuscriptUploadBtn">Upload new file</span>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="file" id="manuscriptFileInput" accept=".pdf,.epub" style="display:none;">
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3 -->
+        <section class="block" style="margin-bottom:0;">
+            <div class="block-head">
+                <div class="block-num">3</div>
+                <div>
+                    <h2>Access &amp; Pricing</h2>
+                    <span>Control reader permissions, pricing tier, and publishing schedule.</span>
+                </div>
+            </div>
+
+            <div class="access-grid">
+                <div>
+                    <div class="media-label">Access Model</div>
+                    <div class="access-options" id="accessOptions">
+                        <label class="access-option" data-value="free">
+                            <input type="radio" name="access" value="free">
+                            Free Reader
+                        </label>
+                        <label class="access-option selected" data-value="premium">
+                            <input type="radio" name="access" value="premium" checked>
+                            <span class="dot"></span>
+                            Premium
+                        </label>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="media-label">Price (NPR)</div>
+                    <div class="price-input">
+                        <span>Rs.</span>
+                        <input type="number" id="fieldPrice" value="480">
+                    </div>
+                </div>
+
+                <div>
+                    <div class="media-label">Release Status</div>
+                    <div class="select-wrap">
+                        <select id="fieldReleaseStatus">
+                            <option value="published">Publish Immediately</option>
+                            <option value="review">Schedule for Later</option>
+                            <option value="draft">Save as Draft</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="notice">
+                <div class="notice-left">
+                    <span>👁</span>
+                    <span>Item will be registered in database with ID <strong id="noticeBookId">#BK-2024-884</strong> under <span id="noticeAdminName">Super Admin</span> audit logging.</span>
+                </div>
+                <div class="notice-right">Local Gateway: Khalti / eSewa Enabled</div>
+            </div>
+        </section>
+
+    </div>
+
+    <div class="bottom-bar">
+        <span class="discard">Cancel &amp; Discard</span>
+        <div class="bottom-actions">
+            <button class="btn" id="saveDraftBottom">Save as Draft</button>
+            <button class="btn btn-dark" id="publishBottom">Publish Content</button>
+        </div>
+    </div>
+</main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+
+        /* =====================================================
+           LOGIN / ROLE CHECK
+           ===================================================== */
+
+        const user = JSON.parse(localStorage.getItem('readoraUser') || 'null');
+
+        if (!user || !user.token) {
+            alert('Please log in with Administrator credentials.');
+            window.location.href = '/login';
+            return;
+        }
+
+        const role = (user.role || '').toUpperCase();
+        if (role !== 'ADMIN' && role !== 'ROLE_ADMIN') {
+            alert('Access forbidden. This area requires ADMIN role.');
+            window.location.href = '/dashboard';
+            return;
+        }
+
+        const authHeaders = {
+            'Authorization': 'Bearer ' + user.token
+        };
+        const jsonHeaders = Object.assign({ 'Content-Type': 'application/json' }, authHeaders);
+
+        // Populate topbar with the logged-in admin's name
+        const displayName = user.name || user.username || user.email || 'Administrator';
+        const initials = displayName
+            .split(/\s+/)
+            .filter(Boolean)
+            .slice(0, 2)
+            .map(w => w[0].toUpperCase())
+            .join('') || 'A';
+
+        const topbarUserName = document.getElementById('topbarUserName');
+        const topbarAvatar = document.getElementById('topbarAvatar');
+        const noticeAdminName = document.getElementById('noticeAdminName');
+        if (topbarUserName) topbarUserName.textContent = displayName + ' · Super Admin';
+        if (topbarAvatar) topbarAvatar.textContent = initials;
+        if (noticeAdminName) noticeAdminName.textContent = displayName;
+
+
+        /* =====================================================
+           STATUS BANNER HELPER
+           ===================================================== */
+
+        const banner = document.getElementById('formStatusBanner');
+
+        function showBanner(message, type) {
+            if (!banner) return;
+            banner.style.display = 'block';
+            banner.textContent = message;
+            if (type === 'error') {
+                banner.style.background = '#fdf0f0';
+                banner.style.border = '1px solid #f1c0c0';
+                banner.style.color = '#8b0000';
+            } else if (type === 'success') {
+                banner.style.background = '#edf6ef';
+                banner.style.border = '1px solid #cfe2d3';
+                banner.style.color = '#28633d';
+            } else {
+                banner.style.background = '#f3f1e9';
+                banner.style.border = '1px solid #e6e2d8';
+                banner.style.color = '#4a4a42';
+            }
+            banner.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+
+        /* =====================================================
+           FORMAT & COLLECTION CHIPS
+           ===================================================== */
+
+        let selectedType = 'book';
+
+        const TYPE_MAP = {
+            books: 'book',
+            heritage: 'nepal',
+            newspaper: 'newspaper',
+            magazine: 'magazine',
+            journal: 'journal',
+            diaries: 'diary'
+        };
+
+        const formatChips = document.getElementById('formatChips');
+        formatChips.addEventListener('click', (e) => {
+            const chip = e.target.closest('.chip');
+            if (!chip) return;
+            document.querySelectorAll('#formatChips .chip').forEach(c => c.classList.remove('active'));
+            chip.classList.add('active');
+            selectedType = TYPE_MAP[chip.dataset.value] || 'book';
+        });
+
+
+        /* =====================================================
+           ACCESS MODEL (FREE / PREMIUM)
+           ===================================================== */
+
+        let isPremium = true;
+
+        document.getElementById('accessOptions').addEventListener('click', (e) => {
+            const opt = e.target.closest('.access-option');
+            if (!opt) return;
+            document.querySelectorAll('.access-option').forEach(o => {
+                o.classList.remove('selected');
+                o.querySelector('.dot')?.remove();
+            });
+            opt.classList.add('selected');
+            opt.querySelector('input').checked = true;
+            isPremium = opt.dataset.value === 'premium';
+            if (isPremium) {
+                const dot = document.createElement('span');
+                dot.className = 'dot';
+                opt.appendChild(dot);
+            }
+        });
+
+
+        /* =====================================================
+           FILE UPLOADS (COVER IMAGE + MANUSCRIPT)
+           ===================================================== */
+
+        let uploadedImageUrl = '';
+        let uploadedFileUrl = '';
+
+        const coverFileInput = document.getElementById('coverFileInput');
+        const coverFileName = document.getElementById('coverFileName');
+        const coverFileMeta = document.getElementById('coverFileMeta');
+        const coverThumb = document.getElementById('coverThumb');
+
+        document.getElementById('coverReplaceBtn').addEventListener('click', () => coverFileInput.click());
+        document.getElementById('coverRemoveBtn').addEventListener('click', () => {
+            uploadedImageUrl = '';
+            coverFileInput.value = '';
+            coverFileName.textContent = 'No cover selected yet';
+            coverFileMeta.textContent = 'Upload a JPG or PNG for the cover';
+            coverThumb.style.backgroundImage = '';
+        });
+
+        function formatSize(bytes) {
+            if (bytes < 1024) return bytes + ' B';
+            if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+            return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+        }
+
+        function uploadFile(file, folder) {
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('folder', folder);
+            return fetch('/api/upload', {
+                method: 'POST',
+                headers: authHeaders, // do NOT set Content-Type; browser sets multipart boundary
+                body: formData
+            }).then(r => {
+                if (!r.ok) {
+                    return r.json().catch(() => ({})).then(body => {
+                        throw new Error(body.message || 'File upload failed (' + r.status + ')');
+                    });
+                }
+                return r.json();
+            }).then(data => data.url);
+        }
+
+        coverFileInput.addEventListener('change', () => {
+            const file = coverFileInput.files[0];
+            if (!file) return;
+            coverFileName.textContent = 'Uploading ' + file.name + '…';
+            coverFileMeta.textContent = formatSize(file.size);
+
+            uploadFile(file, 'covers')
+                .then(url => {
+                    uploadedImageUrl = url;
+                    coverFileName.textContent = file.name;
+                    coverFileMeta.textContent = formatSize(file.size) + ' · uploaded';
+                    coverThumb.style.backgroundImage = "url('" + url + "')";
+                    coverThumb.style.backgroundSize = 'cover';
+                    coverThumb.style.backgroundPosition = 'center';
+                    coverThumb.textContent = '';
+                })
+                .catch(err => {
+                    coverFileName.textContent = 'Upload failed';
+                    coverFileMeta.textContent = err.message;
+                    showBanner('Cover upload failed: ' + err.message, 'error');
+                });
+        });
+
+        const manuscriptFileInput = document.getElementById('manuscriptFileInput');
+        const manuscriptFileName = document.getElementById('manuscriptFileName');
+        const manuscriptFileMeta = document.getElementById('manuscriptFileMeta');
+        const manuscriptBadge = document.getElementById('manuscriptBadge');
+        const manuscriptStatusText = document.getElementById('manuscriptStatusText');
+        const manuscriptProgressFill = document.getElementById('manuscriptProgressFill');
+
+        document.getElementById('manuscriptUploadBtn').addEventListener('click', () => manuscriptFileInput.click());
+
+        manuscriptFileInput.addEventListener('change', () => {
+            const file = manuscriptFileInput.files[0];
+            if (!file) return;
+            manuscriptProgressFill.style.width = '40%';
+            manuscriptStatusText.textContent = 'Uploading…';
+            manuscriptBadge.style.display = 'none';
+            manuscriptFileName.firstChild.textContent = file.name + ' ';
+            manuscriptFileMeta.textContent = formatSize(file.size);
+
+            uploadFile(file, 'books')
+                .then(url => {
+                    uploadedFileUrl = url;
+                    manuscriptProgressFill.style.width = '100%';
+                    manuscriptStatusText.textContent = 'Upload complete';
+                    manuscriptBadge.style.display = 'inline-block';
+                    manuscriptFileMeta.textContent = formatSize(file.size) + ' · Ready';
+                })
+                .catch(err => {
+                    manuscriptProgressFill.style.width = '0%';
+                    manuscriptStatusText.textContent = 'Upload failed';
+                    showBanner('Manuscript upload failed: ' + err.message, 'error');
+                });
+        });
+
+
+        /* =====================================================
+           COLLECT FORM DATA
+           ===================================================== */
+
+        function buildPayload(statusOverride) {
+            const title = document.getElementById('fieldTitle').value.trim();
+            const author = document.getElementById('fieldAuthor').value.trim();
+            const category = document.getElementById('fieldCategory').value;
+            const language = document.getElementById('fieldLanguage').value;
+            const description = document.getElementById('fieldDescription').value.trim();
+            const price = parseFloat(document.getElementById('fieldPrice').value) || 0;
+            const releaseStatus = statusOverride || document.getElementById('fieldReleaseStatus').value;
+
+            return {
+                title: title,
+                author: author,
+                description: description,
+                category: category,
+                language: language,
+                price: isPremium ? price : 0,
+                image: uploadedImageUrl || undefined,
+                filePath: uploadedFileUrl || undefined,
+                premium: isPremium,
+                pageCount: undefined,
+                mood: 'Calm',
+                type: selectedType,
+                status: releaseStatus
+            };
+        }
+
+        function validate(payload) {
+            if (!payload.title) return 'Content title is required.';
+            if (!payload.author) return 'Author / creator is required.';
+            return null;
+        }
+
+        function submitContent(statusOverride, triggerBtn) {
+            const payload = buildPayload(statusOverride);
+            const error = validate(payload);
+            if (error) {
+                showBanner(error, 'error');
+                return;
+            }
+
+            const originalText = triggerBtn ? triggerBtn.textContent : '';
+            if (triggerBtn) {
+                triggerBtn.disabled = true;
+                triggerBtn.textContent = 'Saving…';
+            }
+
+            fetch('/api/author/books', {
+                method: 'POST',
+                headers: jsonHeaders,
+                body: JSON.stringify(payload)
+            })
+                .then(r => {
+                    if (r.status === 401) {
+                        throw new Error('Session expired. Please log in again.');
+                    }
+                    if (r.status === 403) {
+                        throw new Error('Access forbidden. This area requires ADMIN role.');
+                    }
+                    if (!r.ok) {
+                        return r.json().catch(() => ({})).then(body => {
+                            throw new Error(body.message || 'Failed to save content (' + r.status + ')');
+                        });
+                    }
+                    return r.json();
+                })
+                .then(book => {
+                    const noticeBookId = document.getElementById('noticeBookId');
+                    if (noticeBookId) noticeBookId.textContent = '#BK-' + book.id;
+                    showBanner(
+                        'Content "' + book.title + '" saved successfully as ' + payload.status + '.',
+                        'success'
+                    );
+                    setTimeout(() => {
+                        window.location.href = '/admin-dashboard';
+                    }, 1200);
+                })
+                .catch(err => {
+                    showBanner(err.message, 'error');
+                })
+                .finally(() => {
+                    if (triggerBtn) {
+                        triggerBtn.disabled = false;
+                        triggerBtn.textContent = originalText;
+                    }
+                });
+        }
+
+        ['saveDraftTop', 'saveDraftBottom'].forEach(id => {
+            document.getElementById(id).addEventListener('click', (e) => submitContent('draft', e.target));
+        });
+        ['publishTop', 'publishBottom'].forEach(id => {
+            document.getElementById(id).addEventListener('click', (e) => submitContent(null, e.target));
+        });
+
+        document.querySelector('.discard').addEventListener('click', () => {
+            if (confirm('Discard this content and return to the admin dashboard?')) {
+                window.location.href = '/admin-dashboard';
+            }
+        });
+
+    });
+</script>
+
 </body>
 </html>

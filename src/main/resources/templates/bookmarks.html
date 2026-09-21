@@ -4,26 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bookmarks - READORA</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="stylesheet" th:href="@{/css/bookmarks.css}">
 </head>
 <body>
 
     <!-- HEADER -->
-    <th:block th:replace="~{fragments/chrome :: header}"></th:block>
-    <header class="header legacy-chrome-header">
-        <div class="header-inner">
-            <a th:href="@{/index}" class="logo">READORA</a>
-            <nav class="nav-links">
-                <a th:href="@{/index}">Discover</a>
-                <a th:href="@{/Book}">Books</a>
-                <a th:href="@{/newspapers}">Newspapers</a>
-                <a th:href="@{/magazines}">Magazines</a>
-                <a th:href="@{/read-nepal}">Read Nepal</a>
-                <a th:href="@{/library}">My Library</a>
-            </nav>
-            <div class="profile-icon">👤</div>
-        </div>
-    </header>
+
+    <header th:replace="~{fragments/header :: readerHeader('library')}"></header>
 
     <!-- MAIN -->
     <main class="main-content">
@@ -73,7 +61,6 @@
             <div class="footer-copyright">© 2026 READORA. All rights reserved.</div>
         </div>
     </footer>
-    <th:block th:replace="~{fragments/chrome :: footer}"></th:block>
 
     <!-- TOAST -->
     <div id="toast" class="toast"></div>

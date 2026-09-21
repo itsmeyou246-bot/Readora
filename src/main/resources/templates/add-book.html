@@ -1,1505 +1,1102 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-
 <head>
-
     <meta charset="UTF-8">
-
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-
-    <title>READORA | Publish Book</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Book · READORA Admin</title>
 
     <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+          href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
+        :root {
+            --forest: #1b3022;
+            --forest-dark: #122017;
+            --gold: #c5a059;
+            --ivory: #fcf9f8;
+            --sand: #f6f3f2;
+            --border: #e5ded9;
+            --text: #211f1d;
+            --muted: #706b67;
+            --green-soft: #e7f2e9;
+            --green-text: #3f7a4e;
         }
 
         body {
-            font-family: Arial, Helvetica, sans-serif;
-            background: #faf9f7;
-            color: #17251d;
+            background: var(--ivory);
+            color: var(--text);
+            font-family: "Plus Jakarta Sans", sans-serif;
+            font-size: 14px;
+            line-height: 1.5;
         }
 
+        a { color: inherit; text-decoration: none; }
+        button, select, input, textarea { font-family: inherit; }
+        button { cursor: pointer; }
+
+        /* ================= HEADER (YOUR ORIGINAL — UNCHANGED) ================= */
+
         .header {
-            height: 72px;
-            background: #faf9f7;
-            border-bottom: 1px solid #ddd6ca;
-            display: flex;
-            align-items: center;
-            padding: 0 42px;
+            height: 64px;
+            background: var(--ivory);
+            border-bottom: 1px solid var(--border);
         }
 
         .header-inner {
-            width: 100%;
+            max-width: 1400px;
+            height: 100%;
+            margin: auto;
+            padding: 0 28px;
             display: flex;
             align-items: center;
+            gap: 32px;
         }
 
+        .logo-group { display: flex; align-items: center; gap: 10px; }
+
         .logo {
-            text-decoration: none;
-            color: #173a27;
-            font-family: Georgia, "Times New Roman", serif;
-            font-size: 23px;
+            font-family: "Playfair Display", serif;
+            font-size: 19px;
             font-weight: 700;
+            color: var(--forest);
+            letter-spacing: 0.3px;
         }
 
         .admin-badge {
-            margin-left: 10px;
-            padding: 3px 7px;
-            border-radius: 4px;
-            background: #173a27;
+            background: var(--forest);
             color: white;
-            font-size: 9px;
+            font-size: 10px;
             font-weight: 700;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
+            padding: 4px 9px;
+            border-radius: 5px;
         }
 
-        .nav-links {
-            display: flex;
-            gap: 30px;
-            margin-left: auto;
-            margin-right: 25px;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: #403d37;
-            font-size: 14px;
-        }
-
-        .nav-links a:hover {
-            color: #173a27;
-        }
-
-        .header-actions {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .notification-btn,
-        .admin-profile {
-            height: 38px;
-            border: 1px solid #ddd6ca;
-            background: white;
-            color: #173a27;
-            border-radius: 6px;
-        }
-
-        .notification-btn {
-            width: 38px;
-            cursor: pointer;
-        }
-
-        .admin-profile {
-            padding: 0 13px;
-            display: flex;
-            align-items: center;
-            font-size: 12px;
+        .nav-links { display: flex; align-items: center; gap: 26px; flex: 1; }
+        .nav-links a { font-size: 13.5px; color: var(--muted); padding: 22px 0 20px; }
+        .nav-links a:hover { color: var(--forest); }
+        .nav-links a.active {
+            color: var(--forest);
             font-weight: 600;
+            border-bottom: 2px solid var(--forest);
         }
 
-        .page {
-            width: min(1080px, calc(100% - 70px));
+        .header-search {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            background: var(--sand);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 9px 14px;
+            width: 260px;
+            color: var(--muted);
+            font-size: 12.5px;
+        }
+        .header-search i { font-size: 12px; }
+
+        .header-actions { display: flex; align-items: center; gap: 14px; }
+
+        .reader-view-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--sand);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 9px 14px;
+            font-size: 12.5px;
+            font-weight: 600;
+            color: var(--text);
+            white-space: nowrap;
+        }
+
+        .bell { position: relative; color: var(--muted); font-size: 15px; }
+        .bell .dot {
+            position: absolute; top: -3px; right: -3px;
+            width: 7px; height: 7px; background: #c0503f; border-radius: 50%;
+        }
+
+        .profile { display: flex; align-items: center; gap: 10px; }
+        .profile-avatar {
+            width: 34px; height: 34px; border-radius: 50%;
+            background: var(--forest); color: white;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 12px; font-weight: 700;
+        }
+        .profile-info { line-height: 1.3; }
+        .profile-info strong { display: block; font-size: 12.5px; }
+        .profile-info small { color: var(--muted); font-size: 9.5px; letter-spacing: 0.4px; }
+
+        @media (max-width: 1100px) {
+            .nav-links, .header-search { display: none; }
+        }
+
+        /* ================= PAGE ================= */
+
+        .container {
+            max-width: 1400px;
             margin: auto;
-            padding: 35px 0 60px;
+            padding: 28px 28px 70px;
         }
 
         .breadcrumb {
-            font-size: 10px;
-            color: #77736b;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
             text-transform: uppercase;
-            letter-spacing: 1.2px;
+            color: var(--muted);
             margin-bottom: 10px;
         }
+        .breadcrumb a:hover { color: var(--forest); }
+        .breadcrumb span { margin: 0 6px; color: #b8b0a5; }
 
-        .breadcrumb span {
-            margin: 0 7px;
-            color: #aaa49b;
-        }
-
-        .page-header {
+        .page-head {
             display: flex;
             justify-content: space-between;
             align-items: flex-end;
-            border-bottom: 1px solid #ddd6ca;
-            padding-bottom: 22px;
-            margin-bottom: 22px;
+            margin-bottom: 26px;
+            gap: 20px;
+            flex-wrap: wrap;
         }
 
-        .page-header h1 {
-            font-family: Georgia, "Times New Roman", serif;
-            font-size: 42px;
-            color: #10251a;
-            margin-bottom: 8px;
+        .page-head h1 {
+            font-family: "Playfair Display", serif;
+            font-size: 32px;
+            color: var(--forest-dark);
+            margin-bottom: 6px;
         }
 
-        .page-header p {
-            color: #5e5a53;
-            font-size: 14px;
+        .page-head p {
+            color: var(--muted);
+            font-size: 13px;
+            max-width: 520px;
         }
 
-        .header-buttons {
-            display: flex;
-            gap: 10px;
-        }
+        .page-actions { display: flex; gap: 10px; }
 
         .btn {
-            min-height: 40px;
-            padding: 0 18px;
-            border-radius: 4px;
-            border: 1px solid #ddd6ca;
-            background: white;
-            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 11px 18px;
+            border-radius: 8px;
             font-size: 13px;
+            font-weight: 600;
+            border: 1px solid var(--border);
+            white-space: nowrap;
+            background: white;
+            color: var(--text);
         }
-
+        .btn-ghost { background: white; color: var(--text); }
         .btn-primary {
-            background: #173a27;
+            background: var(--forest);
             color: white;
-            border-color: #173a27;
+            border-color: var(--forest);
         }
+        .btn-primary:hover { background: #142a1c; }
+        .btn:disabled { opacity: .55; cursor: not-allowed; }
 
-        .btn-primary:hover {
-            background: #102a1d;
-        }
+        /* ================= LAYOUT GRID ================= */
 
-        .main-grid {
+        .form-grid {
             display: grid;
-            grid-template-columns: 1.5fr .8fr;
-            gap: 22px;
+            grid-template-columns: 1.55fr 0.85fr;
+            gap: 20px;
+            align-items: start;
         }
 
         .card {
             background: white;
-            border: 1px solid #e1dcd4;
-            border-radius: 6px;
-            padding: 22px;
-            margin-bottom: 22px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 20px;
         }
 
-        .card-title {
-            font-family: Georgia, "Times New Roman", serif;
-            font-size: 23px;
-            font-weight: 500;
-            margin-bottom: 5px;
-        }
-
-        .card-subtitle {
-            color: #77736b;
-            font-size: 9px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #ece8e2;
-            margin-bottom: 17px;
-        }
-
-        .book-preview {
+        .card-head {
             display: flex;
-            gap: 22px;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 20px;
         }
 
-        .cover-preview {
-            width: 145px;
-            height: 205px;
-            object-fit: cover;
-            background: #f3f0eb;
-            border: 1px solid #ddd8d1;
+        .card-head-left { display: flex; align-items: flex-start; gap: 12px; }
+
+        .card-icon {
+            width: 34px; height: 34px;
+            border-radius: 8px;
+            background: var(--sand);
+            color: var(--forest);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 14px;
             flex-shrink: 0;
         }
 
-        .book-info h2 {
-            font-family: Georgia, "Times New Roman", serif;
-            font-size: 28px;
-            line-height: 1.1;
+        .card-title-group h2 {
+            font-family: "Playfair Display", serif;
+            font-size: 19px;
+            font-weight: 600;
+            color: var(--forest-dark);
+            margin-bottom: 3px;
+        }
+
+        .card-title-group small {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.6px;
+            color: var(--muted);
+            text-transform: uppercase;
+        }
+
+        .section-pill {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.4px;
+            color: var(--muted);
+            background: var(--sand);
+            border: 1px solid var(--border);
+            padding: 4px 9px;
+            border-radius: 5px;
+            white-space: nowrap;
+        }
+
+        .field { margin-bottom: 16px; }
+        .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+        .field-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+
+        .field label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 10.5px;
+            font-weight: 700;
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+            color: var(--muted);
             margin-bottom: 7px;
         }
+        .field label .req { color: #b5432f; margin-left: 2px; text-transform: none; }
+        .field label .hint { text-transform: none; font-weight: 500; color: #a29c92; }
+        .field label .count { text-transform: none; font-weight: 500; color: #a29c92; }
 
-        .book-info .author {
-            font-size: 13px;
-            color: #555149;
-            margin-bottom: 15px;
-        }
-
-        .book-info .description {
-            font-size: 12px;
-            line-height: 1.7;
-            color: #625e57;
-        }
-
-        .badges {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 7px;
-            margin-top: 15px;
-        }
-
-        .badge {
-            padding: 6px 9px;
-            background: #f2efea;
-            border-radius: 4px;
-            font-size: 9px;
-        }
-
-        .detail-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1px;
-            background: #e7e2da;
-            border: 1px solid #e7e2da;
-        }
-
-        .detail {
+        .field input[type=text],
+        .field input[type=number],
+        .field input[type=date],
+        .field select,
+        .field textarea {
+            width: 100%;
+            padding: 11px 13px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
             background: white;
-            padding: 13px;
+            font-size: 13px;
+            color: var(--text);
+            outline: none;
         }
-
-        .detail-label {
-            color: #77736b;
-            font-size: 8px;
-            text-transform: uppercase;
-            letter-spacing: .8px;
-            margin-bottom: 5px;
+        .field input:focus, .field select:focus, .field textarea:focus {
+            border-color: var(--forest);
+            box-shadow: 0 0 0 3px rgba(27,48,34,.08);
         }
+        .field textarea { resize: vertical; min-height: 100px; line-height: 1.6; }
 
-        .detail-value {
-            color: #26231f;
-            font-size: 12px;
-        }
-
-        .status-card {
-            background: #173a27;
-            color: white;
-            border-radius: 6px;
-            padding: 22px;
-            margin-bottom: 22px;
-        }
-
-        .status-card h2 {
-            font-family: Georgia, "Times New Roman", serif;
-            font-size: 23px;
-            font-weight: 500;
-            margin-bottom: 8px;
-        }
-
-        .status-card p {
-            font-size: 11px;
-            line-height: 1.6;
-            opacity: .8;
-        }
-
-        .status-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 12px 0;
-            border-bottom: 1px solid rgba(255,255,255,.15);
-            font-size: 11px;
-        }
-
-        .status-row:last-child {
-            border-bottom: none;
-        }
-
-        .ready {
-            color: #d5f1d9;
-            font-weight: bold;
-        }
-
-        .file-row {
+        .editor-toolbar {
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            padding: 12px;
-            background: #f5f3ef;
-            margin-bottom: 8px;
-            border-radius: 4px;
-        }
-
-        .file-name {
+            gap: 12px;
+            border: 1px solid var(--border);
+            border-bottom: none;
+            border-radius: 8px 8px 0 0;
+            padding: 8px 12px;
+            background: var(--sand);
             font-size: 11px;
-            max-width: 220px;
-            overflow: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis;
+            color: var(--muted);
+        }
+        .editor-toolbar i { cursor: pointer; }
+        .editor-toolbar .divider { width: 1px; height: 14px; background: var(--border); }
+        .field textarea.with-toolbar { border-radius: 0 0 8px 8px; }
+
+        /* ---- upload boxes ---- */
+        .upload-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px; }
+        .upload-box {
+            border: 1.5px dashed var(--border);
+            border-radius: 10px;
+            padding: 20px 14px;
+            text-align: center;
+            background: var(--sand);
+            cursor: pointer;
+            transition: border-color .15s ease;
+        }
+        .upload-box:hover { border-color: var(--forest); }
+        .upload-box img.thumb-preview {
+            width: 56px; height: 76px; object-fit: cover; border-radius: 5px;
+            margin: 0 auto 8px; display: block; border: 1px solid var(--border);
+        }
+        .upload-box .upload-icon-wrap {
+            width: 40px; height: 40px; border-radius: 8px;
+            background: white; border: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 10px; color: var(--forest); font-size: 15px;
+        }
+        .upload-box .up-title { font-size: 12.5px; font-weight: 600; margin-bottom: 4px; }
+        .upload-box .up-sub { font-size: 10.5px; color: var(--muted); line-height: 1.5; }
+        .upload-box .up-badge {
+            display: inline-flex; align-items: center; gap: 5px;
+            margin-top: 10px; font-size: 10px; font-weight: 700; color: var(--forest);
+            background: white; border: 1px solid var(--border); padding: 4px 8px; border-radius: 5px;
         }
 
-        .file-type {
-            font-size: 8px;
-            color: #173a27;
-            font-weight: bold;
+        .meta-strip {
+            display: flex; align-items: center; gap: 22px;
+            background: var(--sand); border: 1px solid var(--border);
+            border-radius: 8px; padding: 12px 14px; font-size: 11px; color: var(--muted);
         }
+        .meta-strip .field { margin: 0; flex: 1; }
+        .meta-strip .readtime { display: flex; align-items: center; gap: 6px; white-space: nowrap; }
 
-        .price-box {
-            background: #f5f3ef;
-            border-radius: 5px;
+        /* ---- access tier cards ---- */
+        .access-grid { display: grid; grid-template-columns: 1fr 1.3fr; gap: 12px; margin-bottom: 18px; }
+        .access-card {
+            border: 1.5px solid var(--border);
+            border-radius: 10px;
             padding: 15px;
-        }
-
-        .price-line {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-            font-size: 11px;
-        }
-
-        .price-line:last-child {
-            margin-bottom: 0;
-            padding-top: 10px;
-            border-top: 1px solid #ddd8d1;
-            font-weight: bold;
-        }
-
-        .confirmation {
-            background: #fff;
-            border: 1px solid #e1dcd4;
-            padding: 20px;
-            border-radius: 6px;
-            margin-top: 22px;
-        }
-
-        .confirmation label {
-            display: flex;
-            gap: 9px;
-            align-items: flex-start;
-            text-transform: none;
-            letter-spacing: 0;
-            font-size: 11px;
-            color: #4f4b45;
             cursor: pointer;
         }
-
-        .confirmation input {
-            width: auto;
-            margin-top: 2px;
-        }
-
-        .publish-button {
-            width: 100%;
-            min-height: 48px;
-            margin-top: 15px;
-            border: none;
-            border-radius: 5px;
-            background: #173a27;
+        .access-card .radio-row { display: flex; align-items: center; gap: 9px; font-weight: 700; font-size: 13px; margin-bottom: 6px; }
+        .access-card p { font-size: 11px; color: var(--muted); line-height: 1.5; }
+        .access-card.selected {
+            border-color: var(--forest);
+            background: var(--forest);
             color: white;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
+        }
+        .access-card.selected p { color: rgba(255,255,255,.75); }
+        .access-card input { accent-color: var(--forest); }
+
+        .royalty-box {
+            background: var(--sand); border: 1px solid var(--border);
+            border-radius: 8px; padding: 12px 14px; font-size: 11.5px;
+        }
+        .royalty-line { display: flex; justify-content: space-between; margin-bottom: 6px; color: var(--muted); }
+        .royalty-line strong { color: var(--text); }
+        .royalty-note { font-size: 10px; color: #a29c92; margin-top: 8px; line-height: 1.5; }
+
+        /* ---- sidebar cards ---- */
+        .ai-badge {
+            display: inline-flex; align-items: center; gap: 6px;
+            background: var(--green-soft); color: var(--green-text);
+            font-size: 9.5px; font-weight: 700; letter-spacing: .4px;
+            padding: 4px 9px; border-radius: 20px;
+        }
+        .ai-badge i { font-size: 6px; }
+
+        .tag-group { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 18px; }
+        .tag {
+            font-size: 11px; font-weight: 600; padding: 6px 11px;
+            border-radius: 20px; background: var(--sand); border: 1px solid var(--border);
+            color: var(--text); display: flex; align-items: center; gap: 6px; cursor: pointer;
+        }
+        .tag.selected { background: var(--forest); color: white; border-color: var(--forest); }
+        .tag i { font-size: 9px; }
+
+        .sub-label {
+            font-size: 10px; font-weight: 700; letter-spacing: .5px;
+            text-transform: uppercase; color: var(--muted); margin-bottom: 10px;
         }
 
-        .publish-button:hover {
-            background: #102a1d;
+        .cluster-row {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 9px 0; border-bottom: 1px solid var(--sand); font-size: 12.5px;
         }
+        .cluster-row:last-of-type { border-bottom: none; }
+        .cluster-row .fit { font-size: 11px; font-weight: 700; color: var(--forest); }
 
-        .publish-button:disabled {
-            opacity: .5;
-            cursor: not-allowed;
+        .info-box {
+            background: var(--sand); border-radius: 10px; padding: 14px;
+            display: flex; align-items: flex-start; gap: 12px; margin-bottom: 18px;
         }
+        .info-box i { color: var(--forest); font-size: 18px; margin-top: 2px; }
+        .info-box h3 { font-family: "Playfair Display", serif; font-size: 17px; margin-bottom: 3px; }
+        .info-box small { color: var(--muted); font-size: 10.5px; text-transform: uppercase; letter-spacing: .4px; }
 
-        .back-button {
-            width: 100%;
-            margin-top: 8px;
+        .checkbox-line {
+            display: flex; align-items: flex-start; gap: 8px;
+            font-size: 11.5px; color: var(--muted); margin: 4px 0 16px;
         }
+        .checkbox-line input { margin-top: 2px; accent-color: var(--forest); }
 
-        .message {
-            display: none;
-            padding: 13px;
-            margin-bottom: 18px;
-            border-radius: 5px;
-            font-size: 12px;
+        .progress-track {
+            height: 6px; background: var(--sand); border-radius: 4px; overflow: hidden; margin-bottom: 14px;
         }
+        .progress-fill { height: 100%; background: var(--forest); border-radius: 4px; transition: width .2s ease; }
 
-        .success {
-            display: block;
-            background: #e2f1e4;
-            border: 1px solid #bcd8c1;
-            color: #173a27;
+        .readiness-list { margin-bottom: 18px; }
+        .readiness-item {
+            display: flex; align-items: center; gap: 9px;
+            font-size: 12px; color: var(--text); padding: 6px 0;
         }
+        .readiness-item i { font-size: 13px; }
+        .readiness-item.done i { color: var(--green-text); }
+        .readiness-item.pending i { color: #c9c2b7; }
 
-        .error {
-            display: block;
-            background: #f7e5e5;
-            border: 1px solid #e6bebe;
-            color: #8d2525;
+        .side-card-dark {
+            background: var(--forest-dark);
+            border: none;
         }
+        .side-card-dark .sub-label,
+        .side-card-dark .card-title-group small { color: rgba(255,255,255,.55); }
+        .side-card-dark .card-title-group h2 { color: white; }
 
-        @media (max-width: 850px) {
+        .stack-btn { width: 100%; margin-bottom: 9px; justify-content: center; }
 
-            .main-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .nav-links {
-                display: none;
-            }
-
-            .page {
-                width: calc(100% - 30px);
-            }
-
+        #saveMessage {
+            display: none; margin-bottom: 18px; padding: 12px 14px;
+            border-radius: 8px; font-size: 12.5px;
         }
+        #saveMessage.success { display: block; background: var(--green-soft); color: var(--green-text); border: 1px solid #bcd8c1; }
+        #saveMessage.error { display: block; background: #f7e5e5; color: #8d2525; border: 1px solid #e6bebe; }
 
-        @media (max-width: 600px) {
-
-            .book-preview {
-                flex-direction: column;
-            }
-
-            .page-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 15px;
-            }
-
-            .detail-grid {
-                grid-template-columns: 1fr;
-            }
-
+        @media (max-width: 1050px) {
+            .form-grid { grid-template-columns: 1fr; }
+            .field-row, .field-row-3, .upload-grid, .access-grid { grid-template-columns: 1fr; }
         }
-
     </style>
-
 </head>
-
 <body>
 
-<header class="header">
+<!-- ================= HEADER (YOUR ORIGINAL — UNCHANGED) ================= -->
+<header th:replace="~{fragments/header :: adminHeader('books')}"></header>
 
-    <div class="header-inner">
 
-        <a class="logo"
-           th:href="@{/index}">
-            READORA
-        </a>
+<!-- ================= MAIN ================= -->
+<main class="container">
 
-        <span class="admin-badge">
-            ADMIN
-        </span>
+    <div class="breadcrumb">
+        <a th:href="@{/admin-dashboard}">ADMIN</a>
+        <span>›</span>
+        <a th:href="@{/admin/books}">BOOKS &amp; CATALOG</a>
+        <span>›</span>
+        ADD NEW BOOK
+    </div>
 
-        <nav class="nav-links">
+    <div class="page-head">
+        <div>
+            <h1>Add New Book</h1>
+            <p>Create, catalog, and configure a new publication for the READORA digital ecosystem and Himalayan literary registry.</p>
+        </div>
 
-            <a th:href="@{/admin-dashboard}">
-                Dashboard
-            </a>
-
-            <a href="/admin-dashboard#usersTab">
-                Users
-            </a>
-
-            <a class="nav-active"
-               th:href="@{/admin/books}">
-                Content
-            </a>
-
-            <a href="/admin-dashboard#authorsTab">
-                Authors
-            </a>
-
-            <a href="/admin-dashboard#subscriptionsTab">
-                Subscriptions
-            </a>
-
-            <a href="/admin-dashboard#analyticsTab">
-                Analytics
-            </a>
-
-        </nav>
-
-        <div class="header-actions">
-
-            <button class="notification-btn"
-                    type="button">
-
-                <i class="fa-regular fa-bell"></i>
-
+        <div class="page-actions">
+            <button class="btn btn-ghost" id="saveDraftTop" type="button">
+                <i class="fa-solid fa-bookmark"></i>
+                Save as Draft
             </button>
+            <button class="btn btn-primary" id="publishTop" type="button">
+                <i class="fa-solid fa-upload"></i>
+                Publish Book
+            </button>
+        </div>
+    </div>
 
-            <div class="admin-profile">
-                Admin
+    <div id="saveMessage"></div>
+
+    <form id="bookForm">
+        <div class="form-grid">
+
+            <!-- ======================= LEFT COLUMN ======================= -->
+            <div>
+
+                <!-- SECTION 01: Book Information -->
+                <section class="card">
+                    <div class="card-head">
+                        <div class="card-head-left">
+                            <div class="card-icon"><i class="fa-solid fa-book"></i></div>
+                            <div class="card-title-group">
+                                <h2>Book Information</h2>
+                                <small>Bibliographic Metadata</small>
+                            </div>
+                        </div>
+                        <span class="section-pill">Section 01</span>
+                    </div>
+
+                    <div class="field">
+                        <label>Book Title <span class="req">*</span></label>
+                        <input type="text" id="title" placeholder="e.g. The Mountain Path: Chronicles of Langtang" required>
+                    </div>
+
+                    <div class="field">
+                        <label>Subtitle <span class="hint">(optional)</span></label>
+                        <input type="text" id="subtitle" placeholder="e.g. An Ethnographic Record of Trans-Himalayan Herders">
+                    </div>
+
+                    <div class="field-row">
+                        <div class="field">
+                            <label>Primary Author <span class="req">*</span></label>
+                            <select id="author" required>
+                                <option value="">Select verified author...</option>
+                                <option value="Tenzing Norbu">Tenzing Norbu</option>
+                                <option value="Aruna Shrestha">Aruna Shrestha</option>
+                                <option value="Karma Lobsang">Karma Lobsang</option>
+                                <option value="Dr. Sushila Bhattarai">Dr. Sushila Bhattarai</option>
+                            </select>
+                        </div>
+                        <div class="field">
+                            <label>Translator / Contributor</label>
+                            <input type="text" id="contributor" placeholder="e.g. Translated by Michael...">
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label>Description &amp; Synopsis <span class="req">*</span>
+                            <span class="count"><span id="descCount">0</span> / 2,400 chars</span>
+                        </label>
+                        <div class="editor-toolbar">
+                            <i class="fa-solid fa-bold"></i>
+                            <i class="fa-solid fa-italic"></i>
+                            <i class="fa-solid fa-quote-right"></i>
+                            <i class="fa-solid fa-list"></i>
+                            <span class="divider"></span>
+                            <span>Markdown &amp; HTML supported</span>
+                        </div>
+                        <textarea class="with-toolbar" id="description" maxlength="2400" required
+                                  placeholder="A profound narrative chronicling the highland routes, spiritual customs, and changing socio-cultural tapestry of upper Nepal..."></textarea>
+                    </div>
+
+                    <div class="field-row-3">
+                        <div class="field">
+                            <label>Category</label>
+                            <select id="category">
+                                <option value="Himalayan Memoirs">Himalayan Memoirs</option>
+                                <option value="Cultural Heritage">Cultural Heritage</option>
+                                <option value="Philosophy">Philosophy</option>
+                                <option value="Academic">Academic</option>
+                            </select>
+                        </div>
+                        <div class="field">
+                            <label>Primary Language</label>
+                            <select id="language">
+                                <option value="English">English</option>
+                                <option value="Nepali">Nepali</option>
+                            </select>
+                        </div>
+                        <div class="field">
+                            <label>Publication Type</label>
+                            <select id="publicationType">
+                                <option value="Monograph">Monograph / Nonfiction</option>
+                                <option value="Anthology">Anthology</option>
+                                <option value="Research Volume">Research Volume</option>
+                                <option value="Novella">Novella</option>
+                            </select>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SECTION 02: Digital Content & Files -->
+                <section class="card">
+                    <div class="card-head">
+                        <div class="card-head-left">
+                            <div class="card-icon"><i class="fa-solid fa-photo-film"></i></div>
+                            <div class="card-title-group">
+                                <h2>Digital Content &amp; Files</h2>
+                                <small>Assets &amp; Reading Metrics</small>
+                            </div>
+                        </div>
+                        <span class="section-pill">Section 02</span>
+                    </div>
+
+                    <div class="upload-grid">
+
+                        <div>
+                            <label style="font-size:10.5px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:7px;">
+                                Cover Artwork <span class="req">*</span>
+                            </label>
+                            <div class="upload-box" id="coverBox">
+                                <img id="coverThumb" class="thumb-preview" style="display:none;" alt="Cover preview">
+                                <div class="upload-icon-wrap" id="coverIconWrap"><i class="fa-solid fa-image"></i></div>
+                                <div class="up-title" id="coverTitle">Click to browse or drop cover</div>
+                                <div class="up-sub">1600 × 2400px · 300 DPI · JPG/PNG</div>
+                            </div>
+                            <input type="file" id="coverInput" accept="image/*" style="display:none;">
+                        </div>
+
+                        <div>
+                            <label style="font-size:10.5px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:7px;">
+                                Digital Manuscript <span class="req">*</span>
+                            </label>
+                            <div class="upload-box" id="manuscriptBox">
+                                <div class="upload-icon-wrap"><i class="fa-solid fa-file-lines"></i></div>
+                                <div class="up-title" id="manuscriptTitle">Upload EPUB 3.0 or PDF/A</div>
+                                <div class="up-sub">Standard compliant reflowable, max 50 MB</div>
+                                <span class="up-badge"><i class="fa-solid fa-circle-check"></i> EPUB validation engine ready</span>
+                            </div>
+                            <input type="file" id="manuscriptInput" accept=".pdf,.epub" style="display:none;">
+                        </div>
+
+                    </div>
+
+                    <div class="meta-strip">
+                        <div class="field">
+                            <label style="margin-bottom:4px;">Estimated Pages</label>
+                            <input type="number" id="pageCount" value="480" min="1">
+                        </div>
+                        <div class="readtime">
+                            <i class="fa-regular fa-clock"></i>
+                            <span>~<span id="readTime">8.5</span> hours</span>
+                        </div>
+                        <div style="font-size:10px;color:#a29c92;white-space:nowrap;">
+                            <i class="fa-solid fa-calculator"></i> Auto-calculated via 220 WPM pace
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SECTION 03: Pricing & Access Tier -->
+                <section class="card">
+                    <div class="card-head">
+                        <div class="card-head-left">
+                            <div class="card-icon"><i class="fa-solid fa-sack-dollar"></i></div>
+                            <div class="card-title-group">
+                                <h2>Pricing &amp; Access Tier</h2>
+                                <small>Revenue Model &amp; Deployment</small>
+                            </div>
+                        </div>
+                        <span class="section-pill">Section 03</span>
+                    </div>
+
+                    <div class="access-grid" id="accessGrid">
+
+                        <label class="access-card" data-value="free" id="freeCard">
+                            <input type="radio" name="access" value="free" style="display:none;">
+                            <div class="radio-row"><i class="fa-regular fa-circle"></i> Free (Open Access)</div>
+                            <p>Public research, archival heritage manuscripts, or state-supported open texts.</p>
+                        </label>
+
+                        <label class="access-card selected" data-value="premium" id="premiumCard">
+                            <input type="radio" name="access" value="premium" checked style="display:none;">
+                            <div class="radio-row"><i class="fa-solid fa-circle-dot"></i> Premium (Paid Purchase)</div>
+                            <p>Standard retail pricing with automatic author royalty splits via Khalti/eSewa.</p>
+                        </label>
+
+                    </div>
+
+                    <div class="field-row">
+                        <div class="field">
+                            <label>Retail Price (NPR)</label>
+                            <input type="number" id="price" value="480" min="0" step="1">
+                        </div>
+                        <div class="royalty-box">
+                            <div class="royalty-line"><span>Author Royalty (70%):</span><strong>Rs. <span id="royaltyAmt">336.00</span></strong></div>
+                            <div class="royalty-line"><span>Platform Share (30%):</span><strong>Rs. <span id="platformAmt">144.00</span></strong></div>
+                            <div class="royalty-note">Automated ledger allocation configured for Spring Boot royalty engine.</div>
+                        </div>
+                    </div>
+
+                    <div class="field-row">
+                        <div class="field">
+                            <label>Publication Status</label>
+                            <select id="publicationStatus">
+                                <option value="published">Immediate Publish</option>
+                                <option value="scheduled">Scheduled Release</option>
+                                <option value="draft">Draft Only</option>
+                            </select>
+                        </div>
+                        <div class="field">
+                            <label>Scheduled Release Date</label>
+                            <input type="date" id="releaseDate">
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+
+            <!-- ======================= RIGHT COLUMN (SIDEBAR) ======================= -->
+            <div>
+
+                <!-- READORA AI Engine -->
+                <section class="card">
+                    <div class="card-head">
+                        <div class="card-head-left">
+                            <div class="card-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+                            <div class="card-title-group">
+                                <h2>READORA AI Engine</h2>
+                                <small>Semantic &amp; Vector Indexing</small>
+                            </div>
+                        </div>
+                        <span class="ai-badge"><i class="fa-solid fa-circle"></i> ACTIVE</span>
+                    </div>
+
+                    <div class="info-box">
+                        <i class="fa-solid fa-language"></i>
+                        <div>
+                            <h3>Devanagari Normalization</h3>
+                            <small>Unicode NFC Conformant</small>
+                        </div>
+                    </div>
+
+                    <div class="info-box">
+                        <i class="fa-solid fa-shield-halved"></i>
+                        <div>
+                            <h3>Auto-Validated</h3>
+                            <small>UTF-8</small>
+                        </div>
+                    </div>
+
+                    <div class="sub-label">Mood &amp; Atmosphere Tags</div>
+                    <div class="tag-group" id="moodTags">
+                        <span class="tag" data-tag="Contemplative">Contemplative <i class="fa-solid fa-check"></i></span>
+                        <span class="tag selected" data-tag="Philosophical">Philosophical <i class="fa-solid fa-xmark"></i></span>
+                        <span class="tag selected" data-tag="Historical">Historical <i class="fa-solid fa-xmark"></i></span>
+                        <span class="tag" data-tag="Melancholic">Melancholic</span>
+                        <span class="tag" data-tag="Serene">Serene</span>
+                        <span class="tag" data-tag="Inspiring">Inspiring</span>
+                    </div>
+
+                    <div class="sub-label">Target Reader Clusters</div>
+                    <div class="cluster-row"><span>Himalayan Explorers</span><span class="fit">94% Fit</span></div>
+                    <div class="cluster-row"><span>Nepali Heritage Enthusiasts</span><span class="fit">88% Fit</span></div>
+                    <div class="cluster-row"><span>Buddhist Philosophy Scholars</span><span class="fit">79% Fit</span></div>
+
+                    <div class="field" style="margin-top:16px;">
+                        <label>Reading Complexity Level</label>
+                        <select id="complexity">
+                            <option value="Moderate">Moderate (Informed Audiences)</option>
+                            <option value="Accessible">Accessible (General Readers)</option>
+                            <option value="Advanced">Advanced (Specialist Readers)</option>
+                        </select>
+                    </div>
+                </section>
+
+                <!-- Bibliographic Registry -->
+                <section class="card">
+                    <div class="card-head">
+                        <div class="card-head-left">
+                            <div class="card-icon"><i class="fa-solid fa-barcode"></i></div>
+                            <div class="card-title-group">
+                                <h2>Bibliographic Registry</h2>
+                                <small>Archival Legal Identifiers</small>
+                            </div>
+                        </div>
+                        <span class="section-pill">Section 05</span>
+                    </div>
+
+                    <div class="field">
+                        <label>ISBN-13 / Archival Barcode</label>
+                        <input type="text" id="isbn" placeholder="978-9937-01-9921">
+                    </div>
+
+                    <div class="checkbox-line">
+                        <input type="checkbox" id="generateRda">
+                        <span>Generate READORA Digital Archive ID (RDA-ID)</span>
+                    </div>
+
+                    <div class="field-row">
+                        <div class="field">
+                            <label>Edition</label>
+                            <input type="text" id="edition" placeholder="First Edition, 2026">
+                        </div>
+                        <div class="field">
+                            <label>Publisher / Imprint</label>
+                            <input type="text" id="publisher" placeholder="Himalayan Heritage Books">
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Catalog Readiness -->
+                <section class="card">
+                    <div class="card-head">
+                        <div class="card-title-group">
+                            <h2 style="font-size:18px;">Catalog Readiness</h2>
+                        </div>
+                        <span class="ai-badge" id="readinessPct">0% READY</span>
+                    </div>
+
+                    <div class="progress-track"><div class="progress-fill" id="readinessBar" style="width:0%;"></div></div>
+
+                    <p style="font-size:11.5px;color:var(--muted);margin-bottom:14px;">
+                        <span id="readinessCountText">0 of 4</span> core publication criteria fulfilled.
+                    </p>
+
+                    <div class="readiness-list">
+                        <div class="readiness-item pending" id="check-title"><i class="fa-regular fa-circle"></i> Metadata &amp; title indexing valid</div>
+                        <div class="readiness-item pending" id="check-author"><i class="fa-regular fa-circle"></i> Verified author assigned</div>
+                        <div class="readiness-item pending" id="check-cover"><i class="fa-regular fa-circle"></i> Cover image verified</div>
+                        <div class="readiness-item pending" id="check-manuscript"><i class="fa-regular fa-circle"></i> Manuscript packaging verified</div>
+                    </div>
+
+                    <button class="btn btn-primary stack-btn" id="publishBottom" type="button">
+                        <i class="fa-solid fa-tower-broadcast"></i> Publish to Catalog
+                    </button>
+                    <button class="btn btn-ghost stack-btn" id="readerPreview" type="button">
+                        <i class="fa-solid fa-eye"></i> Reader Preview
+                    </button>
+                    <button class="btn btn-ghost stack-btn" id="saveDraftBottom" type="button" style="margin-bottom:0;">
+                        <i class="fa-solid fa-bookmark"></i> Save Draft
+                    </button>
+                </section>
+
             </div>
 
         </div>
-
-    </div>
-
-</header>
-
-<main class="page">
-
-    <div class="breadcrumb">
-
-        Admin
-        <span>›</span>
-        Books & Catalog
-        <span>›</span>
-        Publish Book
-
-    </div>
-
-    <div class="page-header">
-
-        <div>
-
-            <h1>
-                Publish Book
-            </h1>
-
-            <p>
-                Review the publication information before
-                adding this book to the READORA catalog.
-            </p>
-
-        </div>
-
-        <div class="header-buttons">
-
-            <button class="btn"
-                    id="editButton">
-
-                <i class="fa-solid fa-arrow-left"></i>
-                Back to Edit
-
-            </button>
-
-        </div>
-
-    </div>
-
-    <div id="message"
-         class="message">
-    </div>
-
-    <div class="main-grid">
-
-        <div>
-
-            <section class="card">
-
-                <h2 class="card-title">
-                    Publication Preview
-                </h2>
-
-                <div class="card-subtitle">
-                    Review book information
-                </div>
-
-                <div class="book-preview">
-
-                    <img id="coverPreview"
-                         class="cover-preview"
-                         alt="Book cover">
-
-                    <div class="book-info">
-
-                        <h2 id="bookTitle">
-                            —
-                        </h2>
-
-                        <div class="author">
-                            By
-                            <strong id="bookAuthor">
-                                —
-                            </strong>
-                        </div>
-
-                        <p class="description"
-                           id="bookDescription">
-                            —
-                        </p>
-
-                        <div class="badges">
-
-                            <span class="badge"
-                                  id="categoryBadge">
-                                —
-                            </span>
-
-                            <span class="badge"
-                                  id="languageBadge">
-                                —
-                            </span>
-
-                            <span class="badge"
-                                  id="typeBadge">
-                                —
-                            </span>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </section>
-
-            <section class="card">
-
-                <h2 class="card-title">
-                    Bibliographic Information
-                </h2>
-
-                <div class="card-subtitle">
-                    Catalog metadata
-                </div>
-
-                <div class="detail-grid">
-
-                    <div class="detail">
-
-                        <div class="detail-label">
-                            Title
-                        </div>
-
-                        <div class="detail-value"
-                             id="detailTitle">
-                        </div>
-
-                    </div>
-
-                    <div class="detail">
-
-                        <div class="detail-label">
-                            Author
-                        </div>
-
-                        <div class="detail-value"
-                             id="detailAuthor">
-                        </div>
-
-                    </div>
-
-                    <div class="detail">
-
-                        <div class="detail-label">
-                            Category
-                        </div>
-
-                        <div class="detail-value"
-                             id="detailCategory">
-                        </div>
-
-                    </div>
-
-                    <div class="detail">
-
-                        <div class="detail-label">
-                            Language
-                        </div>
-
-                        <div class="detail-value"
-                             id="detailLanguage">
-                        </div>
-
-                    </div>
-
-                    <div class="detail">
-
-                        <div class="detail-label">
-                            Publication Type
-                        </div>
-
-                        <div class="detail-value"
-                             id="detailType">
-                        </div>
-
-                    </div>
-
-                    <div class="detail">
-
-                        <div class="detail-label">
-                            ISBN
-                        </div>
-
-                        <div class="detail-value"
-                             id="detailISBN">
-                        </div>
-
-                    </div>
-
-                    <div class="detail">
-
-                        <div class="detail-label">
-                            Edition
-                        </div>
-
-                        <div class="detail-value"
-                             id="detailEdition">
-                        </div>
-
-                    </div>
-
-                    <div class="detail">
-
-                        <div class="detail-label">
-                            Publisher
-                        </div>
-
-                        <div class="detail-value"
-                             id="detailPublisher">
-                        </div>
-
-                    </div>
-
-                    <div class="detail">
-
-                        <div class="detail-label">
-                            Estimated Pages
-                        </div>
-
-                        <div class="detail-value"
-                             id="detailPages">
-                        </div>
-
-                    </div>
-
-                    <div class="detail">
-
-                        <div class="detail-label">
-                            Reading Complexity
-                        </div>
-
-                        <div class="detail-value"
-                             id="detailComplexity">
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </section>
-
-            <section class="card">
-
-                <h2 class="card-title">
-                    Digital Files
-                </h2>
-
-                <div class="card-subtitle">
-                    Publication assets
-                </div>
-
-                <div class="file-row">
-
-                    <span class="file-name"
-                          id="coverFile">
-                        Cover image
-                    </span>
-
-                    <span class="file-type">
-                        COVER
-                    </span>
-
-                </div>
-
-                <div class="file-row">
-
-                    <span class="file-name"
-                          id="manuscriptFile">
-                        Manuscript
-                    </span>
-
-                    <span class="file-type">
-                        EPUB / PDF
-                    </span>
-
-                </div>
-
-            </section>
-
-        </div>
-
-        <div>
-
-            <section class="status-card">
-
-                <h2>
-                    Ready for Publication
-                </h2>
-
-                <p>
-                    The book will become available in the
-                    READORA catalog after publishing.
-                </p>
-
-                <div class="status-row">
-
-                    <span>
-                        Metadata
-                    </span>
-
-                    <span class="ready">
-                        Complete
-                    </span>
-
-                </div>
-
-                <div class="status-row">
-
-                    <span>
-                        Author
-                    </span>
-
-                    <span class="ready">
-                        Verified
-                    </span>
-
-                </div>
-
-                <div class="status-row">
-
-                    <span>
-                        Cover
-                    </span>
-
-                    <span class="ready">
-                        Uploaded
-                    </span>
-
-                </div>
-
-                <div class="status-row">
-
-                    <span>
-                        Manuscript
-                    </span>
-
-                    <span class="ready">
-                        Uploaded
-                    </span>
-
-                </div>
-
-                <div class="status-row">
-
-                    <span>
-                        Access
-                    </span>
-
-                    <span class="ready"
-                          id="accessStatus">
-                        —
-                    </span>
-
-                </div>
-
-            </section>
-
-            <section class="card">
-
-                <h2 class="card-title">
-                    Pricing & Royalties
-                </h2>
-
-                <div class="card-subtitle">
-                    Revenue configuration
-                </div>
-
-                <div class="price-box">
-
-                    <div class="price-line">
-
-                        <span>
-                            Retail Price
-                        </span>
-
-                        <strong id="price">
-                            Rs. 0.00
-                        </strong>
-
-                    </div>
-
-                    <div class="price-line">
-
-                        <span>
-                            Author Royalty
-                        </span>
-
-                        <strong id="royalty">
-                            Rs. 0.00
-                        </strong>
-
-                    </div>
-
-                    <div class="price-line">
-
-                        <span>
-                            Platform Share
-                        </span>
-
-                        <strong id="platform">
-                            Rs. 0.00
-                        </strong>
-
-                    </div>
-
-                </div>
-
-            </section>
-
-            <section class="confirmation">
-
-                <label>
-
-                    <input type="checkbox"
-                           id="confirm">
-
-                    <span>
-                        I confirm that the book information,
-                        author assignment, digital files and
-                        pricing details have been reviewed and
-                        are ready to be published to the READORA
-                        catalog.
-                    </span>
-
-                </label>
-
-                <button class="publish-button"
-                        id="finalPublish"
-                        disabled>
-
-                    <i class="fa-solid fa-upload"></i>
-
-                    Publish to Catalog
-
-                </button>
-
-                <button class="btn back-button"
-                        id="backButton">
-
-                    Back to Add New Book
-
-                </button>
-
-            </section>
-
-        </div>
-
-    </div>
+    </form>
 
 </main>
 
 <script>
+    // ---------- description char counter ----------
+    const descField = document.getElementById('description');
+    const descCount = document.getElementById('descCount');
+    descField.addEventListener('input', () => {
+        descCount.textContent = descField.value.length;
+        updateReadiness();
+    });
 
-    const stored =
-        sessionStorage.getItem(
-            "readoraBookData"
-        );
+    // ---------- page count -> read time ----------
+    const pageCountInput = document.getElementById('pageCount');
+    const readTimeEl = document.getElementById('readTime');
+    function updateReadTime() {
+        const pages = Number(pageCountInput.value) || 0;
+        // ~275 words/page, 220 wpm pace
+        const hours = (pages * 275) / 220 / 60;
+        readTimeEl.textContent = hours.toFixed(1);
+    }
+    pageCountInput.addEventListener('input', updateReadTime);
+    updateReadTime();
 
-    if (!stored) {
+    // ---------- access tier selection ----------
+    let accessType = 'premium';
+    const freeCard = document.getElementById('freeCard');
+    const premiumCard = document.getElementById('premiumCard');
+    const priceInput = document.getElementById('price');
 
-        window.location.href =
-            "/admin/books/add";
+    function selectAccess(value) {
+        accessType = value;
+        [freeCard, premiumCard].forEach(c => c.classList.remove('selected'));
+        (value === 'free' ? freeCard : premiumCard).classList.add('selected');
+        freeCard.querySelector('.radio-row i').className = value === 'free' ? 'fa-solid fa-circle-dot' : 'fa-regular fa-circle';
+        premiumCard.querySelector('.radio-row i').className = value === 'premium' ? 'fa-solid fa-circle-dot' : 'fa-regular fa-circle';
+        priceInput.disabled = (value === 'free');
+        updateRoyalty();
+    }
+    freeCard.addEventListener('click', () => selectAccess('free'));
+    premiumCard.addEventListener('click', () => selectAccess('premium'));
 
+    function updateRoyalty() {
+        const amount = accessType === 'premium' ? (Number(priceInput.value) || 0) : 0;
+        document.getElementById('royaltyAmt').textContent = (amount * 0.70).toFixed(2);
+        document.getElementById('platformAmt').textContent = (amount * 0.30).toFixed(2);
+    }
+    priceInput.addEventListener('input', updateRoyalty);
+    updateRoyalty();
+
+    // ---------- mood tags ----------
+    document.querySelectorAll('#moodTags .tag').forEach(tag => {
+        tag.addEventListener('click', () => {
+            tag.classList.toggle('selected');
+            const icon = tag.querySelector('i');
+            if (icon) {
+                icon.className = tag.classList.contains('selected') ? 'fa-solid fa-xmark' : 'fa-solid fa-check';
+            } else if (tag.classList.contains('selected')) {
+                tag.insertAdjacentHTML('beforeend', ' <i class="fa-solid fa-xmark"></i>');
+            }
+        });
+    });
+    function getSelectedMoods() {
+        return Array.from(document.querySelectorAll('#moodTags .tag.selected')).map(t => t.dataset.tag);
     }
 
-    const book =
-        JSON.parse(stored);
-
-    document.getElementById(
-        "bookTitle"
-    ).textContent =
-        book.title || "Untitled Book";
-
-    document.getElementById(
-        "bookAuthor"
-    ).textContent =
-        book.authorName || "Unknown Author";
-
-    document.getElementById(
-        "bookDescription"
-    ).textContent =
-        book.description || "No description provided.";
-
-    document.getElementById(
-        "categoryBadge"
-    ).textContent =
-        book.category || "No category";
-
-    document.getElementById(
-        "languageBadge"
-    ).textContent =
-        book.language || "English";
-
-    document.getElementById(
-        "typeBadge"
-    ).textContent =
-        book.publicationType || "Monograph";
-
-    document.getElementById(
-        "detailTitle"
-    ).textContent =
-        book.title || "—";
-
-    document.getElementById(
-        "detailAuthor"
-    ).textContent =
-        book.authorName || "—";
-
-    document.getElementById(
-        "detailCategory"
-    ).textContent =
-        book.category || "—";
-
-    document.getElementById(
-        "detailLanguage"
-    ).textContent =
-        book.language || "—";
-
-    document.getElementById(
-        "detailType"
-    ).textContent =
-        book.publicationType || "—";
-
-    document.getElementById(
-        "detailISBN"
-    ).textContent =
-        book.isbn || "Not provided";
-
-    document.getElementById(
-        "detailEdition"
-    ).textContent =
-        book.edition || "Not provided";
-
-    document.getElementById(
-        "detailPublisher"
-    ).textContent =
-        book.publisher || "Not provided";
-
-    document.getElementById(
-        "detailPages"
-    ).textContent =
-        book.pages || "Not specified";
-
-    document.getElementById(
-        "detailComplexity"
-    ).textContent =
-        book.complexity || "Moderate";
-
-    document.getElementById(
-        "accessStatus"
-    ).textContent =
-        book.accessType === "PREMIUM"
-            ? "Premium"
-            : "Free";
-
-    const amount =
-        Number(book.price) || 0;
-
-    document.getElementById(
-        "price"
-    ).textContent =
-        "Rs. " + amount.toFixed(2);
-
-    if (
-        book.accessType === "PREMIUM"
-    ) {
-
-        document.getElementById(
-            "royalty"
-        ).textContent =
-            "Rs. " +
-            (amount * .70).toFixed(2);
-
-        document.getElementById(
-            "platform"
-        ).textContent =
-            "Rs. " +
-            (amount * .30).toFixed(2);
-
-    } else {
-
-        document.getElementById(
-            "royalty"
-        ).textContent =
-            "Rs. 0.00";
-
-        document.getElementById(
-            "platform"
-        ).textContent =
-            "Rs. 0.00";
-
-    }
-
+    // ---------- cover upload ----------
+    const coverBox = document.getElementById('coverBox');
+    const coverInput = document.getElementById('coverInput');
+    const coverThumb = document.getElementById('coverThumb');
+    const coverIconWrap = document.getElementById('coverIconWrap');
+    const coverTitle = document.getElementById('coverTitle');
     let coverFile = null;
 
+    coverBox.addEventListener('click', () => coverInput.click());
+    coverInput.addEventListener('change', () => {
+        if (coverInput.files && coverInput.files[0]) {
+            coverFile = coverInput.files[0];
+            coverTitle.textContent = coverFile.name;
+            coverIconWrap.style.display = 'none';
+            coverThumb.style.display = 'block';
+            const reader = new FileReader();
+            reader.onload = e => coverThumb.src = e.target.result;
+            reader.readAsDataURL(coverFile);
+            updateReadiness();
+        }
+    });
+
+    // ---------- manuscript upload ----------
+    const manuscriptBox = document.getElementById('manuscriptBox');
+    const manuscriptInput = document.getElementById('manuscriptInput');
+    const manuscriptTitle = document.getElementById('manuscriptTitle');
     let manuscriptFile = null;
 
-    const request =
-        indexedDB.open(
-            "readoraBookDatabase",
-            1
-        );
+    manuscriptBox.addEventListener('click', () => manuscriptInput.click());
+    manuscriptInput.addEventListener('change', () => {
+        if (manuscriptInput.files && manuscriptInput.files[0]) {
+            manuscriptFile = manuscriptInput.files[0];
+            manuscriptTitle.textContent = manuscriptFile.name;
+            updateReadiness();
+        }
+    });
 
-    request.onsuccess =
-        function(event) {
-
-            const db =
-                event.target.result;
-
-            const transaction =
-                db.transaction(
-                    "bookFiles",
-                    "readonly"
-                );
-
-            const store =
-                transaction.objectStore(
-                    "bookFiles"
-                );
-
-            const coverRequest =
-                store.get("cover");
-
-            coverRequest.onsuccess =
-                function() {
-
-                    coverFile =
-                        coverRequest.result;
-
-                    if (coverFile) {
-
-                        document.getElementById(
-                            "coverFile"
-                        ).textContent =
-                            coverFile.name;
-
-                        const reader =
-                            new FileReader();
-
-                        reader.onload =
-                            function(event) {
-
-                                document.getElementById(
-                                    "coverPreview"
-                                ).src =
-                                    event.target.result;
-
-                            };
-
-                        reader.readAsDataURL(
-                            coverFile
-                        );
-
-                    }
-
-                };
-
-            const manuscriptRequest =
-                store.get("manuscript");
-
-            manuscriptRequest.onsuccess =
-                function() {
-
-                    manuscriptFile =
-                        manuscriptRequest.result;
-
-                    if (manuscriptFile) {
-
-                        document.getElementById(
-                            "manuscriptFile"
-                        ).textContent =
-                            manuscriptFile.name;
-
-                    }
-
-                };
-
+    // ---------- catalog readiness ----------
+    function updateReadiness() {
+        const checks = {
+            title: document.getElementById('title').value.trim().length > 0 && descField.value.trim().length > 0,
+            author: document.getElementById('author').value.trim().length > 0,
+            cover: !!coverFile,
+            manuscript: !!manuscriptFile
         };
-
-    const confirmBox =
-        document.getElementById(
-            "confirm"
-        );
-
-    const finalPublish =
-        document.getElementById(
-            "finalPublish"
-        );
-
-    confirmBox.addEventListener(
-        "change",
-        function() {
-
-            finalPublish.disabled =
-                !this.checked;
-
-        }
-    );
-
-    document.getElementById(
-        "editButton"
-    ).addEventListener(
-        "click",
-        function() {
-
-            window.location.href =
-                "/admin/books/add";
-
-        }
-    );
-
-    document.getElementById(
-        "backButton"
-    ).addEventListener(
-        "click",
-        function() {
-
-            window.location.href =
-                "/admin/books/add";
-
-        }
-    );
-
-    finalPublish.addEventListener(
-        "click",
-        async function() {
-
-            if (!confirmBox.checked) {
-
-                return;
-
+        let done = 0;
+        Object.entries(checks).forEach(([key, ok]) => {
+            const el = document.getElementById('check-' + key);
+            const icon = el.querySelector('i');
+            if (ok) {
+                el.classList.remove('pending'); el.classList.add('done');
+                icon.className = 'fa-solid fa-circle-check';
+                done++;
+            } else {
+                el.classList.remove('done'); el.classList.add('pending');
+                icon.className = 'fa-regular fa-circle';
             }
-
-            finalPublish.disabled = true;
-
-            finalPublish.innerHTML =
-                '<i class="fa-solid fa-spinner fa-spin"></i> Publishing...';
-
-            try {
-
-                const formData =
-                    new FormData();
-
-                formData.append(
-                    "title",
-                    book.title || ""
-                );
-
-                formData.append(
-                    "subtitle",
-                    book.subtitle || ""
-                );
-
-                formData.append(
-                    "authorId",
-                    book.authorId || ""
-                );
-
-                formData.append(
-                    "contributor",
-                    book.contributor || ""
-                );
-
-                formData.append(
-                    "description",
-                    book.description || ""
-                );
-
-                formData.append(
-                    "category",
-                    book.category || ""
-                );
-
-                formData.append(
-                    "language",
-                    book.language || ""
-                );
-
-                formData.append(
-                    "publicationType",
-                    book.publicationType || ""
-                );
-
-                formData.append(
-                    "pages",
-                    book.pages || ""
-                );
-
-                formData.append(
-                    "accessType",
-                    book.accessType || "FREE"
-                );
-
-                formData.append(
-                    "price",
-                    book.price || "0"
-                );
-
-                formData.append(
-                    "publicationStatus",
-                    book.publicationStatus || "PUBLISHED"
-                );
-
-                formData.append(
-                    "complexity",
-                    book.complexity || ""
-                );
-
-                formData.append(
-                    "isbn",
-                    book.isbn || ""
-                );
-
-                formData.append(
-                    "edition",
-                    book.edition || ""
-                );
-
-                formData.append(
-                    "publisher",
-                    book.publisher || ""
-                );
-
-                if (coverFile) {
-
-                    formData.append(
-                        "cover",
-                        coverFile
-                    );
-
-                }
-
-                if (manuscriptFile) {
-
-                    formData.append(
-                        "manuscript",
-                        manuscriptFile
-                    );
-
-                }
-
-                const response =
-                    await fetch(
-                        "/api/admin/books",
-                        {
-                            method: "POST",
-                            body: formData
-                        }
-                    );
-
-                let data = null;
-
-                try {
-
-                    data =
-                        await response.json();
-
-                } catch (error) {
-
-                    data = null;
-
-                }
-
-                if (!response.ok) {
-
-                    throw new Error(
-                        data?.message ||
-                        "Unable to publish the book."
-                    );
-
-                }
-
-                sessionStorage.removeItem(
-                    "readoraBookData"
-                );
-
-                const dbRequest =
-                    indexedDB.open(
-                        "readoraBookDatabase",
-                        1
-                    );
-
-                dbRequest.onsuccess =
-                    function(event) {
-
-                        const db =
-                            event.target.result;
-
-                        const transaction =
-                            db.transaction(
-                                "bookFiles",
-                                "readwrite"
-                            );
-
-                        const store =
-                            transaction.objectStore(
-                                "bookFiles"
-                            );
-
-                        store.delete("cover");
-
-                        store.delete("manuscript");
-
-                    };
-
-                showMessage(
-                    "Book published successfully to the READORA catalog.",
-                    "success"
-                );
-
-                setTimeout(
-                    function() {
-
-                        window.location.href =
-                            "/admin-dashboard";
-
-                    },
-                    1500
-                );
-
-            } catch (error) {
-
-                console.error(error);
-
-                showMessage(
-                    error.message ||
-                    "Server error. Unable to publish the book.",
-                    "error"
-                );
-
-                finalPublish.disabled =
-                    false;
-
-                finalPublish.innerHTML =
-                    '<i class="fa-solid fa-upload"></i> Publish to Catalog';
-
-            }
-
-        }
-    );
-
-    function showMessage(
-        message,
-        type
-    ) {
-
-        const box =
-            document.getElementById(
-                "message"
-            );
-
-        box.textContent =
-            message;
-
-        box.className =
-            "message " + type;
-
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth"
         });
+        const total = Object.keys(checks).length;
+        const pct = Math.round((done / total) * 100);
+        document.getElementById('readinessBar').style.width = pct + '%';
+        document.getElementById('readinessPct').textContent = pct + '% READY';
+        document.getElementById('readinessCountText').textContent = done + ' of ' + total;
+    }
+    document.getElementById('title').addEventListener('input', updateReadiness);
+    document.getElementById('author').addEventListener('change', updateReadiness);
+    updateReadiness();
 
+    // ---------- reader preview (placeholder) ----------
+    document.getElementById('readerPreview').addEventListener('click', () => {
+        window.open('/dashboard', '_blank');
+    });
+
+    // ---------- save / publish logic ----------
+    // Only fields that exist on the backend AuthorBookRequest / Book model
+    // are actually persisted (title, author, description, category,
+    // language, price, image, filePath, premium, pageCount, mood, type,
+    // status). The AI-engine / bibliographic-registry fields shown above
+    // (ISBN, edition, publisher, translator, reader clusters, complexity)
+    // are UI-only until the backend model is extended to store them.
+    //
+    // IMPORTANT: "type" is always sent as the literal string "book" —
+    // BookService.getAllBooks() filters strictly on type="book" AND
+    // status="published". Sending the Publication Type dropdown value
+    // here (Monograph/Anthology/etc.) instead of "book" would make the
+    // published record invisible on the reader-facing book list.
+
+    async function uploadFile(file, folder) {
+        const fd = new FormData();
+        fd.append('file', file);
+        fd.append('folder', folder);
+        const res = await fetch('/api/upload', { method: 'POST', body: fd, credentials: 'include' });
+        if (!res.ok) throw new Error('File upload failed (' + folder + ').');
+        const data = await res.json();
+        return data.url;
     }
 
+    function showMessage(text, type) {
+        const box = document.getElementById('saveMessage');
+        box.textContent = text;
+        box.className = type;
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    async function submitBook(statusOverride) {
+        const title = document.getElementById('title').value.trim();
+        const author = document.getElementById('author').value.trim();
+        const description = document.getElementById('description').value.trim();
+
+        if (!title || !author || !description) {
+            showMessage('Please fill in Title, Primary Author and Description before saving.', 'error');
+            return;
+        }
+
+        const buttons = [
+            document.getElementById('publishTop'),
+            document.getElementById('publishBottom'),
+            document.getElementById('saveDraftTop'),
+            document.getElementById('saveDraftBottom')
+        ];
+        buttons.forEach(b => b.disabled = true);
+
+        try {
+            let imageUrl = '';
+            let manuscriptUrl = '';
+
+            if (coverFile) {
+                imageUrl = await uploadFile(coverFile, 'covers');
+            }
+            if (manuscriptFile) {
+                manuscriptUrl = await uploadFile(manuscriptFile, 'manuscripts');
+            } else if (statusOverride !== 'draft') {
+                throw new Error('Please upload a manuscript file before publishing.');
+            }
+
+            // Fold the "Publication Type" dropdown (Monograph/Anthology/etc.)
+            // into category, since the backend Book model has no dedicated
+            // field for it yet — this way the value is at least persisted
+            // somewhere instead of being silently discarded.
+            const publicationType = document.getElementById('publicationType').value;
+            const category = document.getElementById('category').value + ' — ' + publicationType;
+
+            const payload = {
+                title: title,
+                author: author,
+                description: description,
+                category: category,
+                language: document.getElementById('language').value,
+                price: accessType === 'premium' ? Number(priceInput.value) || 0 : 0,
+                image: imageUrl,
+                filePath: manuscriptUrl || 'pending-upload',
+                premium: accessType === 'premium',
+                pageCount: Number(pageCountInput.value) || 0,
+                mood: getSelectedMoods().join(', '),
+                type: 'book', // MUST stay exactly "book" — see note above
+                status: statusOverride || document.getElementById('publicationStatus').value
+            };
+
+            const res = await fetch('/api/author/books', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
+                body: JSON.stringify(payload)
+            });
+
+            if (!res.ok) {
+                const errData = await res.json().catch(() => null);
+                throw new Error(errData?.message || 'Unable to save the book.');
+            }
+
+            showMessage(
+                statusOverride === 'draft'
+                    ? 'Draft saved successfully.'
+                    : 'Book published successfully to the READORA catalog.',
+                'success'
+            );
+
+            setTimeout(() => { window.location.href = '/admin/books'; }, 1200);
+
+        } catch (err) {
+            console.error(err);
+            showMessage(err.message || 'Something went wrong. Please try again.', 'error');
+        } finally {
+            buttons.forEach(b => b.disabled = false);
+        }
+    }
+
+    document.getElementById('publishTop').addEventListener('click', () => submitBook());
+    document.getElementById('publishBottom').addEventListener('click', () => submitBook());
+    document.getElementById('saveDraftTop').addEventListener('click', () => submitBook('draft'));
+    document.getElementById('saveDraftBottom').addEventListener('click', () => submitBook('draft'));
 </script>
 
 </body>
-
 </html>

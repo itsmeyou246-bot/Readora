@@ -9,8 +9,11 @@ body {
 .header {
     min-height: 67px;
     padding: 14px 0;
-    background: #fdfaf8;
+    background: #faf6ee;
     border-bottom: 1px solid #eee8e4;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 }
 
 .header-inner {

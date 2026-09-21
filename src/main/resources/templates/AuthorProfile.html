@@ -1,10 +1,713 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <title>Readora Studio · Author Profile & Bio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Existing CSS - DO NOT CHANGE -->
+    <link rel="stylesheet" th:href="@{/css/AuthorProfile.css}">
+
+    <!-- Font Awesome - ONLY FOR REAL ICONS -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
+
 <body>
-$END$
+
+<!-- ===== HEADER (same as Dashboard / Pipeline / Royalties / Book) ===== -->
+<header th:replace="~{fragments/header :: authorHeader('dashboard')}"></header>
+
+
+<div class="container">
+
+    <!-- ===== SUB NAV ===== -->
+    <div class="subnav">
+
+        <a th:href="@{/AuthorDashboard}" class="subnav-tab">
+            Overview
+        </a>
+
+        <a th:href="@{/SubmissionandPipeline}" class="subnav-tab">
+            Manuscript Pipeline · 5
+        </a>
+
+        <a th:href="@{/RoyalitiesandSales}" class="subnav-tab">
+            Royalties & Earnings
+        </a>
+
+        <button class="subnav-tab">
+            Reader Reviews & Ratings
+        </button>
+
+        <button class="subnav-tab">
+            Publication Analytics
+        </button>
+
+        <button class="subnav-tab subnav-active">
+            Author Profile & Bio
+        </button>
+
+        <span class="subnav-spacer"></span>
+
+        <!-- REAL EYE ICON -->
+        <button class="btn preview-btn">
+            <i class="fa-regular fa-eye"></i>
+            Preview Public Page
+        </button>
+
+        <!-- REAL SAVE ICON -->
+        <button class="btn btn-dark">
+            <i class="fa-regular fa-floppy-disk"></i>
+            Save Profile Changes
+        </button>
+
+    </div>
+
+
+    <!-- ===== PAGE TITLE ===== -->
+    <section class="page-intro">
+
+        <div class="breadcrumb">
+            Author Studio / Author Profile & Bio
+        </div>
+
+        <div class="page-title-row">
+
+            <div>
+
+                <h1 class="page-title">
+                    Author Profile & Public Bio
+                </h1>
+
+                <p class="page-subtitle">
+                    Curate your literary persona, public credentials, writing disciplines, and reader discovery presence.
+                </p>
+
+            </div>
+
+            <div class="title-actions">
+
+                <!-- REAL EYE ICON -->
+                <button class="btn">
+                    <i class="fa-regular fa-eye"></i>
+                    Preview Public Profile
+                </button>
+
+                <!-- REAL CHECK ICON -->
+                <button class="btn btn-dark">
+                    <i class="fa-solid fa-check"></i>
+                    Save Changes
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ===== TWO COLUMN LAYOUT ===== -->
+    <section class="profile-layout">
+
+        <!-- ===== LEFT: FORM COLUMN ===== -->
+        <div class="form-column">
+
+            <!-- Public Identity & Avatar -->
+            <div class="form-card">
+
+                <h3 class="form-card-title">
+                    Public Identity & Avatar
+                </h3>
+
+                <div class="avatar-row">
+
+                    <div class="avatar-circle">
+
+                        TN
+
+                        <!-- REAL CAMERA ICON -->
+                        <span class="avatar-cam">
+                            <i class="fa-solid fa-camera"></i>
+                        </span>
+
+                    </div>
+
+                    <div class="avatar-info">
+
+                        <div class="avatar-label">
+                            Author Headshot
+                        </div>
+
+                        <div class="avatar-note">
+                            Recommended 800 x 800 px square photo. PNG or JPG under 3MB.
+                        </div>
+
+                        <div class="avatar-actions">
+
+                            <button class="btn small-btn">
+                                Upload Photo
+                            </button>
+
+                            <a href="#" class="remove-link">
+                                Remove
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="field-grid">
+
+                    <div class="field">
+
+                        <label>
+                            Author Name (Display Name)
+                            <span class="required">*</span>
+                        </label>
+
+                        <input type="text" value="Tenzing Norbu">
+
+                    </div>
+
+                    <div class="field">
+
+                        <label>
+                            Professional Email
+                            <span class="required">*</span>
+                        </label>
+
+                        <input type="email" value="tenzing@readora.np">
+
+                    </div>
+
+                </div>
+
+
+                <div class="field-grid">
+
+                    <div class="field">
+
+                        <label>
+                            Location / Regional Base
+                        </label>
+
+                        <input type="text"
+                               value="Kathmandu / Namche Bazaar, Nepal">
+
+                    </div>
+
+                    <div class="field">
+
+                        <label>
+                            Affiliation / Society
+                        </label>
+
+                        <input type="text"
+                               value="Himalayan Heritage Fellowship">
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Author Biographies -->
+            <div class="form-card">
+
+                <h3 class="form-card-title">
+                    Author Biographies
+                </h3>
+
+                <div class="field">
+
+                    <label>
+                        Short Biography (Displayed on Book Cards)
+                    </label>
+
+                    <textarea rows="3">Himalayan mountaineer and cultural essayist documenting high-altitude silence, Sherpa heritage, and high mountain ecological transitions.</textarea>
+
+                    <div class="field-hint">
+                        Max 160 characters. Appears on search cards and reader metadata tooltips.
+                    </div>
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>
+                        Full Biography (Public Author Page)
+                    </label>
+
+                    <textarea rows="5">Tenzing Norbu has spent over two decades traversing high Himalayan passes across the Solukhumbu and Mustang regions. His published works explore the intersection of ancient Buddhist monastic philosophy, traditional oral storytelling, and the delicate ecological realities of alpine Nepal. Author of "The Mountain Path" and "Chronicles of the Valley," his essays have been translated across South Asian literary journals.</textarea>
+
+                </div>
+
+            </div>
+
+
+            <!-- Areas of Writing & Languages -->
+            <div class="form-card">
+
+                <h3 class="form-card-title">
+                    Areas of Writing & Languages
+                </h3>
+
+                <div class="field">
+
+                    <label>
+                        Primary Writing Disciplines
+                    </label>
+
+                    <div class="tag-input-box" id="disciplineTags"></div>
+
+                </div>
+
+
+                <div class="field-grid">
+
+                    <div class="field">
+
+                        <label>
+                            Working Languages
+                        </label>
+
+                        <input type="text"
+                               value="English, Nepali, Tibetan">
+
+                    </div>
+
+                    <div class="field">
+
+                        <label>
+                            Personal Website / Archive
+                        </label>
+
+                        <input type="text"
+                               value="https://tenzingnorbu.readora.np">
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Social & Scholar Links -->
+            <div class="form-card">
+
+                <h3 class="form-card-title">
+                    Social & Scholar Links
+                </h3>
+
+                <div class="field-grid">
+
+                    <div class="field">
+
+                        <!-- REAL X ICON -->
+                        <label>
+                            <i class="fa-brands fa-x-twitter"></i>
+                            (Twitter)
+                        </label>
+
+                        <input type="text"
+                               value="@tenzing_himalaya">
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <!-- REAL GRADUATION CAP ICON -->
+                        <label>
+                            <i class="fa-solid fa-graduation-cap"></i>
+                            Google Scholar / ORCID
+                        </label>
+
+                        <input type="text"
+                               value="orcid.org/0000-0002-8912-349X">
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ===== RIGHT: LIVE PUBLIC PREVIEW ===== -->
+        <div class="preview-column">
+
+            <div class="preview-card">
+
+                <div class="preview-head">
+
+                    <span>
+                        <i class="fa-regular fa-eye"></i>
+                        LIVE PUBLIC PREVIEW
+                    </span>
+
+                    <button class="reader-view-pill">
+                        Reader View
+                    </button>
+
+                </div>
+
+
+                <div class="preview-body">
+
+                    <div class="preview-profile-row">
+
+                        <div class="preview-avatar">
+                            TN
+                        </div>
+
+                        <div>
+
+                            <div class="preview-name">
+
+                                Tenzing Norbu
+
+                                <!-- REAL CHECK ICON -->
+                                <span class="verified-check">
+                                    <i class="fa-solid fa-check"></i>
+                                </span>
+
+                            </div>
+
+
+                            <div class="preview-location">
+
+                                <!-- REAL LOCATION ICON -->
+                                <i class="fa-solid fa-location-dot"></i>
+
+                                Kathmandu / Namche Bazaar
+
+                            </div>
+
+
+                            <div class="preview-affiliation">
+                                Himalayan Heritage Fellowship
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="preview-stats" id="previewStats"></div>
+
+
+                    <div class="preview-section-label">
+                        About the Author
+                    </div>
+
+
+                    <p class="preview-about">
+                        Tenzing Norbu has spent over two decades traversing high Himalayan passes across the Solukhumbu and Mustang regions. His published works explore ancient Buddhist monastic philosophy and traditional oral storytelling.
+                    </p>
+
+
+                    <div class="preview-section-label">
+                        Notable Publications
+                    </div>
+
+
+                    <div id="previewPublications"></div>
+
+
+                    <button class="follow-btn">
+                        Follow Author on READORA
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</div>
+
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+
+    <div class="footer-inner">
+
+        <div>
+
+            <div class="footer-logo">
+                READORA
+            </div>
+
+            <div class="footer-copyright" style="margin-top:4px;">
+                Author Studio v2.4 (Advanced Java / Spring Boot Architecture)
+            </div>
+
+        </div>
+
+
+        <div class="footer-links">
+
+            <a href="#editorial">
+                Editorial Guidelines
+            </a>
+
+            <a th:href="@{/RoyalitiesandSales}">
+                Author Payout Terms
+            </a>
+
+            <a href="#">
+                Developer REST APIs
+            </a>
+
+            <a href="#">
+                Support
+            </a>
+
+        </div>
+
+
+    </div>
+
+</footer>
+
+
+<script>
+
+    // ---- Data (edit these to update the Author Profile page) ----
+
+    var disciplines = [
+        "Himalayan Memoirs",
+        "Cultural Heritage",
+        "Philosophy",
+        "Poetry"
+    ];
+
+
+    var previewStats = [
+
+        {
+            value: "3",
+            label: "Published Works"
+        },
+
+        {
+            value: "18.4K",
+            label: "Total Reads"
+        },
+
+        {
+            value: '4.8 <span class="star"><i class="fa-solid fa-star"></i></span>',
+            label: "184 Reviews"
+        }
+
+    ];
+
+
+    var previewPublications = [
+
+        {
+            initials: "PATH",
+            title: "The Mountain Path",
+            meta: "Himalayan Memoirs · 480 pages",
+            price: "Rs. 480"
+        },
+
+        {
+            initials: "VALLEY",
+            title: "Chronicles of the Valley",
+            meta: "Cultural Heritage · 310 pages",
+            price: "Rs. 350"
+        }
+
+    ];
+
+
+    // ---- Render discipline tag chips + input ----
+
+    var tagBox = document.getElementById("disciplineTags");
+
+
+    function renderTags() {
+
+        tagBox.innerHTML = "";
+
+
+        for (var i = 0; i < disciplines.length; i++) {
+
+            var chip = document.createElement("span");
+
+            chip.className = "tag-chip";
+
+
+            chip.innerHTML =
+                disciplines[i] +
+                ' <span class="remove-x" data-index="' +
+                i +
+                '">' +
+                '<i class="fa-solid fa-xmark"></i>' +
+                '</span>';
+
+
+            tagBox.appendChild(chip);
+
+        }
+
+
+        var input = document.createElement("input");
+
+        input.type = "text";
+
+        input.className = "tag-input-field";
+
+        input.placeholder = "Type category and press Enter...";
+
+
+        input.addEventListener("keydown", function (e) {
+
+            if (
+                e.key === "Enter" &&
+                input.value.trim() !== ""
+            ) {
+
+                disciplines.push(input.value.trim());
+
+                renderTags();
+
+            }
+
+        });
+
+
+        tagBox.appendChild(input);
+
+
+        var removeButtons =
+            tagBox.querySelectorAll(".remove-x");
+
+
+        for (
+            var j = 0;
+            j < removeButtons.length;
+            j++
+        ) {
+
+            removeButtons[j].addEventListener(
+                "click",
+                function () {
+
+                    var idx =
+                        parseInt(
+                            this.getAttribute("data-index"),
+                            10
+                        );
+
+                    disciplines.splice(idx, 1);
+
+                    renderTags();
+
+                }
+            );
+
+        }
+
+    }
+
+
+    renderTags();
+
+
+    // ---- Render preview stats ----
+
+    var previewStatsEl =
+        document.getElementById("previewStats");
+
+
+    for (
+        var i = 0;
+        i < previewStats.length;
+        i++
+    ) {
+
+        var s = previewStats[i];
+
+
+        var div = document.createElement("div");
+
+        div.className = "preview-stat";
+
+
+        div.innerHTML =
+            '<div class="preview-stat-value">' +
+            s.value +
+            '</div>' +
+
+            '<div class="preview-stat-label">' +
+            s.label +
+            '</div>';
+
+
+        previewStatsEl.appendChild(div);
+
+    }
+
+
+    // ---- Render preview publications ----
+
+    var previewPubEl =
+        document.getElementById("previewPublications");
+
+
+    for (
+        var i = 0;
+        i < previewPublications.length;
+        i++
+    ) {
+
+        var p = previewPublications[i];
+
+
+        var row = document.createElement("div");
+
+        row.className = "preview-pub-row";
+
+
+        row.innerHTML =
+            '<div class="preview-pub-cover">' +
+            p.initials +
+            '</div>' +
+
+            '<div class="preview-pub-info">' +
+
+            '<div class="preview-pub-title">' +
+            p.title +
+            '</div>' +
+
+            '<div class="preview-pub-meta">' +
+            p.meta +
+            '</div>' +
+
+            '</div>' +
+
+            '<div class="preview-pub-price">' +
+            p.price +
+            '</div>';
+
+
+        previewPubEl.appendChild(row);
+
+    }
+
+</script>
+
 </body>
 </html>

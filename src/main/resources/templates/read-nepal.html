@@ -5,30 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Read Nepal - Readora</title>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=Inter:wght@400;500;600&family=Noto+Sans+Devanagari:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" th:href="@{/css/read-nepal.css}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" th:href="@{/css/read-nepal.css}">
 </head>
 <body>
 
-  <!-- HEADER -->
-    <th:block th:replace="~{fragments/chrome :: header}"></th:block>
-    <header class="header legacy-chrome-header">
-        <div class="header-inner">
-            <a th:href="@{/index}" class="logo">READORA</a>
+<header th:replace="~{fragments/header :: readerHeader('read-nepal')}"></header>
 
-            <nav class="nav-links">
-                <a th:href="@{/index}" class="nav-active">Discover</a>
-                <a th:href="@{/Book}">Books</a>
-                <a th:href="@{/newspapers}">Newspapers</a>
-                <a th:href="@{/magazines}">Magazines</a>
-                <a th:href="@{/read-nepal}">Read Nepal</a>
-                <a th:href="@{/library}">My Library</a>
-            </nav>
 
-            <div class="profile-icon">☺</div>
-        </div>
-    </header>
-
-  <!-- HERO BANNER -->
+<!-- HERO BANNER -->
   <section class="nepal-hero">
     <div class="hero-overlay"></div>
 
@@ -128,8 +113,7 @@
       </div>
     </div>
   </footer>
-  <th:block th:replace="~{fragments/chrome :: footer}"></th:block>
-
+<script th:src="@{/js/cart-utils.js}"></script>
   <script>
     // grab all the filter buttons and all the archive cards
 var filterButtons = document.querySelectorAll('.filter-tab');

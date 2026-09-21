@@ -16,8 +16,26 @@ public class PageController {
             Map.entry("login", "login"),
             Map.entry("signup", "signup"),
             Map.entry("dashboard", "dashboard"),
-            Map.entry("admin-dashboard", "admin-dashboard"),
-            Map.entry("author-dashboard", "author-dashboard"),
+            // NOTE: "admin-dashboard" REMOVED from this map.
+            // It is now handled exclusively by AdminPageController
+            // to avoid an "Ambiguous mapping" startup error.
+            Map.entry("add-content", "add-content"),
+
+            // IMPORTANT: your file is AuthorDashboard.html
+            Map.entry("author-dashboard", "AuthorDashboard"),
+            Map.entry("AuthorDashboard", "AuthorDashboard"),
+
+            // Author Studio sub-pages
+            Map.entry("SubmissionandPipeline", "SubmissionandPipeline"),
+            Map.entry("RoyalitiesandSales", "RoyalitiesandSales"),
+            Map.entry("ReaderAnalytics", "ReaderAnalytics"),
+            Map.entry("EditorialGuidelines", "EditorialGuidelines"),
+            Map.entry("MyPublication", "MyPublication"),
+            Map.entry("CreateNewPublication", "CreateNewPublication"),
+            Map.entry("SubmitManuscript", "SubmitManuscript"),
+            Map.entry("submit-manuscript", "SubmitManuscript"),
+
+
             Map.entry("Book", "Book"),
             Map.entry("book", "Book"),
             Map.entry("book-details", "book-details"),
@@ -38,15 +56,19 @@ public class PageController {
             Map.entry("nepal", "read-nepal"),
             Map.entry("read-nepal-details", "read-nepal-details"),
             Map.entry("reader", "reader"),
+            Map.entry("subscription", "subscription"),
             Map.entry("search", "search")
     );
 
     @GetMapping({"/{page}", "/{page}.html"})
     public String page(@PathVariable String page) {
+
         String template = PAGES.get(page);
+
         if (template == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
+
         return template;
     }
 }

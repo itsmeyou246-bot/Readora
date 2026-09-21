@@ -307,14 +307,12 @@
 
 <script>
 
-
     // =====================================================
     // SIGNUP FORM
     // =====================================================
 
     const signupForm =
         document.getElementById("signupForm");
-
 
 
     // =====================================================
@@ -338,20 +336,15 @@
 
             icon.classList.add("fa-eye-slash");
 
-        }
-
-        else {
+        } else {
 
             input.type = "password";
 
             icon.classList.remove("fa-eye-slash");
 
             icon.classList.add("fa-eye");
-
         }
-
     }
-
 
 
     // =====================================================
@@ -365,10 +358,9 @@
             event.preventDefault();
 
 
-
-            // -------------------------------------------------
-            // GET FORM VALUES
-            // -------------------------------------------------
+            // ---------------------------------------------
+            // GET VALUES
+            // ---------------------------------------------
 
             const name =
                 document
@@ -408,39 +400,32 @@
                     .checked;
 
 
-
-            // -------------------------------------------------
+            // ---------------------------------------------
             // ERROR ELEMENTS
-            // -------------------------------------------------
+            // ---------------------------------------------
 
             const nameError =
                 document.getElementById("nameError");
 
-
             const emailError =
                 document.getElementById("emailError");
-
 
             const passwordError =
                 document.getElementById("passwordError");
 
-
             const confirmError =
                 document.getElementById("confirmError");
 
-
             const termsError =
                 document.getElementById("termsError");
-
 
             const roleError =
                 document.getElementById("roleError");
 
 
-
-            // -------------------------------------------------
-            // CLEAR OLD ERRORS
-            // -------------------------------------------------
+            // ---------------------------------------------
+            // CLEAR ERRORS
+            // ---------------------------------------------
 
             nameError.textContent = "";
 
@@ -455,14 +440,12 @@
             roleError.textContent = "";
 
 
-
             let valid = true;
 
 
-
-            // -------------------------------------------------
+            // ---------------------------------------------
             // NAME VALIDATION
-            // -------------------------------------------------
+            // ---------------------------------------------
 
             if (name.length < 2) {
 
@@ -470,14 +453,12 @@
                     "Please enter your full name.";
 
                 valid = false;
-
             }
 
 
-
-            // -------------------------------------------------
+            // ---------------------------------------------
             // EMAIL VALIDATION
-            // -------------------------------------------------
+            // ---------------------------------------------
 
             const emailPattern =
                 /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -489,14 +470,12 @@
                     "Please enter a valid email address.";
 
                 valid = false;
-
             }
 
 
-
-            // -------------------------------------------------
+            // ---------------------------------------------
             // PASSWORD VALIDATION
-            // -------------------------------------------------
+            // ---------------------------------------------
 
             if (password.length < 8) {
 
@@ -504,14 +483,12 @@
                     "Password must be at least 8 characters.";
 
                 valid = false;
-
             }
 
 
-
-            // -------------------------------------------------
+            // ---------------------------------------------
             // CONFIRM PASSWORD
-            // -------------------------------------------------
+            // ---------------------------------------------
 
             if (password !== confirmPassword) {
 
@@ -519,14 +496,12 @@
                     "Passwords do not match.";
 
                 valid = false;
-
             }
 
 
-
-            // -------------------------------------------------
+            // ---------------------------------------------
             // ROLE VALIDATION
-            // -------------------------------------------------
+            // ---------------------------------------------
 
             if (!role) {
 
@@ -534,14 +509,12 @@
                     "Please select your role.";
 
                 valid = false;
-
             }
 
 
-
-            // -------------------------------------------------
-            // TERMS VALIDATION
-            // -------------------------------------------------
+            // ---------------------------------------------
+            // TERMS
+            // ---------------------------------------------
 
             if (!terms) {
 
@@ -549,26 +522,22 @@
                     "Please accept the terms and privacy policy.";
 
                 valid = false;
-
             }
 
 
-
-            // -------------------------------------------------
-            // STOP IF FORM IS INVALID
-            // -------------------------------------------------
+            // ---------------------------------------------
+            // STOP IF INVALID
+            // ---------------------------------------------
 
             if (!valid) {
 
                 return;
-
             }
 
 
-
-            // -------------------------------------------------
-            // DISABLE BUTTON
-            // -------------------------------------------------
+            // ---------------------------------------------
+            // BUTTON
+            // ---------------------------------------------
 
             const createAccountButton =
                 document.getElementById(
@@ -579,13 +548,13 @@
             createAccountButton.disabled = true;
 
 
-            createAccountButton.querySelector("span")
+            createAccountButton
+                .querySelector("span")
                 .textContent = "Creating Account...";
 
 
-
             // =================================================
-            // SEND DATA TO SPRING BOOT
+            // SEND TO SPRING BOOT
             // =================================================
 
             try {
@@ -594,15 +563,14 @@
                     await fetch(
                         "/api/auth/register",
                         {
-
                             method: "POST",
 
                             headers: {
-
                                 "Content-Type":
                                     "application/json"
-
                             },
+
+                            credentials: "same-origin",
 
                             body: JSON.stringify({
 
@@ -615,25 +583,35 @@
                                 role: role
 
                             })
-
                         }
                     );
 
 
+                // ---------------------------------------------
+                // READ SERVER RESPONSE
+                // ---------------------------------------------
 
-                // -------------------------------------------------
-                // READ RESPONSE
-                // -------------------------------------------------
-
-                const data =
-                    await response.json()
-                        .catch(() => null);
+                const responseText =
+                    await response.text();
 
 
+                let data = null;
 
-                // =================================================
-                // REGISTRATION SUCCESS
-                // =================================================
+
+                try {
+
+                    data =
+                        JSON.parse(responseText);
+
+                } catch (e) {
+
+                    data = null;
+                }
+
+
+                // ---------------------------------------------
+                // SUCCESS
+                // ---------------------------------------------
 
                 if (response.ok) {
 
@@ -642,64 +620,53 @@
                     );
 
 
-                    // Clear form
-
                     signupForm.reset();
 
 
-                    // Go to subscription page
-
                     window.location.href =
                         "/subscription";
+
+
+                    return;
                 }
 
 
+                // ---------------------------------------------
+                // REGISTRATION ERROR
+                // ---------------------------------------------
 
-                    // =================================================
-                    // REGISTRATION FAILED
-                // =================================================
-
-                else {
-
-                    let errorMessage =
-                        "Registration failed. Please try again.";
+                let errorMessage =
+                    "Registration failed.";
 
 
-                    if (typeof data === "string") {
+                if (data && data.message) {
 
-                        errorMessage = data;
+                    errorMessage =
+                        data.message;
 
-                    }
+                } else if (responseText) {
 
-                    else if (data && data.message) {
-
-                        errorMessage = data.message;
-
-                    }
-
-
-                    alert(errorMessage);
-
-
-                    // Enable button again
-
-                    createAccountButton.disabled = false;
-
-
-                    createAccountButton.querySelector("span")
-                        .textContent = "Create Account";
-
+                    errorMessage =
+                        responseText;
                 }
 
-            }
+
+                alert(errorMessage);
 
 
+                // Enable button
 
-                // =================================================
-                // SERVER CONNECTION ERROR
-                // =================================================
+                createAccountButton.disabled =
+                    false;
 
-            catch (error) {
+
+                createAccountButton
+                    .querySelector("span")
+                    .textContent =
+                    "Create Account";
+
+
+            } catch (error) {
 
                 console.error(
                     "Registration error:",
@@ -713,20 +680,20 @@
                 );
 
 
-                createAccountButton.disabled = false;
+                createAccountButton.disabled =
+                    false;
 
 
-                createAccountButton.querySelector("span")
-                    .textContent = "Create Account";
-
+                createAccountButton
+                    .querySelector("span")
+                    .textContent =
+                    "Create Account";
             }
 
         }
     );
 
 </script>
-
-
 </body>
 
 </html>

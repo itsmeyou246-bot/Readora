@@ -1,69 +1,112 @@
-// ==========================================================================
-// READORA — BOOKS CATALOG JAVASCRIPT
-// ==========================================================================
+/* ==========================================================================
+   READORA — BOOKS CATALOG JAVASCRIPT
+   Free books -> Reading page
+   Premium books -> Premium Library page
+   ========================================================================== */
 
-document.addEventListener('DOMContentLoaded', () => {
-    initBookPage();
-});
+document.addEventListener('DOMContentLoaded', initBookPage);
 
 let currentCategory = 'all';
 let currentLanguage = 'all';
 let currentSearch = '';
 let currentSort = 'newest';
 
+function isPremiumBook(book) {
+    return book && (
+        book.premium === true ||
+        String(book.premium).toLowerCase() === 'true'
+    ) && Number(book.price) > 0;
+}
+
+function getBookById(id) {
+    return READORA_DATA.books.find(
+        book => String(book.id) === String(id)
+    );
+}
+
+function openBook(book) {
+    if (!book || !book.id) {
+        showToast('Book information is missing.', 'error');
+        return;
+    }
+
+    sessionStorage.setItem(
+        'selectedBook',
+        JSON.stringify(book)
+    );
+
+    if (isPremiumBook(book)) {
+        window.location.href =
+            '/book-details?id=' +
+            encodeURIComponent(book.id);
+    } else {
+        window.location.href =
+            '/book-reader?bookId=' +
+            encodeURIComponent(book.id);
+    }
+}
+
 function initBookPage() {
     const searchInput = document.getElementById('searchInput');
-    const categoryTabs = document.querySelectorAll('#categoryTabs .filter-tab');
+    const categoryTabs = document.querySelectorAll(
+        '#categoryTabs .filter-tab'
+    );
     const languageFilter = document.getElementById('languageFilter');
     const sortDropdown = document.getElementById('sortDropdown');
     const clearBtn = document.getElementById('clearFiltersBtn');
 
-    // Category Tabs
     categoryTabs.forEach(tab => {
-        tab.addEventListener('click', function() {
-            categoryTabs.forEach(t => t.classList.remove('filter-active'));
+        tab.addEventListener('click', function () {
+            categoryTabs.forEach(t =>
+                t.classList.remove('filter-active')
+            );
+
             this.classList.add('filter-active');
             currentCategory = this.getAttribute('data-filter');
             renderBooks();
         });
     });
 
-    // Search Input
     if (searchInput) {
-        searchInput.addEventListener('input', (e) => {
-            currentSearch = e.target.value.trim().toLowerCase();
+        searchInput.addEventListener('input', event => {
+            currentSearch = event.target.value.trim().toLowerCase();
             renderBooks();
         });
     }
 
-    // Language Filter
     if (languageFilter) {
-        languageFilter.addEventListener('change', (e) => {
-            currentLanguage = e.target.value;
+        languageFilter.addEventListener('change', event => {
+            currentLanguage = event.target.value;
             renderBooks();
         });
     }
 
-    // Sort Dropdown
     if (sortDropdown) {
-        sortDropdown.addEventListener('change', (e) => {
-            currentSort = e.target.value;
+        sortDropdown.addEventListener('change', event => {
+            currentSort = event.target.value;
             renderBooks();
         });
     }
 
-    // Reset Filters
     if (clearBtn) {
         clearBtn.addEventListener('click', () => {
             currentCategory = 'all';
             currentLanguage = 'all';
             currentSearch = '';
             currentSort = 'newest';
+
             if (searchInput) searchInput.value = '';
             if (languageFilter) languageFilter.value = 'all';
             if (sortDropdown) sortDropdown.value = 'newest';
-            categoryTabs.forEach(t => t.classList.remove('filter-active'));
-            if (categoryTabs[0]) categoryTabs[0].classList.add('filter-active');
+
+            categoryTabs.forEach(t =>
+                t.classList.remove('filter-active')
+            );
+
+            if (categoryTabs[0]) {
+                categoryTabs[0].classList.add('filter-active');
+            }
+
             renderBooks();
         });
     }
@@ -75,135 +118,247 @@ function renderBooks() {
     const grid = document.getElementById('bookGrid');
     const emptyState = document.getElementById('emptyMessage');
     const countEl = document.getElementById('resultsCount');
-    if (!grid) return;
+
+    if (!grid || !window.READORA_DATA) return;
 
     let books = [...READORA_DATA.books];
 
-    // Filter by Category or Access
     if (currentCategory !== 'all') {
         if (currentCategory === 'free') {
-            books = books.filter(b => !b.premium);
+            books = books.filter(book => !isPremiumBook(book));
         } else if (currentCategory === 'premium') {
-            books = books.filter(b => b.premium);
+            books = books.filter(book => isPremiumBook(book));
         } else {
-            books = books.filter(b => b.category.toLowerCase() === currentCategory.toLowerCase() || (b.tag && b.tag.toLowerCase() === currentCategory.toLowerCase()));
+            books = books.filter(book =>
+                (book.category || '').toLowerCase() ===
+                currentCategory.toLowerCase() ||
+                (book.tag || '').toLowerCase() ===
+                currentCategory.toLowerCase()
+            );
         }
     }
 
-    // Filter by Language
     if (currentLanguage !== 'all') {
-        books = books.filter(b => b.language.toLowerCase() === currentLanguage.toLowerCase());
-    }
-
-    // Filter by Search
-    if (currentSearch) {
-        books = books.filter(b => 
-            b.title.toLowerCase().includes(currentSearch) ||
-            b.author.toLowerCase().includes(currentSearch) ||
-            b.category.toLowerCase().includes(currentSearch)
+        books = books.filter(book =>
+            (book.language || '').toLowerCase() ===
+            currentLanguage.toLowerCase()
         );
     }
 
-    // Sorting
+    if (currentSearch) {
+        books = books.filter(book => {
+            const search = currentSearch;
+
+            return (
+                (book.title || '').toLowerCase().includes(search) ||
+                (book.author || '').toLowerCase().includes(search) ||
+                (book.category || '').toLowerCase().includes(search)
+            );
+        });
+    }
+
     if (currentSort === 'a-z') {
-        books.sort((a, b) => a.title.localeCompare(b.title));
+        books.sort((a, b) =>
+            (a.title || '').localeCompare(b.title || '')
+        );
     } else if (currentSort === 'popular') {
-        books.sort((a, b) => (b.reads || 0) - (a.reads || 0));
+        books.sort((a, b) =>
+            (b.reads || 0) - (a.reads || 0)
+        );
     } else if (currentSort === 'price-low') {
-        books.sort((a, b) => (a.price || 0) - (b.price || 0));
+        books.sort((a, b) =>
+            (a.price || 0) - (b.price || 0)
+        );
     } else if (currentSort === 'price-high') {
-        books.sort((a, b) => (b.price || 0) - (a.price || 0));
+        books.sort((a, b) =>
+            (b.price || 0) - (a.price || 0)
+        );
     }
 
     if (countEl) {
-        countEl.textContent = `Showing ${books.length} book${books.length === 1 ? '' : 's'}`;
+        countEl.textContent =
+            `Showing ${books.length} book${books.length === 1 ? '' : 's'}`;
     }
 
-    if (books.length === 0) {
+    if (!books.length) {
         grid.innerHTML = '';
-        emptyState.style.display = 'block';
+
+        if (emptyState) {
+            emptyState.style.display = 'block';
+        }
+
         return;
     }
 
-    emptyState.style.display = 'none';
+    if (emptyState) {
+        emptyState.style.display = 'none';
+    }
 
-    // Get current bookmarks from localStorage to set bookmark active status
-    const savedBookmarks = JSON.parse(localStorage.getItem(STORAGE_KEYS.BOOKMARKS) || '[]');
+    let savedBookmarks = [];
+
+    try {
+        savedBookmarks = JSON.parse(
+            localStorage.getItem(
+                window.STORAGE_KEYS?.BOOKMARKS || 'readoraBookmarks'
+            ) || '[]'
+        );
+    } catch (error) {
+        savedBookmarks = [];
+    }
 
     grid.innerHTML = books.map(book => {
-        const isBookmarked = savedBookmarks.some(bm => bm.bookTitle === book.title);
+        const isBookmarked = savedBookmarks.some(
+            bookmark => bookmark.bookTitle === book.title
+        );
 
-        let priceBadge = `<span class="free-badge">FREE</span>`;
-        if (book.premium) {
-            priceBadge = `<span class="premium-badge"><i class="fa-solid fa-crown"></i> Rs. ${book.price}</span>`;
-        }
+        const premium = isPremiumBook(book);
+
+        const priceBadge = premium
+            ? `<span class="premium-badge">
+                <i class="fa-solid fa-crown"></i>
+                Rs. ${Number(book.price || 0).toFixed(2)}
+               </span>`
+            : `<span class="free-badge">FREE</span>`;
 
         return `
             <div class="book-card" data-id="${book.id}">
-                <div class="book-card-image-wrap" style="position: relative;">
-                    <img src="${book.image}" alt="${book.title}" loading="lazy">
-                    <button class="bookmark-badge-btn ${isBookmarked ? 'bookmarked' : ''}" data-id="${book.id}" title="Save Bookmark">
-                        <i class="fa-${isBookmarked ? 'solid' : 'regular'} fa-bookmark"></i>
+                <div class="book-card-image-wrap"
+                     style="position: relative;">
+                    <img src="${escapeHtml(book.image || '')}"
+                         alt="${escapeHtml(book.title || 'Book')}"
+                         loading="lazy">
+
+                    <button class="bookmark-badge-btn
+                        ${isBookmarked ? 'bookmarked' : ''}"
+                        data-id="${book.id}"
+                        title="Save Bookmark"
+                        type="button">
+                        <i class="fa-${isBookmarked ? 'solid' : 'regular'}
+                            fa-bookmark"></i>
                     </button>
                 </div>
-                <div style="display: flex; justify-content: space-between; align-items: baseline; margin-top: 10px;">
+
+                <div style="display:flex;
+                            justify-content:space-between;
+                            align-items:baseline;
+                            margin-top:10px;">
                     ${priceBadge}
-                    <span style="font-size: 11px; color: var(--color-text-muted);"><i class="fa-solid fa-star" style="color: var(--color-gold);"></i> ${book.rating || '4.8'}</span>
+
+                    <span style="font-size:11px;
+                                 color:var(--color-text-muted);">
+                        <i class="fa-solid fa-star"
+                           style="color:var(--color-gold);"></i>
+                        ${book.rating || book.averageRating || '4.8'}
+                    </span>
                 </div>
-                <h3>${book.title}</h3>
-                <p>${book.author}</p>
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px;">
-                    <span class="book-tag">${book.category}</span>
-                    <span style="font-size: 11px; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 0.5px;">${book.language}</span>
+
+                <h3>${escapeHtml(book.title || 'Untitled Book')}</h3>
+                <p>${escapeHtml(book.author || 'Unknown Author')}</p>
+
+                <div style="display:flex;
+                            justify-content:space-between;
+                            align-items:center;
+                            margin-top:8px;">
+                    <span class="book-tag">
+                        ${escapeHtml(book.category || 'Book')}
+                    </span>
+
+                    <span style="font-size:11px;
+                                 color:var(--color-text-secondary);
+                                 text-transform:uppercase;
+                                 letter-spacing:.5px;">
+                        ${escapeHtml(book.language || 'English')}
+                    </span>
                 </div>
             </div>
         `;
     }).join('');
 
-    // Attach card click handlers
     grid.querySelectorAll('.book-card').forEach(card => {
-        card.addEventListener('click', function(e) {
-            if (e.target.closest('.bookmark-badge-btn')) return;
-            const id = parseInt(this.getAttribute('data-id'), 10);
-            const book = READORA_DATA.books.find(b => b.id === id);
+        card.addEventListener('click', function (event) {
+            if (event.target.closest('.bookmark-badge-btn')) return;
+
+            const book = getBookById(this.dataset.id);
+
             if (book) {
-                sessionStorage.setItem('selectedBook', JSON.stringify(book));
-                window.location.href = 'book-details.html';
+                openBook(book);
             }
         });
     });
 
-    // Attach bookmark handlers
-    grid.querySelectorAll('.bookmark-badge-btn').forEach(btn => {
-        btn.addEventListener('click', function(e) {
-            e.stopPropagation();
-            const id = parseInt(this.getAttribute('data-id'), 10);
-            const book = READORA_DATA.books.find(b => b.id === id);
+    grid.querySelectorAll('.bookmark-badge-btn').forEach(button => {
+        button.addEventListener('click', function (event) {
+            event.stopPropagation();
+
+            const book = getBookById(this.dataset.id);
             if (!book) return;
 
-            let bookmarks = JSON.parse(localStorage.getItem(STORAGE_KEYS.BOOKMARKS) || '[]');
-            const existsIndex = bookmarks.findIndex(bm => bm.bookTitle === book.title);
+            let bookmarks = [];
+
+            try {
+                bookmarks = JSON.parse(
+                    localStorage.getItem(
+                        window.STORAGE_KEYS?.BOOKMARKS ||
+                        'readoraBookmarks'
+                    ) || '[]'
+                );
+            } catch (error) {
+                bookmarks = [];
+            }
+
+            const index = bookmarks.findIndex(
+                bookmark => bookmark.bookTitle === book.title
+            );
 
             const icon = this.querySelector('i');
-            if (existsIndex > -1) {
-                bookmarks.splice(existsIndex, 1);
+
+            if (index > -1) {
+                bookmarks.splice(index, 1);
                 this.classList.remove('bookmarked');
-                icon.className = 'fa-regular fa-bookmark';
-                showToast(`Removed '${book.title}' from bookmarks`, 'info');
+
+                if (icon) {
+                    icon.className = 'fa-regular fa-bookmark';
+                }
+
+                showToast(
+                    `Removed '${book.title}' from bookmarks`,
+                    'info'
+                );
             } else {
                 bookmarks.push({
                     id: Date.now(),
                     bookTitle: book.title,
                     bookAuthor: book.author,
-                    page: "Chapter 1",
+                    page: 'Chapter 1',
                     savedDate: new Date().toISOString().split('T')[0],
                     image: book.image
                 });
+
                 this.classList.add('bookmarked');
-                icon.className = 'fa-solid fa-bookmark';
-                showToast(`Bookmarked '${book.title}'`, 'success');
+
+                if (icon) {
+                    icon.className = 'fa-solid fa-bookmark';
+                }
+
+                showToast(
+                    `Bookmarked '${book.title}'`,
+                    'success'
+                );
             }
-            localStorage.setItem(STORAGE_KEYS.BOOKMARKS, JSON.stringify(bookmarks));
+
+            localStorage.setItem(
+                window.STORAGE_KEYS?.BOOKMARKS || 'readoraBookmarks',
+                JSON.stringify(bookmarks)
+            );
         });
     });
+}
+
+function escapeHtml(value) {
+    return String(value || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
 }

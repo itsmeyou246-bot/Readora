@@ -27,7 +27,11 @@ a {
 
 .header {
   border-bottom: 1px solid #ddd4c0;
-  padding: 20px 0;
+  padding: 0;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background-color: #faf6ee;
 }
 
 .header-inner {

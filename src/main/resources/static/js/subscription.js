@@ -2,58 +2,54 @@ document.addEventListener("DOMContentLoaded", function () {
     const planButtons = document.querySelectorAll(".plan-btn[data-plan]");
     const institutionalButton = document.getElementById("institutionalBtn");
 
-    function getRegisteredEmail() {
-        try {
-            const user = JSON.parse(localStorage.getItem("readoraUser") || "null");
-            if (user && user.email) {
-                return user.email.trim();
-            }
-        } catch (error) {
-            localStorage.removeItem("readoraUser");
-        }
-
-        const email = window.prompt("Enter your registered READORA email:");
-        return email ? email.trim() : "";
-    }
-
     planButtons.forEach(function (button) {
         button.addEventListener("click", async function () {
             const plan = button.getAttribute("data-plan");
-            const email = getRegisteredEmail();
-
-            if (!email) {
-                alert("A registered READORA email is required to select a plan.");
-                return;
-            }
-
             button.disabled = true;
 
             try {
-                const response = await fetch("/api/subscription", {
+                const res = await fetch("/api/payments/esewa/initiate", {
                     method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
+                    headers: { "Content-Type": "application/json" },
+                    credentials: "include",
                     body: JSON.stringify({
-                        email: email,
+                        paymentType: "SUBSCRIPTION",
                         plan: plan
                     })
                 });
 
-                const data = await response.json().catch(function () {
-                    return null;
-                });
-
-                if (!response.ok) {
-                    throw new Error(data && data.message
-                        ? data.message
-                        : "Subscription selection failed.");
+                if (res.status === 401) {
+                    window.location.href = "/login?redirect=subscription";
+                    return;
                 }
 
-                localStorage.setItem("selectedPlan", data.plan);
-                localStorage.setItem("planPrice", data.price);
-                alert(data.message);
-                window.location.href = "/login";
+                const data = await res.json();
+
+                if (!res.ok) {
+                    throw new Error(data.message || "Could not start subscription checkout.");
+                }
+
+                if (data.free) {
+                    // FREE plan — already activated server-side
+                    window.location.href = "/dashboard?payment=processed";
+                    return;
+                }
+
+                // Build and auto-submit the signed eSewa form
+                const form = document.createElement("form");
+                form.method = "POST";
+                form.action = data.formActionUrl;
+
+                Object.entries(data.formFields).forEach(function ([key, value]) {
+                    const input = document.createElement("input");
+                    input.type = "hidden";
+                    input.name = key;
+                    input.value = value;
+                    form.appendChild(input);
+                });
+
+                document.body.appendChild(form);
+                form.submit();
             } catch (error) {
                 alert(error.message);
                 button.disabled = false;

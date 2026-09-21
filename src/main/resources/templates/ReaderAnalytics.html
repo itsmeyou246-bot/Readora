@@ -1,10 +1,602 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <title>Readora Studio · Reader Analytics</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" th:href="@{/css/ReaderAnalytics.css}">
+
+    <!-- Iconify icon runtime -->
+    <script src="https://code.iconify.design/3/3.1.1/iconify.min.js"></script>
 </head>
+
 <body>
-$END$
+
+<!-- ============ HEADER (shared with Author Dashboard) ============ -->
+<header th:replace="~{fragments/header :: authorHeader('analytics')}"></header>
+
+
+<div class="container">
+
+    <!-- SUB NAV -->
+    <div class="subnav">
+
+        <a th:href="@{/AuthorDashboard}" class="subnav-tab">
+            Overview
+        </a>
+
+        <a th:href="@{/SubmissionandPipeline}" class="subnav-tab">
+            Manuscript Pipeline · <span th:text="${pipelineCount} ?: '5'">5</span>
+        </a>
+
+        <a th:href="@{/RoyalitiesandSales}" class="subnav-tab">
+            Royalties & Earnings
+        </a>
+
+        <a href="#reviews" class="subnav-tab">
+            Reader Reviews & Ratings
+        </a>
+
+        <a th:href="@{/ReaderAnalytics}" class="subnav-tab subnav-active">
+            Publication Analytics
+        </a>
+
+        <a href="#profile" class="subnav-tab">
+            Author Profile & Bio
+        </a>
+
+        <span class="subnav-spacer"></span>
+
+        <!-- Export current analytics view -->
+        <a th:href="@{/ReaderAnalytics/export}" class="btn-outline">
+            <span class="iconify" data-icon="mdi:tray-arrow-down" data-width="15"></span>
+            Export Analytics CSV
+        </a>
+
+        <!-- Create / manage publications -->
+        <a th:href="@{/Book}" class="new-pub-btn">
+            <span class="iconify" data-icon="mdi:plus" data-width="15"></span>
+            New Publication
+        </a>
+
+    </div>
+
+
+    <!-- BREADCRUMB -->
+    <div class="breadcrumb">
+        <a th:href="@{/AuthorDashboard}">Author Studio</a>
+        &nbsp;/&nbsp;
+        <span class="current">Reader Analytics</span>
+    </div>
+
+
+    <!-- PAGE HEAD -->
+    <section class="page-head">
+
+        <div>
+            <h1 class="page-title">
+                Reader Engagement & Analytics
+            </h1>
+
+            <p class="page-subtitle">
+                Deep engagement metrics, reading completion benchmarks, bookmarks, and
+                popular marginalia across your catalog.
+            </p>
+        </div>
+
+        <div class="page-head-actions">
+
+            <span class="period-pill">
+                <span class="iconify" data-icon="mdi:calendar-blank-outline" data-width="15"></span>
+                Reporting Period: <strong th:text="${reportingPeriod} ?: 'Last 30 Days'">Last 30 Days</strong>
+            </span>
+
+            <button class="btn" type="button">
+                <span class="iconify" data-icon="mdi:filter-variant" data-width="15"></span>
+                Filter by Work
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- STATS -->
+    <section class="stats-section">
+
+        <div class="stats-grid">
+
+            <div class="stat-card">
+                <div class="stat-head">
+                    <div class="stat-label">Total Reads</div>
+                    <div class="stat-icon">
+                        <span class="iconify" data-icon="mdi:book-open-page-variant-outline" data-width="14"></span>
+                    </div>
+                </div>
+                <div class="stat-value" id="statTotalReads">0</div>
+                <div class="stat-sub positive">
+                    <span class="iconify" data-icon="mdi:trending-up" data-width="12"></span>
+                    From reading history
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-head">
+                    <div class="stat-label">Unique Readers</div>
+                    <div class="stat-icon">
+                        <span class="iconify" data-icon="mdi:account-group-outline" data-width="14"></span>
+                    </div>
+                </div>
+                <div class="stat-value" id="statUniqueReaders">0</div>
+                <div class="stat-sub positive">
+                    <span class="iconify" data-icon="mdi:trending-up" data-width="12"></span>
+                    Distinct readers
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-head">
+                    <div class="stat-label">Avg Progress</div>
+                    <div class="stat-icon">
+                        <span class="iconify" data-icon="mdi:chart-bar" data-width="14"></span>
+                    </div>
+                </div>
+                <div class="stat-value" id="statAvgProgress">0<span class="unit">%</span></div>
+                <div class="stat-progress">
+                    <div class="stat-progress-fill" id="statAvgProgressFill" style="width: 0%;"></div>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-head">
+                    <div class="stat-label">Average Rating</div>
+                    <div class="stat-icon">
+                        <span class="iconify" data-icon="mdi:star-outline" data-width="14"></span>
+                    </div>
+                </div>
+                <div class="stat-value" id="statAvgRating">0<span class="unit">/ 5.0</span></div>
+                <div class="stat-sub positive" id="statReviewNote">No reviews yet</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-head">
+                    <div class="stat-label">Bookmarks</div>
+                    <div class="stat-icon">
+                        <span class="iconify" data-icon="mdi:bookmark-outline" data-width="14"></span>
+                    </div>
+                </div>
+                <div class="stat-value" id="statBookmarks">0</div>
+                <div class="stat-sub">Active reader sessions</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-head">
+                    <div class="stat-label">Highlights</div>
+                    <div class="stat-icon">
+                        <span class="iconify" data-icon="mdi:pencil-outline" data-width="14"></span>
+                    </div>
+                </div>
+                <div class="stat-value" id="statHighlights">0</div>
+                <div class="stat-sub">Academic & casual readers</div>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- TOP PERFORMING PUBLICATION -->
+    <section class="card-section">
+
+        <div class="card">
+
+            <div class="card-head" style="margin-bottom: 18px;">
+
+                <div class="top-pub-eyebrow" style="margin-bottom: 0;">
+                    <h3>
+                        <span class="dot"></span>
+                        Top Performing Publication
+                    </h3>
+                    <span class="top-pub-tag" id="topPubTag">#1 Catalog</span>
+                </div>
+
+                <a th:href="@{/MyPublication}" class="card-link" id="topPubLink">
+                    View Publication Details
+                    <span class="iconify" data-icon="mdi:arrow-right" data-width="14"></span>
+                </a>
+
+            </div>
+
+            <div class="top-pub-body">
+
+                <div class="top-pub-book">
+
+                    <div class="book-cover-lg">
+                        <div class="imprint">Readora<br>Editorial</div>
+                        <div class="title-on-cover" id="topCoverTitle">—</div>
+                        <div class="author-on-cover" id="topCoverAuthor">—</div>
+                    </div>
+
+                    <div>
+
+                        <div class="top-pub-flagship">Flagship Title</div>
+
+                        <div class="top-pub-name" id="topPubName">
+                            No published analytics yet
+                        </div>
+
+                        <div class="top-pub-meta" id="topPubMeta">
+                            Create and publish books to see reader engagement here.
+                        </div>
+
+                        <div class="top-pub-badges">
+                            <span class="status-pill" id="topPubStatus">—</span>
+                            <span class="top-pub-rating" id="topPubRating">
+                                <span class="iconify" data-icon="mdi:star" data-width="13"></span>
+                                —
+                            </span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="top-metrics">
+
+                    <div class="top-metric">
+                        <div class="top-metric-label">Total Reads</div>
+                        <div class="top-metric-value" id="topMetricReads">0</div>
+                        <div class="top-metric-sub" id="topMetricShare">0% of author catalog</div>
+                    </div>
+
+                    <div class="top-metric">
+                        <div class="top-metric-label">Avg Completion</div>
+                        <div class="top-metric-value" id="topMetricCompletion">0%</div>
+                        <div class="mini-progress">
+                            <div class="mini-progress-fill" id="topMetricCompletionFill" style="width: 0%;"></div>
+                        </div>
+                    </div>
+
+                    <div class="top-metric">
+                        <div class="top-metric-label">Total Marginalia</div>
+                        <div class="top-metric-value" id="topMetricHighlights">0</div>
+                        <div class="top-metric-sub">Highlights & Citations</div>
+                    </div>
+
+                    <div class="top-metric">
+                        <div class="top-metric-label">Accrued Royalties</div>
+                        <div class="top-metric-value gold" id="topMetricRoyalties">Rs. 0</div>
+                        <div class="top-metric-sub">Verified Payout</div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- PUBLICATION PERFORMANCE BREAKDOWN -->
+    <section class="card-section">
+
+        <div class="card">
+
+            <div class="card-head">
+
+                <div>
+                    <h3>Publication Performance Breakdown</h3>
+                    <p class="card-subtitle" style="margin-bottom: 0;">
+                        Comparative reading depth, completion percentages, and reader reception
+                    </p>
+                </div>
+
+                <span style="font-size: 12.5px; color: #55503f;">
+                    Sort by: <strong>Most Reads (Descending)</strong>
+                </span>
+
+            </div>
+
+            <table style="margin-top: 18px;">
+
+                <thead>
+                <tr>
+                    <th>Publication</th>
+                    <th>Category</th>
+                    <th>Total Reads</th>
+                    <th>Average Progress</th>
+                    <th>Bookmarks</th>
+                    <th>Highlights</th>
+                    <th>Rating</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+
+                <tbody id="performanceRows"></tbody>
+
+            </table>
+
+            <div class="table-footer">
+                <span>Displaying engagement records across 3 live published works.</span>
+                <span>Data synchronized with READORA reader event engine.</span>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- MILESTONES + DEMOGRAPHICS -->
+    <section class="two-col-section" id="analytics-detail">
+
+        <div class="two-col">
+
+            <!-- MILESTONES -->
+            <div class="card">
+
+                <div class="card-head" style="margin-bottom: 4px;">
+                    <h3>Reader Completion Milestones</h3>
+                </div>
+
+                <p class="card-subtitle">
+                    Percentage of readers reaching key chapters across your catalog.
+                </p>
+
+                <div id="milestones"></div>
+
+            </div>
+
+            <!-- DEMOGRAPHICS -->
+            <div class="card">
+
+                <div class="card-head" style="margin-bottom: 4px;">
+                    <h3>Reader Demographics & Devices</h3>
+                </div>
+
+                <p class="card-subtitle">
+                    Audience distribution by geographic hub and reading medium.
+                </p>
+
+                <div class="demo-grid">
+
+                    <div class="demo-box">
+                        <div class="demo-box-title">
+                            <span class="iconify" data-icon="mdi:map-marker-outline" data-width="14"></span>
+                            Top Reader Regions
+                        </div>
+                        <div id="regionRows"></div>
+                    </div>
+
+                    <div class="demo-box">
+                        <div class="demo-box-title">
+                            <span class="iconify" data-icon="mdi:devices" data-width="14"></span>
+                            Reading Modality
+                        </div>
+                        <div id="modalityRows"></div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</div>
+
+
+<!-- ============ FOOTER (shared with Author Dashboard) ============ -->
+<footer class="footer">
+
+    <div class="footer-inner">
+
+        <div>
+
+            <div class="footer-logo">
+                READORA
+            </div>
+
+            <div class="footer-copyright" style="margin-top:4px;">
+                Author Studio v2.4 (Advanced Java / Spring Boot Architecture)
+            </div>
+
+        </div>
+
+
+        <div class="footer-links">
+
+            <!-- Editorial guidelines page -->
+            <a th:href="@{/EditorialGuidelines}">
+                Editorial Guidelines
+            </a>
+
+            <!-- Existing purchase page -->
+            <a th:href="@{/purchase-history}">
+                Author Payout Terms
+            </a>
+
+            <!-- Search page reused as API reference entry point -->
+            <a th:href="@{/search}">
+                Developer REST APIs
+            </a>
+
+            <!-- Support -->
+            <a th:href="@{/support}">
+                Support
+            </a>
+
+        </div>
+
+
+        <div class="footer-copyright">
+            © 2026 READORA Publishing Inc. All rights reserved.
+        </div>
+
+    </div>
+
+</footer>
+
+
+<script>
+    function getLoggedInUser() {
+        try {
+            return JSON.parse(localStorage.getItem("readoraUser") || "null");
+        } catch (e) {
+            return null;
+        }
+    }
+
+    function getAuthHeaders() {
+        var headers = { "Content-Type": "application/json" };
+        try {
+            var user = getLoggedInUser();
+            var token = user && (user.token || user.jwt);
+            if (token) headers["Authorization"] = "Bearer " + token;
+        } catch (e) { /* cookie auth */ }
+        return headers;
+    }
+
+    function formatNum(n) {
+        return Number(n || 0).toLocaleString();
+    }
+
+    function renderPerformance(performance) {
+        var performanceRows = document.getElementById("performanceRows");
+        performanceRows.innerHTML = "";
+
+        if (!performance || !performance.length) {
+            performanceRows.innerHTML =
+                '<tr><td colspan="8" style="text-align:center;padding:24px;color:#948d78;">No publication performance data yet.</td></tr>';
+            return;
+        }
+
+        for (var i = 0; i < performance.length; i++) {
+            var p = performance[i];
+            var row = document.createElement("tr");
+            row.innerHTML =
+                '<td>' +
+                '<div class="book-row">' +
+                '<div class="book-cover-sm"></div>' +
+                '<div>' +
+                '<div class="book-row-name">' + p.title + '</div>' +
+                '<div class="book-row-pages">' + p.pages + '</div>' +
+                '</div></div></td>' +
+                '<td>' + p.cat + '</td>' +
+                '<td>' + p.reads + '</td>' +
+                '<td>' +
+                '<div class="progress-cell">' +
+                '<div class="progress-track">' +
+                '<div class="progress-fill" style="width:' + p.progress + '%;"></div>' +
+                '</div><span>' + p.progress + '%</span></div></td>' +
+                '<td>' + p.bookmarks + '</td>' +
+                '<td>' + p.highlights + '</td>' +
+                '<td><span class="rating-chip">' +
+                '<span class="iconify" data-icon="mdi:star" data-width="11"></span>' +
+                p.rating + ' (' + p.reviewCount + ')</span></td>' +
+                '<td><a class="details-btn" href="/book-details.html?id=' + p.id + '">Details</a></td>';
+            performanceRows.appendChild(row);
+        }
+    }
+
+    function renderMilestones(milestones) {
+        var milestonesEl = document.getElementById("milestones");
+        milestonesEl.innerHTML = "";
+        for (var i = 0; i < milestones.length; i++) {
+            var m = milestones[i];
+            var div = document.createElement("div");
+            div.className = "milestone";
+            div.innerHTML =
+                '<div class="milestone-head">' +
+                '<span>' + m.label + '</span>' +
+                '<span class="milestone-value">' + m.value + '%</span></div>' +
+                '<div class="milestone-track">' +
+                '<div class="milestone-fill' + (m.gold ? ' gold' : '') + '" style="width:' + m.value + '%;"></div>' +
+                '</div>';
+            milestonesEl.appendChild(div);
+        }
+    }
+
+    function renderDemoRows(containerId, items) {
+        var el = document.getElementById(containerId);
+        el.innerHTML = "";
+        for (var i = 0; i < items.length; i++) {
+            var it = items[i];
+            var div = document.createElement("div");
+            div.className = "demo-row";
+            div.innerHTML = '<span>' + it.label + '</span><span class="value">' + it.value + '</span>';
+            el.appendChild(div);
+        }
+    }
+
+    function fillStats(stats) {
+        document.getElementById("statTotalReads").textContent = formatNum(stats.totalReads);
+        document.getElementById("statUniqueReaders").textContent = formatNum(stats.uniqueReaders);
+        var avg = stats.avgProgress || 0;
+        document.getElementById("statAvgProgress").innerHTML = avg + '<span class="unit">%</span>';
+        document.getElementById("statAvgProgressFill").style.width = avg + "%";
+        document.getElementById("statAvgRating").innerHTML = (stats.averageRating || 0) + '<span class="unit">/ 5.0</span>';
+        document.getElementById("statReviewNote").textContent = (stats.reviewCount || 0) + " reviews";
+        document.getElementById("statBookmarks").textContent = formatNum(stats.bookmarks);
+        document.getElementById("statHighlights").textContent = formatNum(stats.highlights);
+    }
+
+    function fillTopBook(top) {
+        if (!top) return;
+        document.getElementById("topPubTag").textContent = "#1 " + (top.category || "Catalog");
+        document.getElementById("topCoverTitle").textContent = top.title || "—";
+        document.getElementById("topCoverAuthor").textContent = top.author || "—";
+        document.getElementById("topPubName").textContent = top.title || "—";
+        document.getElementById("topPubMeta").textContent =
+            (top.pages || 0) + " pages · " + (top.language || "English") +
+            " · Rs. " + (top.price || 0);
+        document.getElementById("topPubStatus").textContent = "Published";
+        document.getElementById("topPubRating").innerHTML =
+            '<span class="iconify" data-icon="mdi:star" data-width="13"></span> ' +
+            (top.rating || 0) + " (" + (top.reviewCount || 0) + " reviews)";
+        document.getElementById("topMetricReads").textContent = formatNum(top.reads);
+        document.getElementById("topMetricShare").textContent = (top.catalogShare || 0) + "% of author catalog";
+        document.getElementById("topMetricCompletion").textContent = (top.avgCompletion || 0) + "%";
+        document.getElementById("topMetricCompletionFill").style.width = (top.avgCompletion || 0) + "%";
+        document.getElementById("topMetricHighlights").textContent = formatNum(top.highlights);
+        document.getElementById("topMetricRoyalties").textContent =
+            "Rs. " + Number(top.royalties || 0).toLocaleString(undefined, { maximumFractionDigits: 0 });
+        if (top.id) {
+            document.getElementById("topPubLink").href = "/book-details.html?id=" + top.id;
+        }
+    }
+
+    async function loadReaderAnalytics() {
+        try {
+            var resp = await fetch("/api/author/reader-analytics", {
+                method: "GET",
+                headers: getAuthHeaders(),
+                credentials: "same-origin"
+            });
+            if (resp.status === 401 || resp.status === 403) {
+                document.getElementById("performanceRows").innerHTML =
+                    '<tr><td colspan="8" style="text-align:center;padding:24px;">Please <a href="/login.html">log in</a> as an author.</td></tr>';
+                return;
+            }
+            if (!resp.ok) throw new Error("Failed");
+            var data = await resp.json();
+            fillStats(data.stats || {});
+            fillTopBook(data.topBook);
+            renderPerformance(data.performance || []);
+            renderMilestones(data.milestones || []);
+            renderDemoRows("regionRows", data.regions || []);
+            renderDemoRows("modalityRows", data.modality || []);
+        } catch (e) {
+            console.error(e);
+            document.getElementById("performanceRows").innerHTML =
+                '<tr><td colspan="8" style="text-align:center;color:#a33b3b;padding:24px;">Could not load reader analytics.</td></tr>';
+        }
+    }
+
+    loadReaderAnalytics();
+</script>
+
 </body>
 </html>

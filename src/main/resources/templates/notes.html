@@ -5,230 +5,191 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Notes - READORA</title>
     <link rel="stylesheet" th:href="@{/css/notes.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
 <body>
 
-    <!-- HEADER -->
-    <th:block th:replace="~{fragments/chrome :: header}"></th:block>
-    <header class="header legacy-chrome-header">
-        <div class="header-inner">
-            <a th:href="@{/index}" class="logo">READORA</a>
-            <nav class="nav-links">
-                <a th:href="@{/index}">Discover</a>
-                <a th:href="@{/Book}">Books</a>
-                <a th:href="@{/newspapers}">Newspapers</a>
-                <a th:href="@{/magazines}">Magazines</a>
-                <a th:href="@{/read-nepal}">Read Nepal</a>
-                <a th:href="@{/library}">My Library</a>
-            </nav>
-            <div class="profile-icon">👤</div>
+<!-- HEADER -->
+<header th:replace="~{fragments/header :: readerHeader('library')}"></header>
+
+<!-- MAIN -->
+<main class="main-content">
+    <div class="container">
+
+        <!-- PAGE HEADER -->
+        <div class="page-header">
+            <h1>My Notes</h1>
+            <p>Your reading notes and annotations.</p>
         </div>
-    </header>
 
-    <!-- MAIN -->
-    <main class="main-content">
-        <div class="container">
-
-            <!-- PAGE HEADER -->
-            <div class="page-header">
-                <h1>My Notes</h1>
-                <p>Your reading notes and annotations.</p>
+        <!-- FILTER SECTION -->
+        <div class="filter-section">
+            <div class="filter-row">
+                <input type="text" id="searchInput" class="search-input" placeholder="Search notes by book or content...">
+                <select id="sortBy" class="filter-select">
+                    <option value="newest">Newest First</option>
+                    <option value="oldest">Oldest First</option>
+                    <option value="book">By Book</option>
+                </select>
             </div>
-
-            <!-- FILTER SECTION -->
-            <div class="filter-section">
-                <div class="filter-row">
-                    <input type="text" id="searchInput" class="search-input" placeholder="Search notes by book or content...">
-                    <select id="sortBy" class="filter-select">
-                        <option value="newest">Newest First</option>
-                        <option value="oldest">Oldest First</option>
-                        <option value="book">By Book</option>
-                    </select>
-                </div>
-            </div>
-
-            <!-- EMPTY STATE -->
-            <div id="emptyState" class="empty-state">
-                <p>You haven't created any notes yet.</p>
-                <p>When reading, use the Notes panel to save your thoughts and ideas.</p>
-                <a th:href="@{/Book}" class="btn-primary" style="display: inline-block; margin-top: 16px;">Start Reading</a>
-            </div>
-
-            <!-- NOTES GRID -->
-            <div id="notesContainer" class="notes-container">
-                <div id="notesList" class="notes-grid">
-                    <!-- Notes will be inserted here -->
-                </div>
-            </div>
-
         </div>
-    </main>
 
-    <!-- FOOTER -->
-    <footer class="footer legacy-chrome-footer">
-        <div class="footer-inner">
-            <div class="footer-logo">READORA</div>
-            <div class="footer-links">
-                <a href="#">About</a>
-                <a href="#">Support</a>
-                <a href="#">Terms</a>
-                <a href="#">Privacy</a>
-            </div>
-            <div class="footer-copyright">© 2026 READORA. All rights reserved.</div>
+        <!-- EMPTY STATE -->
+        <div id="emptyState" class="empty-state">
+            <p>You haven't created any notes yet.</p>
+            <p>When reading, use the Notes panel to save your thoughts and ideas.</p>
+            <a th:href="@{/Book}" class="btn-primary" style="display: inline-block; margin-top: 16px;">Start Reading</a>
         </div>
-    </footer>
-    <th:block th:replace="~{fragments/chrome :: footer}"></th:block>
 
-    <!-- EDIT NOTE MODAL -->
-    <div id="editModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>Edit Note</h2>
-                <button class="modal-close">&times;</button>
+        <!-- NOTES GRID -->
+        <div id="notesContainer" class="notes-container">
+            <div id="notesList" class="notes-grid">
+                <!-- Notes will be inserted here -->
             </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label>Book Title</label>
-                    <input type="text" id="editBookTitle" class="form-input" readonly>
-                </div>
-                <div class="form-group">
-                    <label>Page / Location</label>
-                    <input type="text" id="editPage" class="form-input" readonly>
-                </div>
-                <div class="form-group">
-                    <label>Note</label>
-                    <textarea id="editNoteText" class="form-textarea" rows="6"></textarea>
-                </div>
-                <div class="form-group">
-                    <label>Date</label>
-                    <input type="text" id="editDate" class="form-input" readonly>
-                </div>
+        </div>
+
+    </div>
+</main>
+
+<!-- FOOTER -->
+<footer class="footer legacy-chrome-footer">
+    <div class="footer-inner">
+        <div class="footer-logo">READORA</div>
+        <div class="footer-links">
+            <a href="#">About</a>
+            <a href="#">Support</a>
+            <a href="#">Terms</a>
+            <a href="#">Privacy</a>
+        </div>
+        <div class="footer-copyright">© 2026 READORA. All rights reserved.</div>
+    </div>
+</footer>
+
+<!-- EDIT NOTE MODAL -->
+<div id="editModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Edit Note</h2>
+            <button class="modal-close">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label>Book Title</label>
+                <input type="text" id="editBookTitle" class="form-input" readonly>
             </div>
-            <div class="modal-footer">
-                <button id="saveNoteBtn" class="btn-primary">Save Note</button>
-                <button id="cancelEditBtn" class="btn-secondary">Cancel</button>
+            <div class="form-group">
+                <label>Page / Location</label>
+                <input type="text" id="editPage" class="form-input" readonly>
             </div>
+            <div class="form-group">
+                <label>Note</label>
+                <textarea id="editNoteText" class="form-textarea" rows="6"></textarea>
+            </div>
+            <div class="form-group">
+                <label>Date</label>
+                <input type="text" id="editDate" class="form-input" readonly>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button id="saveNoteBtn" class="btn-primary">Save Note</button>
+            <button id="cancelEditBtn" class="btn-secondary">Cancel</button>
         </div>
     </div>
+</div>
 
-    <!-- TOAST -->
-    <div id="toast" class="toast"></div>
+<!-- TOAST -->
+<div id="toast" class="toast"></div>
 
-    <script>
-        // ========================================
-        // DEMO DATA - NOTES
-        // Later: GET /api/notes
-        // ========================================
+<script>
+    let allNotes = [];
+    let currentEditingNoteId = null;
 
-        const demoNotes = [
-            {
-                id: 1,
-                bookTitle: "The Silent Spring",
-                bookAuthor: "Rachel Carson",
-                page: "Chapter 2, Page 23",
-                noteText: "This passage about pesticides is very powerful. It shows how chemicals can affect ecosystems.",
-                dateCreated: "2026-08-28"
-            },
-            {
-                id: 2,
-                bookTitle: "The Mountain Path",
-                bookAuthor: "Demo Author",
-                page: "Chapter 4, Page 56",
-                noteText: "Beautiful description of the landscape. Need to remember this for writing.",
-                dateCreated: "2026-08-25"
-            },
-            {
-                id: 3,
-                bookTitle: "Muna Madan",
-                bookAuthor: "Laxmi Prasad Devkota",
-                page: "Verse 85",
-                noteText: "The poetry here reminds me of traditional Nepali verses. Strong cultural references.",
-                dateCreated: "2026-08-20"
-            }
-        ];
+    // ========================================
+    // INITIALIZE PAGE
+    // ========================================
 
-        let allNotes = [];
-        let currentEditingNoteId = null;
+    document.addEventListener('DOMContentLoaded', function() {
+        loadNotes();
+        setupEventListeners();
+    });
 
-        // ========================================
-        // INITIALIZE PAGE
-        // ========================================
+    // ========================================
+    // LOAD NOTES FROM THE REAL BACKEND
+    // ========================================
 
-        document.addEventListener('DOMContentLoaded', function() {
-            loadNotes();
-            setupEventListeners();
+    function loadNotes() {
+        fetch('/api/notes', { credentials: 'include' })
+            .then(function (res) {
+                if (res.status === 401) {
+                    window.location.href = '/login';
+                    throw new Error('Not authenticated.');
+                }
+                if (!res.ok) throw new Error('Failed to load notes.');
+                return res.json();
+            })
+            .then(function (notes) {
+                allNotes = notes;
+                filterAndDisplayNotes();
+            })
+            .catch(function (err) {
+                console.error(err);
+                displayNotes([]);
+            });
+    }
+
+    // ========================================
+    // FILTER AND DISPLAY NOTES
+    // ========================================
+
+    function filterAndDisplayNotes() {
+        const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+        const sortBy = document.getElementById('sortBy').value;
+
+        let filtered = allNotes.filter(note => {
+            return note.bookTitle.toLowerCase().includes(searchTerm) ||
+                note.noteText.toLowerCase().includes(searchTerm) ||
+                note.bookAuthor.toLowerCase().includes(searchTerm);
         });
 
-        // ========================================
-        // LOAD NOTES FROM STORAGE
-        // ========================================
-
-        function loadNotes() {
-            let notes = localStorage.getItem('myNotes');
-            
-            if (notes) {
-                allNotes = JSON.parse(notes);
-            } else {
-                allNotes = demoNotes;
-            }
-
-            filterAndDisplayNotes();
+        if (sortBy === 'newest') {
+            filtered.sort((a, b) => new Date(b.dateCreated) - new Date(a.dateCreated));
+        } else if (sortBy === 'oldest') {
+            filtered.sort((a, b) => new Date(a.dateCreated) - new Date(b.dateCreated));
+        } else if (sortBy === 'book') {
+            filtered.sort((a, b) => a.bookTitle.localeCompare(b.bookTitle));
         }
 
-        // ========================================
-        // FILTER AND DISPLAY NOTES
-        // ========================================
+        displayNotes(filtered);
+    }
 
-        function filterAndDisplayNotes() {
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            const sortBy = document.getElementById('sortBy').value;
+    // ========================================
+    // DISPLAY NOTES (unchanged - still your original rendering)
+    // ========================================
 
-            let filtered = allNotes.filter(note => {
-                return note.bookTitle.toLowerCase().includes(searchTerm) ||
-                       note.noteText.toLowerCase().includes(searchTerm) ||
-                       note.bookAuthor.toLowerCase().includes(searchTerm);
+    function displayNotes(notes) {
+        const notesList = document.getElementById('notesList');
+        const emptyState = document.getElementById('emptyState');
+        const notesContainer = document.getElementById('notesContainer');
+
+        if (notes.length === 0) {
+            notesList.innerHTML = '';
+            emptyState.style.display = 'block';
+            notesContainer.style.display = 'none';
+            return;
+        }
+
+        emptyState.style.display = 'none';
+        notesContainer.style.display = 'block';
+
+        notesList.innerHTML = notes.map(note => {
+            const date = new Date(note.dateCreated);
+            const formattedDate = date.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
             });
 
-            // Sort notes
-            if (sortBy === 'newest') {
-                filtered.sort((a, b) => new Date(b.dateCreated) - new Date(a.dateCreated));
-            } else if (sortBy === 'oldest') {
-                filtered.sort((a, b) => new Date(a.dateCreated) - new Date(b.dateCreated));
-            } else if (sortBy === 'book') {
-                filtered.sort((a, b) => a.bookTitle.localeCompare(b.bookTitle));
-            }
-
-            displayNotes(filtered);
-        }
-
-        // ========================================
-        // DISPLAY NOTES
-        // ========================================
-
-        function displayNotes(notes) {
-            const notesList = document.getElementById('notesList');
-            const emptyState = document.getElementById('emptyState');
-            const notesContainer = document.getElementById('notesContainer');
-
-            if (notes.length === 0) {
-                notesList.innerHTML = '';
-                emptyState.style.display = 'block';
-                notesContainer.style.display = 'none';
-                return;
-            }
-
-            emptyState.style.display = 'none';
-            notesContainer.style.display = 'block';
-
-            notesList.innerHTML = notes.map(note => {
-                const date = new Date(note.dateCreated);
-                const formattedDate = date.toLocaleDateString('en-US', { 
-                    year: 'numeric', 
-                    month: 'short', 
-                    day: 'numeric' 
-                });
-
-                return `
+            return `
                     <div class="note-card">
                         <div class="note-header">
                             <div class="note-book">
@@ -237,7 +198,7 @@
                             </div>
                             <p class="note-date">${formattedDate}</p>
                         </div>
-                        <p class="note-location">📍 ${note.page}</p>
+                        <p class="note-location"><i class="fa-solid fa-location-dot"></i> ${note.page}</p>
                         <p class="note-text">${note.noteText}</p>
                         <div class="note-actions">
                             <button class="btn-edit" data-id="${note.id}">Edit</button>
@@ -246,161 +207,156 @@
                         </div>
                     </div>
                 `;
-            }).join('');
+        }).join('');
 
-            attachNoteEventListeners();
-        }
+        attachNoteEventListeners();
+    }
 
-        // ========================================
-        // SETUP EVENT LISTENERS
-        // ========================================
+    // ========================================
+    // SETUP EVENT LISTENERS (unchanged)
+    // ========================================
 
-        function setupEventListeners() {
-            const searchInput = document.getElementById('searchInput');
-            const sortBy = document.getElementById('sortBy');
+    function setupEventListeners() {
+        const searchInput = document.getElementById('searchInput');
+        const sortBy = document.getElementById('sortBy');
 
-            searchInput.addEventListener('input', filterAndDisplayNotes);
-            sortBy.addEventListener('change', filterAndDisplayNotes);
+        searchInput.addEventListener('input', filterAndDisplayNotes);
+        sortBy.addEventListener('change', filterAndDisplayNotes);
 
-            // Modal close button
-            document.querySelector('.modal-close').addEventListener('click', closeEditModal);
+        document.querySelector('.modal-close').addEventListener('click', closeEditModal);
+        document.getElementById('cancelEditBtn').addEventListener('click', closeEditModal);
+        document.getElementById('saveNoteBtn').addEventListener('click', saveEditedNote);
 
-            // Cancel button
-            document.getElementById('cancelEditBtn').addEventListener('click', closeEditModal);
-
-            // Save button
-            document.getElementById('saveNoteBtn').addEventListener('click', saveEditedNote);
-
-            // Close modal on overlay click
-            document.getElementById('editModal').addEventListener('click', function(e) {
-                if (e.target === this) {
-                    closeEditModal();
-                }
-            });
-        }
-
-        // ========================================
-        // ATTACH NOTE EVENT LISTENERS
-        // ========================================
-
-        function attachNoteEventListeners() {
-            // Edit buttons
-            const editButtons = document.querySelectorAll('.btn-edit');
-            editButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const id = this.getAttribute('data-id');
-                    openEditModal(id);
-                });
-            });
-
-            // Delete buttons
-            const deleteButtons = document.querySelectorAll('.btn-delete-note');
-            deleteButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const id = this.getAttribute('data-id');
-                    deleteNote(id);
-                });
-            });
-
-            // Reader buttons
-            const readerButtons = document.querySelectorAll('.btn-reader');
-            readerButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const id = this.getAttribute('data-id');
-                    openInReader(id);
-                });
-            });
-        }
-
-        // ========================================
-        // OPEN EDIT MODAL
-        // ========================================
-
-        function openEditModal(id) {
-            const note = allNotes.find(n => n.id == id);
-            if (!note) return;
-
-            currentEditingNoteId = id;
-
-            document.getElementById('editBookTitle').value = note.bookTitle;
-            document.getElementById('editPage').value = note.page;
-            document.getElementById('editNoteText').value = note.noteText;
-            
-            const date = new Date(note.dateCreated);
-            const formattedDate = date.toLocaleDateString('en-US', { 
-                year: 'numeric', 
-                month: 'short', 
-                day: 'numeric' 
-            });
-            document.getElementById('editDate').value = formattedDate;
-
-            document.getElementById('editModal').classList.add('show');
-        }
-
-        // ========================================
-        // CLOSE EDIT MODAL
-        // ========================================
-
-        function closeEditModal() {
-            document.getElementById('editModal').classList.remove('show');
-            currentEditingNoteId = null;
-        }
-
-        // ========================================
-        // SAVE EDITED NOTE
-        // ========================================
-
-        function saveEditedNote() {
-            if (currentEditingNoteId === null) return;
-
-            const noteIndex = allNotes.findIndex(n => n.id == currentEditingNoteId);
-            if (noteIndex === -1) return;
-
-            allNotes[noteIndex].noteText = document.getElementById('editNoteText').value;
-
-            localStorage.setItem('myNotes', JSON.stringify(allNotes));
-            closeEditModal();
-            showToast('Note updated');
-            filterAndDisplayNotes();
-        }
-
-        // ========================================
-        // DELETE NOTE
-        // ========================================
-
-        function deleteNote(id) {
-            allNotes = allNotes.filter(n => n.id != id);
-            localStorage.setItem('myNotes', JSON.stringify(allNotes));
-            showToast('Note deleted');
-            filterAndDisplayNotes();
-        }
-
-        // ========================================
-        // OPEN IN READER
-        // ========================================
-
-        function openInReader(id) {
-            const note = allNotes.find(n => n.id == id);
-            if (note) {
-                sessionStorage.setItem('readerNote', JSON.stringify(note));
-                window.location.href = 'reader.html';
+        document.getElementById('editModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeEditModal();
             }
-        }
+        });
+    }
 
-        // ========================================
-        // TOAST NOTIFICATION
-        // ========================================
+    // ========================================
+    // ATTACH NOTE EVENT LISTENERS (unchanged)
+    // ========================================
 
-        function showToast(message) {
-            const toast = document.getElementById('toast');
-            toast.textContent = message;
-            toast.classList.add('show');
-            
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, 3000);
+    function attachNoteEventListeners() {
+        document.querySelectorAll('.btn-edit').forEach(button => {
+            button.addEventListener('click', function() {
+                openEditModal(this.getAttribute('data-id'));
+            });
+        });
+
+        document.querySelectorAll('.btn-delete-note').forEach(button => {
+            button.addEventListener('click', function() {
+                deleteNote(this.getAttribute('data-id'));
+            });
+        });
+
+        document.querySelectorAll('.btn-reader').forEach(button => {
+            button.addEventListener('click', function() {
+                openInReader(this.getAttribute('data-id'));
+            });
+        });
+    }
+
+    // ========================================
+    // OPEN EDIT MODAL (unchanged)
+    // ========================================
+
+    function openEditModal(id) {
+        const note = allNotes.find(n => n.id == id);
+        if (!note) return;
+
+        currentEditingNoteId = id;
+
+        document.getElementById('editBookTitle').value = note.bookTitle;
+        document.getElementById('editPage').value = note.page;
+        document.getElementById('editNoteText').value = note.noteText;
+
+        const date = new Date(note.dateCreated);
+        document.getElementById('editDate').value = date.toLocaleDateString('en-US', {
+            year: 'numeric', month: 'short', day: 'numeric'
+        });
+
+        document.getElementById('editModal').classList.add('show');
+    }
+
+    function closeEditModal() {
+        document.getElementById('editModal').classList.remove('show');
+        currentEditingNoteId = null;
+    }
+
+    // ========================================
+    // SAVE EDITED NOTE -> real PUT /api/notes/{id}
+    // ========================================
+
+    function saveEditedNote() {
+        if (currentEditingNoteId === null) return;
+
+        const newContent = document.getElementById('editNoteText').value;
+
+        fetch('/api/notes/' + currentEditingNoteId, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify({ content: newContent })
+        })
+            .then(function (res) {
+                if (!res.ok) throw new Error('Failed to update note.');
+                return res.json();
+            })
+            .then(function () {
+                closeEditModal();
+                showToast('Note updated');
+                loadNotes(); // re-fetch so the list reflects the real saved state
+            })
+            .catch(function (err) {
+                alert('Could not update the note. ' + err.message);
+            });
+    }
+
+    // ========================================
+    // DELETE NOTE -> real DELETE /api/notes/{id}
+    // ========================================
+
+    function deleteNote(id) {
+        if (!confirm('Delete this note?')) return;
+
+        fetch('/api/notes/' + id, {
+            method: 'DELETE',
+            credentials: 'include'
+        })
+            .then(function (res) {
+                if (!res.ok) throw new Error('Failed to delete note.');
+                showToast('Note deleted');
+                loadNotes();
+            })
+            .catch(function (err) {
+                alert('Could not delete the note. ' + err.message);
+            });
+    }
+
+    // ========================================
+    // OPEN IN READER -> use the real link the backend already gives us
+    // ========================================
+
+    function openInReader(id) {
+        const note = allNotes.find(n => n.id == id);
+        if (note && note.link) {
+            window.location.href = note.link;
         }
-    </script>
+    }
+
+    // ========================================
+    // TOAST NOTIFICATION (unchanged)
+    // ========================================
+
+    function showToast(message) {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+</script>
 
 </body>
 </html>

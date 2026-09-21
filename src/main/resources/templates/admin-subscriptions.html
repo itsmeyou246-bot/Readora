@@ -1,10 +1,988 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subscriptions · READORA Admin</title>
+
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --forest: #1b3022;
+            --dark: #122017;
+            --gold: #c5a059;
+            --ivory: #fcf9f8;
+            --sand: #f6f3f2;
+            --border: #e5ded9;
+            --text: #211f1d;
+            --muted: #706b67;
+        }
+
+        body {
+            background: var(--ivory);
+            color: var(--text);
+            font-family: "Plus Jakarta Sans", sans-serif;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        a { color: inherit; text-decoration: none; }
+        button { font-family: inherit; cursor: pointer; }
+
+        /* ================= HEADER ================= */
+
+        .header {
+            height: 64px;
+            background: var(--ivory);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .header-inner {
+            max-width: 1400px;
+            height: 100%;
+            margin: auto;
+            padding: 0 28px;
+            display: flex;
+            align-items: center;
+            gap: 32px;
+        }
+
+        .logo-group { display: flex; align-items: center; gap: 10px; }
+
+        .logo {
+            font-family: "Playfair Display", serif;
+            font-size: 19px;
+            font-weight: 700;
+            color: var(--forest);
+            letter-spacing: 0.3px;
+        }
+
+        .admin-badge {
+            background: var(--forest);
+            color: white;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            padding: 4px 9px;
+            border-radius: 5px;
+        }
+
+        .nav-links { display: flex; align-items: center; gap: 26px; flex: 1; }
+
+        .nav-links a { font-size: 13.5px; color: var(--muted); padding: 22px 0 20px; }
+        .nav-links a:hover { color: var(--forest); }
+        .nav-links a.nav-active {
+            color: var(--forest);
+            font-weight: 600;
+            border-bottom: 2px solid var(--forest);
+        }
+
+        .header-search {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            background: var(--sand);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 9px 14px;
+            width: 260px;
+            color: var(--muted);
+            font-size: 12.5px;
+        }
+
+        .header-search i { font-size: 12px; }
+
+        .header-actions { display: flex; align-items: center; gap: 14px; }
+
+        .reader-view-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--sand);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 9px 14px;
+            font-size: 12.5px;
+            font-weight: 600;
+            color: var(--text);
+            white-space: nowrap;
+        }
+
+        .bell { position: relative; color: var(--muted); font-size: 15px; }
+        .bell .dot {
+            position: absolute;
+            top: -3px; right: -3px;
+            width: 7px; height: 7px;
+            background: #c0503f;
+            border-radius: 50%;
+        }
+
+        .profile { display: flex; align-items: center; gap: 10px; }
+        .profile-avatar {
+            width: 34px; height: 34px;
+            border-radius: 50%;
+            background: var(--forest);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+        }
+        .profile-info { line-height: 1.3; }
+        .profile-info strong { display: block; font-size: 12.5px; }
+        .profile-info small { color: var(--muted); font-size: 9.5px; letter-spacing: 0.4px; }
+
+        /* ================= MAIN ================= */
+
+        .container { max-width: 1400px; margin: auto; padding: 30px 28px 70px; }
+
+        .page-eyebrow {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: var(--muted);
+            margin-bottom: 6px;
+        }
+
+        .page-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 28px;
+            gap: 20px;
+        }
+
+        .page-head h1 {
+            font-family: "Playfair Display", serif;
+            font-size: 34px;
+            color: var(--dark);
+            margin-bottom: 6px;
+        }
+
+        .page-head p { color: var(--muted); font-size: 13.5px; }
+
+        .page-actions { display: flex; gap: 10px; }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 11px 18px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            border: 1px solid var(--border);
+            white-space: nowrap;
+            background: white;
+            color: var(--text);
+        }
+
+        .btn-primary { background: var(--forest); color: white; border-color: var(--forest); }
+
+        /* ================= STAT CARDS ================= */
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .stat-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 10.5px;
+            font-weight: 700;
+            letter-spacing: 0.6px;
+            color: var(--muted);
+            margin-bottom: 14px;
+        }
+
+        .stat-top i { color: var(--gold); font-size: 13px; }
+
+        .stat-value {
+            font-family: "Playfair Display", serif;
+            font-size: 30px;
+            color: var(--dark);
+            margin-bottom: 8px;
+        }
+
+        .stat-sub { font-size: 11.5px; color: var(--muted); }
+
+        .stat-bar {
+            margin-top: 10px;
+            height: 5px;
+            border-radius: 4px;
+            background: var(--sand);
+            overflow: hidden;
+        }
+
+        .stat-bar div { height: 100%; background: var(--forest); border-radius: 4px; }
+
+        /* ================= FILTER PANEL ================= */
+
+        .filter-panel {
+            background: var(--sand);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 22px;
+        }
+
+        .filter-row {
+            display: grid;
+            grid-template-columns: 1fr 170px 170px 40px;
+            gap: 10px;
+        }
+
+        .filter-row input,
+        .filter-row select {
+            width: 100%;
+            padding: 11px 14px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: white;
+            font-size: 12.5px;
+            font-family: inherit;
+            color: var(--text);
+        }
+
+        .filter-row .search-input {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 0 14px;
+        }
+
+        .filter-row .search-input i { color: var(--muted); font-size: 12px; }
+        .filter-row .search-input input { border: none; padding: 11px 0; }
+
+        .filter-reset {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--muted);
+        }
+        .filter-reset:hover { background: var(--sand); }
+
+        /* ================= TABLE ================= */
+
+        .table-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        table { width: 100%; border-collapse: collapse; }
+
+        thead th {
+            text-align: left;
+            font-size: 10.5px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            color: var(--muted);
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--border);
+            background: var(--sand);
+        }
+
+        tbody td {
+            padding: 16px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: middle;
+            font-size: 13px;
+        }
+
+        tbody tr:last-child td { border-bottom: none; }
+
+        .user-cell { display: flex; align-items: center; gap: 10px; }
+
+        .avatar {
+            width: 34px; height: 34px;
+            border-radius: 50%;
+            background: var(--forest);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            flex-shrink: 0;
+        }
+
+        .user-cell strong { display: block; font-size: 13.5px; }
+        .user-cell small { color: var(--muted); font-size: 11px; }
+
+        .plan-pill {
+            display: inline-block;
+            background: var(--sand);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 5px 10px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.4px;
+        }
+
+        .plan-PREMIUM { color: var(--forest); }
+        .plan-INSTITUTIONAL { color: var(--gold); border-color: var(--gold); }
+        .plan-FREE { color: var(--muted); }
+
+        .amount-cell strong { display: block; font-size: 13.5px; }
+        .amount-cell small { display: block; font-size: 10px; color: var(--muted); margin-top: 2px; }
+
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11.5px;
+            font-weight: 600;
+            padding: 5px 10px;
+            border-radius: 20px;
+        }
+
+        .status-pill i { font-size: 6px; }
+
+        .status-ACTIVE { background: #e7f2e9; color: #3f7a4e; }
+        .status-EXPIRED { background: var(--sand); color: var(--muted); }
+        .status-CANCELLED { background: #fbe7e4; color: #c0503f; }
+
+        .row-actions { display: flex; gap: 8px; justify-content: flex-end; }
+
+        .row-actions button {
+            padding: 7px 12px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            background: white;
+            color: var(--text);
+            font-size: 11px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .row-actions button:hover { background: var(--sand); }
+
+        /* ================= TABLE FOOTER / PAGINATION ================= */
+
+        .table-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 18px;
+            font-size: 12.5px;
+            color: var(--muted);
+        }
+
+        .pagination { display: flex; align-items: center; gap: 6px; }
+
+        .pagination button {
+            padding: 7px 12px;
+            border-radius: 6px;
+            font-size: 12.5px;
+            color: var(--muted);
+            border: 1px solid var(--border);
+            background: white;
+        }
+
+        .pagination button:hover:not(:disabled) { background: var(--sand); }
+        .pagination button:disabled { opacity: 0.45; cursor: default; }
+
+        .pagination button.current {
+            background: var(--forest);
+            color: white;
+            font-weight: 700;
+            border-color: var(--forest);
+        }
+
+        /* ================= MODALS ================= */
+
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(18, 32, 23, 0.45);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            z-index: 50;
+        }
+
+        .modal-overlay.hidden { display: none; }
+
+        .modal-box {
+            background: white;
+            border-radius: 12px;
+            max-width: 460px;
+            width: 100%;
+            padding: 26px;
+            box-shadow: 0 20px 50px rgba(18, 32, 23, 0.25);
+        }
+
+        .modal-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 18px;
+        }
+
+        .modal-eyebrow {
+            font-size: 10px;
+            letter-spacing: 0.6px;
+            color: var(--muted);
+            text-transform: uppercase;
+            font-weight: 700;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .modal-head h3 {
+            font-family: "Playfair Display", serif;
+            font-size: 20px;
+            color: var(--forest);
+        }
+
+        .modal-head p { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+        .modal-close {
+            border: none;
+            background: none;
+            color: var(--muted);
+            font-size: 16px;
+        }
+
+        .modal-detail-box {
+            background: var(--sand);
+            border-radius: 10px;
+            padding: 16px;
+            margin-bottom: 18px;
+        }
+
+        .modal-detail-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12.5px;
+            padding: 6px 0;
+        }
+
+        .modal-detail-row span:first-child {
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            font-size: 10.5px;
+            font-weight: 700;
+        }
+
+        .modal-detail-row span:last-child { font-weight: 600; }
+
+        .modal-actions { display: flex; justify-content: flex-end; gap: 10px; }
+
+        .status-select {
+            width: 100%;
+            padding: 10px 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            font-family: inherit;
+            font-size: 13px;
+            margin-bottom: 18px;
+        }
+
+        @media (max-width: 1100px) {
+            .stats { grid-template-columns: repeat(2, 1fr); }
+            .filter-row { grid-template-columns: 1fr; }
+            .nav-links, .header-search { display: none; }
+        }
+    </style>
 </head>
 <body>
-$END$
+
+<!-- ================= HEADER ================= -->
+<header th:replace="~{fragments/header :: adminHeader('subscriptions')}"></header>
+
+<!-- ================= MAIN ================= -->
+<main class="container">
+
+    <div class="page-eyebrow">SUBSCRIPTION ACCESS ENGINE</div>
+
+    <div class="page-head">
+        <div>
+            <h1>Subscriptions</h1>
+            <p>Monitor subscription plans, premium access, and billing activity on READORA.</p>
+        </div>
+
+        <div class="page-actions">
+            <button class="btn" id="refreshBtn">
+                <i class="fa-solid fa-rotate"></i>
+                Refresh
+            </button>
+        </div>
+    </div>
+
+    <!-- ================= STATS ================= -->
+    <div class="stats">
+        <div class="stat-card">
+            <div class="stat-top">TOTAL SUBSCRIPTIONS <i class="fa-solid fa-layer-group"></i></div>
+            <div class="stat-value" id="statTotal">0</div>
+            <div class="stat-sub" id="statTotalSub">All subscription records</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-top">ACTIVE <i class="fa-solid fa-circle-check"></i></div>
+            <div class="stat-value" id="statActive">0</div>
+            <div class="stat-bar"><div id="statActiveBar" style="width:0%"></div></div>
+            <div class="stat-sub" id="statActiveSub" style="margin-top:8px;">—</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-top">FREE PLAN <i class="fa-solid fa-book-open"></i></div>
+            <div class="stat-value" id="statFree">0</div>
+            <div class="stat-sub" id="statFreeSub">Standard community tier</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-top">MONTHLY RECURRING REVENUE <i class="fa-solid fa-sack-dollar"></i></div>
+            <div class="stat-value" id="statMrr">Rs. 0</div>
+            <div class="stat-sub" id="statMrrSub">From active paid plans</div>
+        </div>
+    </div>
+
+    <!-- ================= FILTERS ================= -->
+    <div class="filter-panel">
+        <div class="filter-row">
+            <div class="search-input">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="searchInput" placeholder="Search by name, email, or subscription ID...">
+            </div>
+
+            <select id="planFilter">
+                <option value="ALL">All Plans</option>
+                <option value="FREE">Free</option>
+                <option value="PREMIUM">Premium</option>
+                <option value="INSTITUTIONAL">Institutional</option>
+            </select>
+
+            <select id="statusFilter">
+                <option value="ALL">All Statuses</option>
+                <option value="ACTIVE">Active</option>
+                <option value="EXPIRED">Expired</option>
+                <option value="CANCELLED">Cancelled</option>
+            </select>
+
+            <button class="filter-reset" id="clearFiltersBtn" title="Reset filters">
+                <i class="fa-solid fa-filter-circle-xmark"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- ================= TABLE ================= -->
+    <div class="table-card">
+        <table>
+            <thead>
+            <tr>
+                <th>User</th>
+                <th>Plan</th>
+                <th>Amount</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Status</th>
+                <th style="text-align:right;">Actions</th>
+            </tr>
+            </thead>
+            <tbody id="subscriptionsTableBody">
+            <tr><td colspan="7" style="text-align:center;padding:30px;color:var(--muted);">Loading subscriptions…</td></tr>
+            </tbody>
+        </table>
+
+        <div class="table-footer">
+            <span id="tableFooterText">Loading…</span>
+            <div class="pagination" id="paginationControls"></div>
+        </div>
+    </div>
+
+</main>
+
+<!-- ================= DETAILS MODAL ================= -->
+<div class="modal-overlay hidden" id="inspectorModal">
+    <div class="modal-box">
+        <div class="modal-head">
+            <div>
+                <span class="modal-eyebrow">Subscription Details</span>
+                <h3 id="modalUserName">—</h3>
+                <p id="modalUserEmail">—</p>
+            </div>
+            <button class="modal-close" id="closeInspectorModal"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+
+        <div class="modal-detail-box">
+            <div class="modal-detail-row"><span>Subscription ID</span><span id="modalSubCode">—</span></div>
+            <div class="modal-detail-row"><span>Plan Tier</span><span id="modalPlan">—</span></div>
+            <div class="modal-detail-row"><span>Billing Amount</span><span id="modalAmount">—</span></div>
+            <div class="modal-detail-row"><span>Payment Method</span><span id="modalMethod">—</span></div>
+            <div class="modal-detail-row"><span>Start Date</span><span id="modalStart">—</span></div>
+            <div class="modal-detail-row"><span>End Date</span><span id="modalEnd">—</span></div>
+            <div class="modal-detail-row"><span>Access Status</span><span id="modalStatus">—</span></div>
+        </div>
+
+        <div class="modal-actions">
+            <button class="btn" id="dismissModalBtn">Close</button>
+        </div>
+    </div>
+</div>
+
+<!-- ================= MANAGE STATUS MODAL ================= -->
+<div class="modal-overlay hidden" id="statusModal">
+    <div class="modal-box">
+        <div class="modal-head">
+            <div>
+                <span class="modal-eyebrow">Manage Status</span>
+                <h3 id="statusModalName">—</h3>
+                <p>Updates access entitlement immediately.</p>
+            </div>
+            <button class="modal-close" id="closeStatusModal"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+
+        <select class="status-select" id="statusSelect">
+            <option value="ACTIVE">Active</option>
+            <option value="EXPIRED">Expired</option>
+            <option value="CANCELLED">Cancelled</option>
+        </select>
+
+        <div class="modal-actions">
+            <button class="btn" id="cancelStatusBtn">Dismiss</button>
+            <button class="btn btn-primary" id="confirmStatusBtn">Confirm Update</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const PAGE_SIZE = 10;
+
+    let allSubscriptions = [];
+    let currentPage = 1;
+    let activeSubscriptionId = null;
+
+    document.addEventListener("DOMContentLoaded", function () {
+        loadStats();
+        loadSubscriptions();
+
+        document.getElementById("searchInput").addEventListener("input", function () {
+            currentPage = 1;
+            renderTable();
+        });
+        document.getElementById("planFilter").addEventListener("change", function () {
+            currentPage = 1;
+            renderTable();
+        });
+        document.getElementById("statusFilter").addEventListener("change", function () {
+            currentPage = 1;
+            renderTable();
+        });
+
+        document.getElementById("clearFiltersBtn").addEventListener("click", function () {
+            document.getElementById("searchInput").value = "";
+            document.getElementById("planFilter").value = "ALL";
+            document.getElementById("statusFilter").value = "ALL";
+            currentPage = 1;
+            renderTable();
+        });
+
+        document.getElementById("refreshBtn").addEventListener("click", function () {
+            loadStats();
+            loadSubscriptions();
+        });
+
+        document.getElementById("closeInspectorModal").addEventListener("click", hideInspector);
+        document.getElementById("dismissModalBtn").addEventListener("click", hideInspector);
+        document.getElementById("inspectorModal").addEventListener("click", function (e) {
+            if (e.target === this) hideInspector();
+        });
+
+        document.getElementById("closeStatusModal").addEventListener("click", hideStatusModal);
+        document.getElementById("cancelStatusBtn").addEventListener("click", hideStatusModal);
+        document.getElementById("statusModal").addEventListener("click", function (e) {
+            if (e.target === this) hideStatusModal();
+        });
+        document.getElementById("confirmStatusBtn").addEventListener("click", submitStatusChange);
+
+        window.addEventListener("keydown", function (e) {
+            if (e.key === "Escape") {
+                hideInspector();
+                hideStatusModal();
+            }
+        });
+    });
+
+    // ============================================================
+    // DATA LOADING
+    // ============================================================
+
+    function loadStats() {
+        fetch("/api/admin/subscriptions/stats", { credentials: "include" })
+            .then(handleAuthErrors)
+            .then(res => res.json())
+            .then(renderStats)
+            .catch(err => console.error("Could not load stats.", err));
+    }
+
+    function loadSubscriptions() {
+        fetch("/api/admin/subscriptions", { credentials: "include" })
+            .then(handleAuthErrors)
+            .then(res => res.json())
+            .then(function (data) {
+                allSubscriptions = data;
+                renderTable();
+            })
+            .catch(function (err) {
+                console.error(err);
+                document.getElementById("subscriptionsTableBody").innerHTML =
+                    '<tr><td colspan="7" style="text-align:center;padding:30px;color:#c0503f;">Could not load subscriptions.</td></tr>';
+            });
+    }
+
+    function handleAuthErrors(res) {
+        if (res.status === 401 || res.status === 403) {
+            window.location.href = "/login";
+            throw new Error("Not authorized.");
+        }
+        if (!res.ok) throw new Error("Request failed.");
+        return res;
+    }
+
+    // ============================================================
+    // RENDERING
+    // ============================================================
+
+    function renderStats(stats) {
+        document.getElementById("statTotal").textContent = stats.totalSubscriptions;
+        document.getElementById("statTotalSub").textContent = stats.totalSubscriptions + " total subscribers";
+
+        document.getElementById("statActive").textContent = stats.activeSubscriptions;
+        const activePct = stats.totalSubscriptions
+            ? Math.round(stats.activeSubscriptions / stats.totalSubscriptions * 100) : 0;
+        document.getElementById("statActiveBar").style.width = activePct + "%";
+        document.getElementById("statActiveSub").textContent = activePct + "% of all subscriptions";
+
+        document.getElementById("statFree").textContent = stats.freeCount;
+        document.getElementById("statFreeSub").textContent =
+            (stats.premiumCount + stats.institutionalCount) + " on paid plans";
+
+        document.getElementById("statMrr").textContent = "Rs. " + formatMoney(stats.monthlyRecurringRevenue);
+    }
+
+    function getFiltered() {
+        const search = document.getElementById("searchInput").value.toLowerCase();
+        const plan = document.getElementById("planFilter").value;
+        const status = document.getElementById("statusFilter").value;
+
+        return allSubscriptions.filter(function (s) {
+            const matchesSearch = !search ||
+                (s.userName || "").toLowerCase().includes(search) ||
+                (s.userEmail || "").toLowerCase().includes(search) ||
+                (s.subscriptionCode || "").toLowerCase().includes(search);
+
+            const matchesPlan = plan === "ALL" || s.plan === plan;
+            const matchesStatus = status === "ALL" || s.status === status;
+
+            return matchesSearch && matchesPlan && matchesStatus;
+        });
+    }
+
+    function renderTable() {
+        const filtered = getFiltered();
+        const tbody = document.getElementById("subscriptionsTableBody");
+
+        const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+        if (currentPage > totalPages) currentPage = totalPages;
+
+        const start = (currentPage - 1) * PAGE_SIZE;
+        const pageItems = filtered.slice(start, start + PAGE_SIZE);
+
+        document.getElementById("tableFooterText").textContent =
+            "Showing " + pageItems.length + " of " + filtered.length + " subscribers (" + allSubscriptions.length + " total)";
+
+        if (pageItems.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:30px;color:var(--muted);">No subscriptions match this filter.</td></tr>';
+            renderPagination(totalPages);
+            return;
+        }
+
+        tbody.innerHTML = pageItems.map(function (s) {
+            const initials = (s.userName || "U").split(" ").map(w => w[0]).slice(0, 2).join("").toUpperCase();
+            const statusLabel = s.status ? (s.status.charAt(0) + s.status.slice(1).toLowerCase()) : "Unknown";
+
+            return `
+                <tr>
+                    <td>
+                        <div class="user-cell">
+                            <div class="avatar">${initials}</div>
+                            <div>
+                                <strong>${escapeHtml(s.userName || "Unknown")}</strong>
+                                <small>${escapeHtml(s.userEmail || "—")}</small>
+                            </div>
+                        </div>
+                    </td>
+                    <td><span class="plan-pill plan-${s.plan}">${escapeHtml(s.plan)}</span></td>
+                    <td class="amount-cell">
+                        <strong>Rs. ${formatMoney(s.amount)}</strong>
+                        <small>${escapeHtml(s.paymentMethod || "—")}</small>
+                    </td>
+                    <td>${formatDate(s.startDate)}</td>
+                    <td>${formatDate(s.endDate)}</td>
+                    <td><span class="status-pill status-${s.status}"><i class="fa-solid fa-circle"></i>${statusLabel}</span></td>
+                    <td class="row-actions">
+                        <button onclick="openInspector(${s.id})"><i class="fa-solid fa-eye"></i> View</button>
+                        <button onclick="openStatusModal(${s.id})"><i class="fa-solid fa-sliders"></i> Manage</button>
+                    </td>
+                </tr>
+            `;
+        }).join("");
+
+        renderPagination(totalPages);
+    }
+
+    function renderPagination(totalPages) {
+        const container = document.getElementById("paginationControls");
+
+        let html = `<button ${currentPage === 1 ? "disabled" : ""} onclick="goToPage(${currentPage - 1})">Previous</button>`;
+
+        for (let i = 1; i <= totalPages; i++) {
+            if (i === 1 || i === totalPages || Math.abs(i - currentPage) <= 1) {
+                html += `<button class="${i === currentPage ? "current" : ""}" onclick="goToPage(${i})">${i}</button>`;
+            } else if (Math.abs(i - currentPage) === 2) {
+                html += `<span>…</span>`;
+            }
+        }
+
+        html += `<button ${currentPage === totalPages ? "disabled" : ""} onclick="goToPage(${currentPage + 1})">Next</button>`;
+
+        container.innerHTML = html;
+    }
+
+    function goToPage(page) {
+        currentPage = page;
+        renderTable();
+    }
+
+    // ============================================================
+    // MODALS
+    // ============================================================
+
+    function openInspector(id) {
+        const sub = allSubscriptions.find(s => s.id === id);
+        if (!sub) return;
+
+        document.getElementById("modalUserName").textContent = sub.userName || "Unknown User";
+        document.getElementById("modalUserEmail").textContent = sub.userEmail || "—";
+        document.getElementById("modalSubCode").textContent = sub.subscriptionCode;
+        document.getElementById("modalPlan").textContent = sub.plan;
+        document.getElementById("modalAmount").textContent = "Rs. " + formatMoney(sub.amount);
+        document.getElementById("modalMethod").textContent = sub.paymentMethod || "—";
+        document.getElementById("modalStart").textContent = formatDate(sub.startDate);
+        document.getElementById("modalEnd").textContent = formatDate(sub.endDate);
+        document.getElementById("modalStatus").textContent = sub.status;
+
+        document.getElementById("inspectorModal").classList.remove("hidden");
+    }
+
+    function hideInspector() {
+        document.getElementById("inspectorModal").classList.add("hidden");
+    }
+
+    function openStatusModal(id) {
+        const sub = allSubscriptions.find(s => s.id === id);
+        if (!sub) return;
+
+        activeSubscriptionId = id;
+        document.getElementById("statusModalName").textContent = sub.userName || "Subscriber";
+        document.getElementById("statusSelect").value = sub.status;
+
+        document.getElementById("statusModal").classList.remove("hidden");
+    }
+
+    function hideStatusModal() {
+        document.getElementById("statusModal").classList.add("hidden");
+        activeSubscriptionId = null;
+    }
+
+    function submitStatusChange() {
+        if (!activeSubscriptionId) return;
+
+        const newStatus = document.getElementById("statusSelect").value;
+        const btn = document.getElementById("confirmStatusBtn");
+        const originalText = btn.textContent;
+        btn.textContent = "Processing...";
+        btn.disabled = true;
+
+        fetch("/api/admin/subscriptions/" + activeSubscriptionId + "/status", {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+            body: JSON.stringify({ status: newStatus })
+        })
+            .then(handleAuthErrors)
+            .then(res => res.json())
+            .then(function (updated) {
+                const idx = allSubscriptions.findIndex(s => s.id === updated.id);
+                if (idx !== -1) allSubscriptions[idx] = updated;
+                renderTable();
+                loadStats();
+                hideStatusModal();
+            })
+            .catch(function (err) {
+                alert("Could not update subscription status. " + err.message);
+            })
+            .finally(function () {
+                btn.textContent = originalText;
+                btn.disabled = false;
+            });
+    }
+
+    // ============================================================
+    // HELPERS
+    // ============================================================
+
+    function formatMoney(value) {
+        const n = Number(value || 0);
+        return n.toLocaleString("en-IN", { minimumFractionDigits: 0, maximumFractionDigits: 2 });
+    }
+
+    function formatDate(isoDate) {
+        if (!isoDate) return "—";
+        const d = new Date(isoDate);
+        if (isNaN(d.getTime())) return isoDate;
+        return d.toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" });
+    }
+
+    function escapeHtml(str) {
+        return String(str)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;");
+    }
+</script>
+
 </body>
 </html>

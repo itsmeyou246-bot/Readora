@@ -1,76 +1,66 @@
 package com.readora.readora.service;
 
-import com.readora.readora.dto.SubscriptionRequest;
 import com.readora.readora.model.Subscription;
-import com.readora.readora.model.SubscriptionPlan;
-import com.readora.readora.model.User;
 import com.readora.readora.repository.SubscriptionRepository;
-import com.readora.readora.repository.UserRepository;
-
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class SubscriptionService {
 
-    private final UserRepository userRepository;
-    private final SubscriptionRepository subscriptionRepository;
+    private final SubscriptionRepository repository;
 
-    public SubscriptionService(
-            UserRepository userRepository,
-            SubscriptionRepository subscriptionRepository
-    ) {
-        this.userRepository = userRepository;
-        this.subscriptionRepository = subscriptionRepository;
+    // Monthly price per plan, in NPR. Single source of truth for billing.
+    private static final Map<String, Double> PLAN_PRICING = Map.of(
+            "FREE", 0.0,
+            "PREMIUM", 450.0,
+            "INSTITUTIONAL", 2400.0
+    );
+
+    public SubscriptionService(SubscriptionRepository repository) {
+        this.repository = repository;
     }
 
-    public Subscription saveSubscription(
-            SubscriptionRequest request
-    ) {
+    public Subscription createSubscription(Long userId, String plan) {
+        String cleanPlan = normalizePlan(plan);
 
-        if (request == null || request.getEmail() == null || request.getEmail().isBlank()) {
-            throw new IllegalArgumentException("A registered user email is required.");
-        }
+        Subscription subscription = repository.findByUserId(userId)
+                .orElse(new Subscription());
 
-        if (request.getPlan() == null || request.getPlan().isBlank()) {
-            throw new IllegalArgumentException("A subscription plan is required.");
-        }
+        LocalDate today = LocalDate.now();
 
-        User user = userRepository
-                .findByEmailIgnoreCase(request.getEmail().trim())
-                .orElseThrow(() ->
-                        new IllegalArgumentException(
-                                "User not found"
-                        )
-                );
-
-        SubscriptionPlan plan;
-        try {
-            plan = SubscriptionPlan.valueOf(request.getPlan().trim().toUpperCase());
-        } catch (IllegalArgumentException exception) {
-            throw new IllegalArgumentException("Invalid subscription plan.");
-        }
-
-        double price = 0;
-
-        if (plan == SubscriptionPlan.PREMIUM) {
-            price = 499;
-        }
-
-        if (plan == SubscriptionPlan.INSTITUTIONAL) {
-            price = 0;
-        }
-
-        Subscription subscription =
-                subscriptionRepository
-                        .findByUser(user)
-                        .orElse(new Subscription());
-
-        subscription.setUser(user);
-        subscription.setPlan(plan);
-        subscription.setPrice(price);
-
-        return subscriptionRepository.save(
-                subscription
+        subscription.setUserId(userId);
+        subscription.setPlan(cleanPlan);
+        subscription.setStatus("ACTIVE");
+        subscription.setStartDate(today);
+        subscription.setEndDate(today.plusMonths(1));
+        subscription.setAmount(PLAN_PRICING.getOrDefault(cleanPlan, 0.0));
+        subscription.setPaymentMethod(
+                cleanPlan.equals("FREE") ? "Complimentary" : "Pending Gateway Selection"
         );
+
+        return repository.save(subscription);
+    }
+
+    public Optional<Subscription> getSubscription(Long userId) {
+        return repository.findByUserId(userId);
+    }
+
+    private String normalizePlan(String plan) {
+        if (plan == null || plan.isBlank()) {
+            throw new IllegalArgumentException("Subscription plan is required.");
+        }
+
+        String value = plan.trim().toUpperCase();
+
+        return switch (value) {
+            case "FREE" -> "FREE";
+            case "PREMIUM" -> "PREMIUM";
+            case "INSTITUTIONAL" -> "INSTITUTIONAL";
+            default -> throw new IllegalArgumentException("Invalid subscription plan.");
+        };
     }
 }

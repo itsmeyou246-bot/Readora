@@ -1,10 +1,1321 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <title>Readora Studio · Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" th:href="@{/css/AuthorDashboard.css}">
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
+
 <body>
-$END$
+
+<header th:replace="~{fragments/header :: authorHeader('dashboard')}"></header>
+
+
+<div class="container">
+
+    <!-- SUB NAV -->
+    <div class="subnav">
+
+        <a href="#overview" class="subnav-tab subnav-active">
+            Overview
+        </a>
+
+        <a href="#pipeline" class="subnav-tab" id="subnavPipeline">
+            Manuscript Pipeline · 0
+        </a>
+
+        <a th:href="@{/purchase-history}" class="subnav-tab">
+            Royalties & Earnings
+        </a>
+
+        <a href="#reviews" class="subnav-tab">
+            Reader Reviews & Ratings
+        </a>
+
+        <a href="#analytics" class="subnav-tab">
+            Publication Analytics
+        </a>
+
+        <a href="#profile" class="subnav-tab">
+            Author Profile & Bio
+        </a>
+
+        <a href="#drafts" class="subnav-tab" id="subnavDrafts">
+            Drafts · 0
+        </a>
+
+        <span class="subnav-spacer"></span>
+
+        <!-- Create / manage publications -->
+        <a th:href="@{/Book}" class="new-pub-btn">
+            <i class="fa-solid fa-plus"></i>
+            New Publication
+        </a>
+
+    </div>
+
+
+    <!-- HERO -->
+    <section class="page-intro" id="overview">
+
+        <div class="hero-card">
+
+            <div class="hero-meta">
+
+                <span>
+                    <i class="fa-solid fa-circle"></i>
+                    Active Session
+                </span>
+
+                <span id="heroDate">Friday, March 2026</span>
+
+                <span>Kathmandu (NPT)</span>
+
+                <span class="verified">
+                    <i class="fa-solid fa-check"></i>
+                    Verified Readora Fellow
+                </span>
+
+            </div>
+
+            <h1 class="page-title" id="heroTitle">
+                Welcome back, Author.
+            </h1>
+
+            <p class="page-subtitle" id="heroSubtitle">
+                Your author dashboard is connected and ready.
+            </p>
+
+            <div class="hero-actions">
+
+                <a th:href="@{/Book}" class="btn btn-dark">
+                    Upload Manuscript
+                </a>
+
+                <a th:href="@{/purchase-history}" class="btn">
+                    Royalties Report
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- STATS -->
+    <section class="stats-section">
+
+        <div class="stats-grid">
+
+            <div class="stat-card">
+                <div class="stat-label">Total Works</div>
+                <div class="stat-value" id="statTotalWorks">0</div>
+                <div class="stat-sub">Cataloged in Studio</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-label">Published</div>
+                <div class="stat-value" id="statPublished">0</div>
+                <div class="stat-sub positive">
+                    <i class="fa-solid fa-circle"></i>
+                    Live in public store
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-label">In Pipeline</div>
+                <div class="stat-value" id="statPipeline">0</div>
+                <div class="stat-sub">
+                    Draft & Review
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-label">Total Reads</div>
+                <div class="stat-value" id="statTotalReads">0</div>
+                <div class="stat-sub positive" id="statReadsSub">
+                    Across publications
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-label">Royalties</div>
+                <div class="stat-value" id="statRoyalties">Rs. 0</div>
+                <div class="stat-sub">
+                    Net accrued payout
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-label">Avg Rating</div>
+                <div class="stat-value" id="statAvgRating">0.0</div>
+                <div class="stat-sub" id="statReviewsSub">
+                    Across 0 reviews
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- CTA -->
+    <section class="cta-section" id="pipeline">
+
+        <div class="cta-banner">
+
+            <div>
+
+                <div class="cta-eyebrow">
+                    Readora Editorial Publishing Pipeline
+                </div>
+
+                <h2>
+                    Ready to introduce your next masterpiece to readers?
+                </h2>
+
+                <p>
+                    Upload clean manuscript PDF/ePub, configure tier-based institutional
+                    pricing, and submit directly for peer and editorial review in Nepal
+                    & South Asia.
+                </p>
+
+            </div>
+
+            <div class="cta-actions">
+
+                <a th:href="@{/Book}" class="btn btn-gold">
+                    Publish New Work
+                </a>
+
+                <a href="#drafts" class="btn btn-ghost">
+                    Resume Drafts
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- BOOKS / PIPELINE -->
+    <section class="card-section" id="drafts">
+
+        <div class="card">
+
+            <div class="card-head">
+
+                <h3>
+                    Recent Books & Manuscript Pipeline
+                </h3>
+
+                <a th:href="@{/Book}" id="viewAllBooksLink">
+                    View All Books (0)
+                </a>
+
+            </div>
+
+            <p class="card-subtitle">
+                Latest created titles, peer-review milestones, and marketplace metrics
+            </p>
+
+            <table>
+
+                <thead>
+                <tr>
+                    <th>Book Title</th>
+                    <th>Category</th>
+                    <th>Tier / Price</th>
+                    <th>Status</th>
+                    <th>Reads</th>
+                    <th>Rating</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+
+                <tbody id="bookRows"></tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+
+    <!-- ANALYTICS -->
+    <section class="two-col-section" id="analytics">
+
+        <div class="two-col">
+
+            <div class="card">
+
+                <div class="card-head">
+
+                    <h3>
+                        Weekly Readership Activity
+                    </h3>
+
+                    <span class="card-subtitle" style="margin:0;">
+                        Last 7 Days
+                    </span>
+
+                </div>
+
+                <p class="card-subtitle">
+                    Daily chapter reads & digital pages turned across all active works
+                </p>
+
+                <div class="chart" id="chart"></div>
+
+                <div class="chart-footer">
+
+                    <span id="chartPeakText">
+                        Peak reader immersion: None recorded
+                    </span>
+
+                    <span id="chartTotalText">
+                        Total weekly engagement: 0 reads
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- TOP BOOK -->
+            <div class="card" id="topBookCard">
+
+                <div class="top-badge" id="topBookBadge">
+                    <i class="fa-solid fa-trophy"></i>
+                    Top Performing Title
+                </div>
+
+                <div class="card-head" style="margin-bottom:14px;">
+
+                    <h3>
+                        Top Performing Title
+                    </h3>
+
+                </div>
+
+                <div class="top-book" id="topBookSection">
+
+                    <div class="book-cover-lg" id="topBookCover"></div>
+
+                    <div>
+
+                        <div class="top-book-name" id="topBookName">
+                            Cataloging...
+                        </div>
+
+                        <div class="top-book-meta" id="topBookMeta">
+                            Author Studio
+                        </div>
+
+                        <div class="top-book-rating" id="topBookRating">
+                            <i class="fa-solid fa-star"></i>
+                            — (0 reviews)
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="top-metrics">
+
+                    <div class="top-metric">
+
+                        <div class="top-metric-label">
+                            Catalog Reads
+                        </div>
+
+                        <div class="top-metric-value" id="topBookReads">
+                            0
+                        </div>
+
+                        <div class="top-metric-sub" id="topBookReadsSub">
+                            Total catalog reads
+                        </div>
+
+                    </div>
+
+                    <div class="top-metric">
+
+                        <div class="top-metric-label">
+                            Accrued Royalties
+                        </div>
+
+                        <div class="top-metric-value" id="topBookRoyalties">
+                            Rs. 0
+                        </div>
+
+                        <div class="top-metric-sub">
+                            Accrued royalties
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <a th:href="@{/dashboard}" class="btn-outline-full">
+                    Inspect Book Analytics & Demographics
+                    <i class="fa-solid fa-arrow-right"></i>
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- REVIEWS -->
+    <section class="two-col-section" id="review-section">
+
+        <div class="two-col">
+
+            <div class="card">
+
+                <div class="card-head">
+
+                    <h3>
+                        Reader Reviews & Critical Reception
+                    </h3>
+
+                    <a href="#reviews" id="reviewsCountLink">
+                        View all (0)
+                    </a>
+
+                </div>
+
+                <p class="card-subtitle">
+                    Verified reader thoughts on your publications
+                </p>
+
+                <div id="reviews"></div>
+
+                <div class="review-footer">
+
+                    <span>
+                        Overall Author Sentiment:
+                        <strong>Verified Reviews</strong>
+                    </span>
+
+                    <a href="#reviews">
+                        Community feedback
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- HIGHLIGHTS -->
+            <div class="card">
+
+                <div class="card-head">
+
+                    <h3>
+                        Popular Reader Highlights & Marginalia
+                    </h3>
+
+                    <span class="card-subtitle" style="margin:0;" id="highlightsCountSpan">
+                        0 total highlights
+                    </span>
+
+                </div>
+
+                <p class="card-subtitle">
+                    Most bookmarked sentences in your texts
+                </p>
+
+                <div id="highlights"></div>
+
+                <div class="review-footer">
+
+                    <span>
+                        Reader Quote Permission:
+                        <strong>Attribution Enabled</strong>
+                    </span>
+
+                    <a href="#profile">
+                        Manage Quotation Licenses
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- EDITORIAL NOTICES -->
+    <section class="card-section" id="editorial">
+
+        <div class="card">
+
+            <div class="card-head">
+
+                <h3>
+                    Editorial Pipeline Notices
+                </h3>
+
+            </div>
+
+            <p class="card-subtitle" id="noticesCountSubtitle">
+                0 notifications
+            </p>
+
+            <div id="notices"></div>
+
+        </div>
+
+    </section>
+
+
+    <!-- AUTHOR PROFILE ANCHOR -->
+    <section id="profile"></section>
+
+</div>
+
+
+<!-- FOOTER -->
+<footer class="footer">
+
+    <div class="footer-inner">
+
+        <div>
+
+            <div class="footer-logo">
+                READORA
+            </div>
+
+            <div class="footer-copyright" style="margin-top:4px;">
+                Author Studio v2.4 (Cloud Microservices Architecture)
+            </div>
+
+        </div>
+
+
+        <div class="footer-links">
+
+            <a th:href="@{/dashboard}">
+                Reader Dashboard
+            </a>
+
+            <a th:href="@{/Book}">
+                Public Catalog
+            </a>
+
+            <a th:href="@{/read-nepal}">
+                Read Nepal Archive
+            </a>
+
+            <a th:href="@{/purchase-history}">
+                Publisher Terms
+            </a>
+
+            <a th:href="@{/search}">
+                Developer REST APIs
+            </a>
+
+        </div>
+
+
+        <div class="footer-copyright">
+            © 2026 READORA Publishing Inc. All rights reserved.
+        </div>
+
+    </div>
+
+</footer>
+
+
+<script>
+    // ==========================================
+    // READORA AUTHOR DASHBOARD DYNAMIC ENGINE
+    // ==========================================
+
+    function getLoggedInUser() {
+        try {
+            return JSON.parse(localStorage.getItem("readoraUser") || "null");
+        } catch (e) {
+            return null;
+        }
+    }
+
+    function getAuthToken() {
+        var user = getLoggedInUser();
+        if (user) {
+            return user.token || user.jwt || null;
+        }
+        return null;
+    }
+
+    function getAuthHeaders() {
+        var token = getAuthToken();
+        var headers = { "Content-Type": "application/json" };
+        if (token) {
+            headers["Authorization"] = "Bearer " + token;
+        }
+        return headers;
+    }
+
+    function escapeHtml(text) {
+        if (text === null || text === undefined) return "";
+        return String(text)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+    function escapeJs(text) {
+        if (text === null || text === undefined) return "";
+        return String(text).replace(/'/g, "\\'").replace(/"/g, "\\\"");
+    }
+
+    function escapeAttr(text) {
+        if (text === null || text === undefined) return "";
+        return String(text).replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+    }
+
+    function formatNumber(num) {
+        if (num === null || num === undefined || isNaN(num)) return "0";
+        return Number(num).toLocaleString();
+    }
+
+    // ---- Render Books Table ----
+    function renderBooksTable(books) {
+        var bookRows = document.getElementById("bookRows");
+        if (!bookRows) return;
+        bookRows.innerHTML = "";
+
+        if (!books || books.length === 0) {
+            var emptyRow = document.createElement("tr");
+            emptyRow.innerHTML =
+                '<td colspan="7" style="text-align: center; padding: 32px; color: #948d78; font-size: 13px;">' +
+                'No publications cataloged yet. Click <strong><i class="fa-solid fa-plus"></i> New Publication</strong> to upload and publish your first manuscript.' +
+                '</td>';
+            bookRows.appendChild(emptyRow);
+            return;
+        }
+
+        var statusLabel = {
+            published: "Published",
+            review: "In Review",
+            draft: "Draft"
+        };
+
+        for (var i = 0; i < books.length; i++) {
+            var b = books[i];
+            var st = (b.status || "published").toLowerCase();
+            if (!statusLabel[st]) st = "published";
+
+            var tag = b.premium
+                ? '<span class="tag">PREMIUM</span>'
+                : '';
+
+            var tier = (b.price && b.price > 0)
+                ? 'Rs. ' + formatNumber(b.price)
+                : 'FREE / OPEN';
+
+            var rating = (b.averageRating && b.averageRating > 0)
+                ? '<i class="fa-solid fa-star"></i> ' + Number(b.averageRating).toFixed(1)
+                : '—';
+
+            var reads = (b.ratingCount !== undefined && b.ratingCount !== null)
+                ? formatNumber(b.ratingCount)
+                : '—';
+
+            var pageInfo = (b.pageCount ? b.pageCount + ' pages · ' : '') +
+                (b.language ? b.language : 'English') +
+                (b.category ? ' · ' + b.category : '');
+
+            var coverHtml = (b.image && b.image.trim() !== "")
+                ? '<img src="' + escapeAttr(b.image) + '" class="book-cover-sm" style="object-fit:cover;" onerror="this.outerHTML=\'<div class=\\\'book-cover-sm\\\'></div>\';">'
+                : '<div class="book-cover-sm"></div>';
+
+            var row = document.createElement("tr");
+
+            row.innerHTML =
+                '<td>' +
+                '<div class="book-row">' +
+                coverHtml +
+                '<div>' +
+                '<div class="book-row-name">' + escapeHtml(b.title) + '</div>' +
+                '<div class="book-row-pages">' + escapeHtml(pageInfo) + '</div>' +
+                '</div>' +
+                '</div>' +
+                '</td>' +
+
+                '<td>' + escapeHtml(b.category || 'Literature') + '</td>' +
+
+                '<td>' +
+                tier +
+                tag +
+                '</td>' +
+
+                '<td>' +
+                '<span class="status ' + st + '">' +
+                '<span class="status-dot"></span>' +
+                statusLabel[st] +
+                '</span>' +
+                '</td>' +
+
+                '<td>' + reads + '</td>' +
+
+                '<td>' + rating + '</td>' +
+
+                '<td class="row-actions">' +
+                '<a href="/book-details.html?id=' + b.id + '" title="View Publication"><i class="fa-solid fa-eye"></i></a>' +
+                '<a href="/Book?edit=' + b.id + '" title="Edit Publication"><i class="fa-solid fa-pen"></i></a>' +
+                '<a href="javascript:void(0)" onclick="deleteAuthorBook(' + b.id + ', \'' + escapeJs(b.title) + '\')" title="Delete Publication" style="cursor:pointer; color:#a33b3b;"><i class="fa-solid fa-xmark"></i></a>' +
+                '</td>';
+
+            bookRows.appendChild(row);
+        }
+    }
+
+    // ---- Render Weekly Chart ----
+    function renderWeeklyChart(weekly) {
+        var chart = document.getElementById("chart");
+        if (!chart) return;
+        chart.innerHTML = "";
+
+        if (!weekly || weekly.length === 0) {
+            var empty = document.createElement("div");
+            empty.style.cssText = "width:100%; text-align:center; padding:40px 0; color:#948d78; font-size:13px;";
+            empty.textContent = "No readership activity recorded in the past 7 days.";
+            chart.appendChild(empty);
+            return;
+        }
+
+        var maxReads = 0;
+        var totalWeekly = 0;
+        var peakDay = "";
+        var peakReads = 0;
+
+        for (var i = 0; i < weekly.length; i++) {
+            var r = Number(weekly[i].reads) || 0;
+            totalWeekly += r;
+            if (r > maxReads) {
+                maxReads = r;
+                peakDay = weekly[i].day;
+                peakReads = r;
+            }
+        }
+
+        for (var i = 0; i < weekly.length; i++) {
+            var d = weekly[i];
+            var reads = Number(d.reads) || 0;
+            var isPeak = maxReads > 0 && reads === maxReads;
+            var heightPct = maxReads > 0 ? (reads / maxReads) * 100 : 4;
+
+            var wrap = document.createElement("div");
+            wrap.className = "bar-wrap";
+
+            wrap.innerHTML =
+                '<div class="bar ' +
+                (isPeak ? "bar-peak" : "") +
+                '" style="height:' +
+                heightPct +
+                '%;">' +
+                '<span class="bar-value">' +
+                formatNumber(reads) +
+                '</span>' +
+                '</div>' +
+                '<div class="bar-day ' +
+                (isPeak ? "bar-day-peak" : "") +
+                '">' +
+                escapeHtml(d.day) +
+                '</div>';
+
+            chart.appendChild(wrap);
+        }
+
+        var peakText = document.getElementById("chartPeakText");
+        if (peakText) {
+            peakText.textContent = maxReads > 0
+                ? "Peak reader immersion: " + peakDay + " (" + formatNumber(peakReads) + " reads)"
+                : "Peak reader immersion: None recorded this week";
+        }
+
+        var totalText = document.getElementById("chartTotalText");
+        if (totalText) {
+            totalText.textContent = "Total weekly engagement: " + formatNumber(totalWeekly) + " reads";
+        }
+    }
+
+    // ---- Render Reviews ----
+    function renderReviews(reviews) {
+        var reviewsEl = document.getElementById("reviews");
+        if (!reviewsEl) return;
+        reviewsEl.innerHTML = "";
+
+        if (!reviews || reviews.length === 0) {
+            reviewsEl.innerHTML = '<div style="padding: 24px; text-align: center; color: #948d78; font-size: 13px;">No reviews available yet.</div>';
+            return;
+        }
+
+        for (var i = 0; i < reviews.length; i++) {
+            var r = reviews[i];
+            var starCount = Math.max(1, Math.min(5, r.stars || 5));
+
+            var stars =
+                '<i class="fa-solid fa-star"></i>'.repeat(starCount) +
+                '<i class="fa-regular fa-star"></i>'.repeat(5 - starCount);
+
+            var div = document.createElement("div");
+            div.className = "review";
+
+            div.innerHTML =
+                '<div class="review-head">' +
+                '<span>' +
+                '<span class="who">' +
+                escapeHtml(r.initials) + ' ' + escapeHtml(r.name) +
+                '</span>' +
+                ' · ' +
+                escapeHtml(r.loc) +
+                '</span>' +
+                '<span>Reply as Author</span>' +
+                '</div>' +
+
+                '<div class="review-stars">' +
+                stars +
+                '</div>' +
+
+                '<div class="review-quote">' +
+                '"' + escapeHtml(r.quote) + '"' +
+                '</div>' +
+
+                '<div class="review-ref">' +
+                escapeHtml(r.book) +
+                ' · ' +
+                escapeHtml(r.time) +
+                '</div>';
+
+            reviewsEl.appendChild(div);
+        }
+    }
+
+    // ---- Render Highlights ----
+    function renderHighlights(highlights) {
+        var highlightsEl = document.getElementById("highlights");
+        if (!highlightsEl) return;
+        highlightsEl.innerHTML = "";
+
+        if (!highlights || highlights.length === 0) {
+            highlightsEl.innerHTML = '<div style="padding: 24px; text-align: center; color: #948d78; font-size: 13px;">No reader highlights recorded yet.</div>';
+            return;
+        }
+
+        for (var i = 0; i < highlights.length; i++) {
+            var h = highlights[i];
+            var div = document.createElement("div");
+            div.className = "highlight";
+
+            div.innerHTML =
+                '<div class="highlight-head">' +
+                '<span class="highlight-src">' +
+                escapeHtml(h.book) +
+                '</span>' +
+                '<span class="highlight-count">' +
+                escapeHtml(h.count) +
+                '</span>' +
+                '</div>' +
+
+                '<p class="highlight-quote">' +
+                '"' + escapeHtml(h.quote) + '"' +
+                '</p>' +
+
+                '<div class="highlight-ref">' +
+                escapeHtml(h.ref) +
+                '</div>';
+
+            highlightsEl.appendChild(div);
+        }
+    }
+
+    // ---- Render Editorial Notices ----
+    function renderNotices(notices) {
+        var noticesEl = document.getElementById("notices");
+        if (!noticesEl) return;
+        noticesEl.innerHTML = "";
+
+        if (!notices || notices.length === 0) {
+            noticesEl.innerHTML = '<div style="padding: 24px; text-align: center; color: #948d78; font-size: 13px;">No notifications.</div>';
+            return;
+        }
+
+        for (var i = 0; i < notices.length; i++) {
+            var n = notices[i];
+            var div = document.createElement("div");
+            div.className = "notice";
+
+            div.innerHTML =
+                '<span>' +
+                '<span class="notice-dot"></span>' +
+                escapeHtml(n.text) +
+                '</span>' +
+                '<span class="notice-time">' +
+                escapeHtml(n.time) +
+                '</span>';
+
+            noticesEl.appendChild(div);
+        }
+    }
+
+    // ---- Render Top Performing Book ----
+    function renderTopBook(topBook) {
+        var nameEl = document.getElementById("topBookName");
+        var metaEl = document.getElementById("topBookMeta");
+        var ratingEl = document.getElementById("topBookRating");
+        var readsEl = document.getElementById("topBookReads");
+        var royaltiesEl = document.getElementById("topBookRoyalties");
+        var badgeEl = document.getElementById("topBookBadge");
+        var coverEl = document.getElementById("topBookCover");
+
+        if (!topBook) {
+            if (badgeEl) {
+                badgeEl.innerHTML =
+                    '<i class="fa-solid fa-trophy"></i> Literary Catalog';
+            }
+
+            if (nameEl) nameEl.textContent = "No publications cataloged yet";
+            if (metaEl) metaEl.textContent = "Publish your first manuscript to begin tracking performance.";
+
+            if (ratingEl) {
+                ratingEl.innerHTML =
+                    '<i class="fa-solid fa-star"></i> — (0 reviews)';
+            }
+
+            if (readsEl) readsEl.textContent = "0";
+            if (royaltiesEl) royaltiesEl.textContent = "Rs. 0";
+            return;
+        }
+
+        if (badgeEl) {
+            badgeEl.innerHTML =
+                '<i class="fa-solid fa-trophy"></i> Top Performing Publication';
+        }
+
+        if (nameEl) nameEl.textContent = topBook.title;
+        if (metaEl) metaEl.textContent = topBook.meta || "Published · Author Studio";
+
+        if (ratingEl) {
+            var rat = topBook.rating > 0
+                ? Number(topBook.rating).toFixed(1)
+                : "—";
+
+            ratingEl.innerHTML =
+                '<i class="fa-solid fa-star"></i> ' +
+                rat +
+                ' (' +
+                (topBook.reviewCount || 0) +
+                ' verified reviews)';
+        }
+
+        if (readsEl) {
+            readsEl.textContent = formatNumber(topBook.catalogReads);
+        }
+
+        if (royaltiesEl) {
+            royaltiesEl.textContent =
+                "Rs. " + formatNumber(topBook.accruedRoyalties);
+        }
+
+        if (coverEl && topBook.image && topBook.image.trim() !== "") {
+            coverEl.style.backgroundImage =
+                'url("' + escapeAttr(topBook.image) + '")';
+
+            coverEl.style.backgroundSize = "cover";
+            coverEl.style.backgroundPosition = "center";
+        }
+    }
+
+    // ---- Render Complete Dashboard Response ----
+    function renderDashboardData(data) {
+        var authorName = data.authorName || "Author";
+
+        // Hero Section
+        var heroTitle = document.getElementById("heroTitle");
+        var heroSubtitle = document.getElementById("heroSubtitle");
+
+        if (heroTitle) {
+            if (data.totalReads > 0) {
+                heroTitle.textContent =
+                    "Welcome back, " +
+                    authorName +
+                    ". Your literary catalog reached " +
+                    formatNumber(data.totalReads) +
+                    " readers.";
+            } else {
+                heroTitle.textContent =
+                    "Welcome back, " +
+                    authorName +
+                    ". Your Studio catalog is active.";
+            }
+        }
+
+        if (heroSubtitle) {
+            if (data.totalWorks > 0) {
+                heroSubtitle.textContent =
+                    "Your catalog currently has " +
+                    data.totalWorks +
+                    " publication" +
+                    (data.totalWorks === 1 ? "" : "s") +
+                    " with " +
+                    formatNumber(data.totalReviews) +
+                    " verified reader reviews and an average rating of " +
+                    (data.averageRating > 0
+                        ? data.averageRating.toFixed(1) + " ★"
+                        : "unrated") +
+                    ".";
+            } else {
+                heroSubtitle.textContent =
+                    "Your author dashboard is connected and ready. Upload manuscripts and publish your works to start reaching readers across Nepal and South Asia.";
+            }
+        }
+
+        // Hero Date
+        var heroDate = document.getElementById("heroDate");
+
+        if (heroDate) {
+            try {
+                var now = new Date();
+
+                var options = {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                };
+
+                heroDate.textContent =
+                    now.toLocaleDateString('en-US', options);
+
+            } catch(e) {}
+        }
+
+        // Subnav Counts
+        var subnavPipeline =
+            document.getElementById("subnavPipeline");
+
+        if (subnavPipeline) {
+            subnavPipeline.textContent =
+                "Manuscript Pipeline · " +
+                (data.pipelineWorks || 0);
+        }
+
+        var subnavDrafts =
+            document.getElementById("subnavDrafts");
+
+        if (subnavDrafts) {
+            subnavDrafts.textContent =
+                "Drafts · " +
+                (data.pipelineWorks || 0);
+        }
+
+        // KPI Stat Cards
+        var elTotalWorks =
+            document.getElementById("statTotalWorks");
+
+        if (elTotalWorks) {
+            elTotalWorks.textContent =
+                formatNumber(data.totalWorks);
+        }
+
+        var elPublished =
+            document.getElementById("statPublished");
+
+        if (elPublished) {
+            elPublished.textContent =
+                formatNumber(data.publishedWorks);
+        }
+
+        var elPipeline =
+            document.getElementById("statPipeline");
+
+        if (elPipeline) {
+            elPipeline.textContent =
+                formatNumber(data.pipelineWorks);
+        }
+
+        var elTotalReads =
+            document.getElementById("statTotalReads");
+
+        if (elTotalReads) {
+            elTotalReads.textContent =
+                formatNumber(data.totalReads);
+        }
+
+        var elRoyalties =
+            document.getElementById("statRoyalties");
+
+        if (elRoyalties) {
+            elRoyalties.textContent =
+                "Rs. " + formatNumber(data.totalRoyalties);
+        }
+
+        var elAvgRating =
+            document.getElementById("statAvgRating");
+
+        if (elAvgRating) {
+            elAvgRating.textContent =
+                data.averageRating > 0
+                    ? data.averageRating.toFixed(1)
+                    : "—";
+        }
+
+        var elReviewsSub =
+            document.getElementById("statReviewsSub");
+
+        if (elReviewsSub) {
+            elReviewsSub.textContent =
+                "Across " +
+                formatNumber(data.totalReviews) +
+                " reviews";
+        }
+
+        // View all books count link
+        var viewAllBooksLink =
+            document.getElementById("viewAllBooksLink");
+
+        if (viewAllBooksLink) {
+            viewAllBooksLink.textContent =
+                "View All Books (" +
+                (data.totalWorks || 0) +
+                ")";
+        }
+
+        // Reviews count link
+        var reviewsCountLink =
+            document.getElementById("reviewsCountLink");
+
+        if (reviewsCountLink) {
+            reviewsCountLink.textContent =
+                "View all (" +
+                (data.totalReviews ||
+                    (data.recentReviews
+                        ? data.recentReviews.length
+                        : 0)) +
+                ")";
+        }
+
+        // Highlights count span
+        var highlightsCountSpan =
+            document.getElementById("highlightsCountSpan");
+
+        if (highlightsCountSpan) {
+
+            var hlLen =
+                data.recentHighlights
+                    ? data.recentHighlights.length
+                    : 0;
+
+            highlightsCountSpan.textContent =
+                hlLen +
+                " total highlight" +
+                (hlLen === 1 ? "" : "s");
+        }
+
+        // Notices subtitle
+        var noticesSubtitle =
+            document.getElementById("noticesCountSubtitle");
+
+        if (noticesSubtitle) {
+
+            var nLen =
+                data.notices
+                    ? data.notices.length
+                    : 0;
+
+            noticesSubtitle.textContent =
+                nLen +
+                " notification" +
+                (nLen === 1 ? "" : "s");
+        }
+
+        // Top Book
+        renderTopBook(data.topBook);
+
+        // Weekly Chart
+        renderWeeklyChart(data.weeklyReads);
+
+        // Reviews
+        renderReviews(data.recentReviews);
+
+        // Highlights
+        renderHighlights(data.recentHighlights);
+
+        // Notices
+        renderNotices(data.notices);
+    }
+
+    // ---- Book Deletion Action ----
+    window.deleteAuthorBook = async function(bookId, bookTitle) {
+
+        if (!confirm(
+            'Are you sure you want to delete "' +
+            bookTitle +
+            '"?\n\nThis will permanently remove this publication from your catalog. This action cannot be undone.'
+        )) {
+            return;
+        }
+
+        try {
+
+            var resp = await fetch(
+                '/api/author/books/' + bookId,
+                {
+                    method: 'DELETE',
+                    headers: getAuthHeaders(),
+                    credentials: 'same-origin'
+                }
+            );
+
+            if (resp.ok) {
+
+                alert(
+                    '"' +
+                    bookTitle +
+                    '" was successfully deleted.'
+                );
+
+                loadDashboard();
+
+            } else {
+
+                var err =
+                    await resp.json()
+                        .catch(function() {
+                            return {};
+                        });
+
+                alert(
+                    err.message ||
+                    'Unable to delete publication. Please ensure you own this book.'
+                );
+            }
+
+        } catch (e) {
+
+            alert(
+                'A network error occurred while deleting the book.'
+            );
+        }
+    };
+
+    // ---- Main Fetch / Load Routine ----
+    async function loadDashboard() {
+
+        var headers = getAuthHeaders();
+
+        try {
+
+            // Fetch author dashboard summary
+            var dashResp = await fetch(
+                '/api/author/dashboard',
+                {
+                    method: 'GET',
+                    headers: headers,
+                    credentials: 'same-origin'
+                }
+            );
+
+            if (
+                dashResp.status === 401 ||
+                dashResp.status === 403
+            ) {
+
+                var heroTitle =
+                    document.getElementById("heroTitle");
+
+                var heroSubtitle =
+                    document.getElementById("heroSubtitle");
+
+                if (heroTitle) {
+                    heroTitle.textContent =
+                        "Author Authentication Required";
+                }
+
+                if (heroSubtitle) {
+
+                    heroSubtitle.innerHTML =
+                        'Please <a href="/login.html" style="text-decoration:underline; font-weight:600;">log in with your Author account</a> to view your Studio Dashboard.';
+                }
+
+                return;
+            }
+
+            if (dashResp.ok) {
+
+                var dashData =
+                    await dashResp.json();
+
+                renderDashboardData(dashData);
+
+            } else {
+
+                console.error(
+                    "Failed to load author dashboard summary:",
+                    dashResp.status
+                );
+            }
+
+            // Fetch author books list for the table
+            var booksResp = await fetch(
+                '/api/author/books',
+                {
+                    method: 'GET',
+                    headers: headers,
+                    credentials: 'same-origin'
+                }
+            );
+
+            if (booksResp.ok) {
+
+                var booksData =
+                    await booksResp.json();
+
+                renderBooksTable(booksData);
+
+            } else {
+
+                console.error(
+                    "Failed to load author books:",
+                    booksResp.status
+                );
+            }
+
+        } catch (error) {
+
+            console.error(
+                "Network error while loading author dashboard:",
+                error
+            );
+        }
+    }
+
+    // Initialize on page load
+    document.addEventListener(
+        "DOMContentLoaded",
+        loadDashboard
+    );
+</script>
+
 </body>
 </html>

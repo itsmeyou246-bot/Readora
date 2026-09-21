@@ -8,5 +8,5 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 	<link rel="stylesheet" th:href="@{/css/purchase-history.css}">
 </head>
-<body><th:block th:replace="~{fragments/chrome :: header}"></th:block><header class="history-header legacy-chrome-header"><a th:href="@{/index}" class="logo">READORA</a><nav><a th:href="@{/Book}">Books</a><a th:href="@{/library}">My Library</a><a th:href="@{/cart}"><i class="fa-solid fa-cart-shopping"></i> Cart</a></nav></header><main class="history-page"><div class="eyebrow">ACCOUNT</div><h1>Purchase History</h1><div id="historyList"></div></main><th:block th:replace="~{fragments/chrome :: footer}"></th:block><script th:src="@{/js/purchase-history.js}"></script></body>
+<body><header th:replace="~{fragments/header :: readerHeader('library')}"></header><main class="history-page"><div class="eyebrow">ACCOUNT</div><h1>Purchase History</h1><div id="historyList"></div></main><script th:src="@{/js/purchase-history.js}"></script></body>
 </html>

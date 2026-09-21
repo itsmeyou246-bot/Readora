@@ -1,2 +1,7 @@
 # Project exclude paths
 /target/
+
+# Local environment & secret files
+.env
+.env.local
+*.local

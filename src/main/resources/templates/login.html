@@ -2,7 +2,6 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-
     <meta charset="UTF-8">
 
     <meta name="viewport"
@@ -10,22 +9,18 @@
 
     <title>READORA | Login</title>
 
-    <!-- Font Awesome -->
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
     <link rel="stylesheet"
           th:href="@{/css/login.css}">
-
 </head>
-
 
 <body>
 
 <div class="login-page">
 
-
-    <!-- ================= LEFT SIDE ================= -->
+    <!-- LEFT SIDE -->
 
     <div class="login-image">
 
@@ -34,15 +29,9 @@
 
         <div class="image-overlay"></div>
 
-
-        <!-- Logo -->
-
         <div class="logo">
             READORA
         </div>
-
-
-        <!-- Bottom Text -->
 
         <div class="image-content">
 
@@ -61,15 +50,11 @@
     </div>
 
 
-
-    <!-- ================= RIGHT SIDE ================= -->
+    <!-- RIGHT SIDE -->
 
     <div class="login-section">
 
         <div class="login-box">
-
-
-            <!-- Heading -->
 
             <div class="login-header">
 
@@ -84,13 +69,9 @@
             </div>
 
 
-
-            <!-- ================= LOGIN FORM ================= -->
+            <!-- LOGIN FORM -->
 
             <form id="loginForm">
-
-
-                <!-- Email -->
 
                 <div class="form-group">
 
@@ -106,6 +87,7 @@
                                 type="email"
                                 id="email"
                                 placeholder="you@example.com"
+                                autocomplete="email"
                                 required
                         >
 
@@ -115,9 +97,6 @@
 
                 </div>
 
-
-
-                <!-- Password -->
 
                 <div class="form-group">
 
@@ -133,6 +112,7 @@
                                 type="password"
                                 id="password"
                                 placeholder="••••••••"
+                                autocomplete="current-password"
                                 required
                         >
 
@@ -153,9 +133,6 @@
                 </div>
 
 
-
-                <!-- ================= ROLE ================= -->
-
                 <div class="form-group">
 
                     <label for="role">
@@ -168,7 +145,8 @@
 
                         <select
                                 id="role"
-                                aria-label="Choose workspace">
+                                aria-label="Choose workspace"
+                                required>
 
                             <option value="user">
                                 Reader
@@ -191,9 +169,6 @@
                 </div>
 
 
-
-                <!-- ================= REMEMBER / FORGOT ================= -->
-
                 <div class="login-options">
 
                     <label class="remember">
@@ -208,9 +183,9 @@
 
                     </label>
 
-
                     <a href="#"
-                       class="forgot">
+                       class="forgot"
+                       id="forgotPassword">
 
                         Forgot password?
 
@@ -218,9 +193,6 @@
 
                 </div>
 
-
-
-                <!-- ================= LOGIN BUTTON ================= -->
 
                 <button
                         type="submit"
@@ -231,12 +203,8 @@
 
                 </button>
 
-
             </form>
 
-
-
-            <!-- ================= SIGNUP ================= -->
 
             <div class="signup-link">
 
@@ -250,7 +218,6 @@
 
             </div>
 
-
         </div>
 
     </div>
@@ -258,127 +225,107 @@
 </div>
 
 
-
-<!-- ========================================================= -->
-<!-- JAVASCRIPT -->
-<!-- ========================================================= -->
-
 <script>
 
+    document.addEventListener("DOMContentLoaded", function () {
 
-    // =========================================================
-    // PASSWORD SHOW / HIDE
-    // =========================================================
+        const togglePassword =
+            document.getElementById("togglePassword");
 
-    const togglePassword =
-        document.getElementById("togglePassword");
+        const passwordInput =
+            document.getElementById("password");
 
-    const passwordInput =
-        document.getElementById("password");
+        const loginForm =
+            document.getElementById("loginForm");
+
+        const loginButton =
+            document.getElementById("loginButton");
 
 
-    togglePassword.addEventListener(
-        "click",
-        function () {
+        /*
+         * Show and hide password
+         */
 
-            const icon =
-                this.querySelector("i");
+        togglePassword.addEventListener("click", function () {
 
+            const icon = this.querySelector("i");
 
             if (passwordInput.type === "password") {
 
                 passwordInput.type = "text";
 
                 icon.classList.remove("fa-eye");
-
                 icon.classList.add("fa-eye-slash");
 
-            }
+                this.setAttribute("aria-label", "Hide password");
 
-            else {
+            } else {
 
                 passwordInput.type = "password";
 
                 icon.classList.remove("fa-eye-slash");
-
                 icon.classList.add("fa-eye");
+
+                this.setAttribute("aria-label", "Show password");
 
             }
 
-        }
-    );
+        });
 
 
+        /*
+         * Forgot password
+         */
 
-    // =========================================================
-    // LOGIN FORM
-    // =========================================================
+        document.getElementById("forgotPassword")
+            .addEventListener("click", function (event) {
 
-    const loginForm =
-        document.getElementById("loginForm");
+                event.preventDefault();
+
+                alert("Please contact READORA support to reset your password.");
+
+            });
 
 
-    loginForm.addEventListener(
-        "submit",
-        async function (event) {
+        /*
+         * Login form
+         */
+
+        loginForm.addEventListener("submit", async function (event) {
 
             event.preventDefault();
 
 
-            // -------------------------------------------------
-            // GET VALUES
-            // -------------------------------------------------
-
             const email =
-                document
-                    .getElementById("email")
+                document.getElementById("email")
                     .value
                     .trim();
 
-
             const password =
-                document
-                    .getElementById("password")
+                document.getElementById("password")
                     .value;
-
 
             const role =
-                document
-                    .getElementById("role")
+                document.getElementById("role")
                     .value;
 
-
-
-            // -------------------------------------------------
-            // ERROR ELEMENTS
-            // -------------------------------------------------
 
             const emailError =
                 document.getElementById("emailError");
 
-
             const passwordError =
                 document.getElementById("passwordError");
-
 
             const roleError =
                 document.getElementById("roleError");
 
 
             emailError.textContent = "";
-
             passwordError.textContent = "";
-
             roleError.textContent = "";
 
 
-
-            // -------------------------------------------------
-            // VALIDATION
-            // -------------------------------------------------
-
             let valid = true;
-
 
             const emailPattern =
                 /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -394,7 +341,7 @@
             }
 
 
-            if (password.length === 0) {
+            if (password.trim().length === 0) {
 
                 passwordError.textContent =
                     "Please enter your password.";
@@ -414,35 +361,14 @@
             }
 
 
-
-            // Stop if validation fails
-
             if (!valid) {
-
                 return;
-
             }
 
 
-
-            // -------------------------------------------------
-            // DISABLE LOGIN BUTTON
-            // -------------------------------------------------
-
-            const loginButton =
-                document.getElementById("loginButton");
-
-
             loginButton.disabled = true;
+            loginButton.textContent = "Logging in...";
 
-            loginButton.textContent =
-                "Logging in...";
-
-
-
-            // -------------------------------------------------
-            // SEND LOGIN REQUEST TO SPRING BOOT
-            // -------------------------------------------------
 
             try {
 
@@ -452,18 +378,20 @@
                         method: "POST",
 
                         headers: {
-
-                            "Content-Type":
-                                "application/json"
-
+                            "Content-Type": "application/json",
+                            "Accept": "application/json"
                         },
+
+                        /*
+                         * This is required when Spring Boot
+                         * sends the JWT through a cookie.
+                         */
+                        credentials: "same-origin",
 
                         body: JSON.stringify({
 
                             email: email,
-
                             password: password,
-
                             role: role
 
                         })
@@ -471,143 +399,222 @@
                     });
 
 
+                const responseText =
+                    await response.text();
 
-                // -------------------------------------------------
-                // READ SERVER RESPONSE
-                // -------------------------------------------------
+                let data = null;
 
-                const data =
-                    await response.json()
-                        .catch(() => null);
+                try {
 
+                    data =
+                        responseText
+                            ? JSON.parse(responseText)
+                            : null;
 
+                } catch (parseError) {
 
-                // -------------------------------------------------
-                // LOGIN SUCCESS
-                // -------------------------------------------------
-
-                if (response.ok) {
-
-
-                    // Save logged-in user information
-
-                    localStorage.setItem(
-                        "readoraUser",
-                        JSON.stringify(data)
-                    );
-
-
-                    localStorage.setItem(
-                        "readoraActiveRole",
-                        data.role
-                    );
-
-
-
-                    // Success message
-
-                    alert(
-                        "Login successful! Welcome to READORA."
-                    );
-
-
-
-                    // -------------------------------------------------
-                    // REDIRECT BASED ON ROLE
-                    // -------------------------------------------------
-
-                    if (data.role === "ADMIN") {
-
-                        window.location.href =
-                            "admin-dashboard.html";
-
-                    }
-
-                    else if (data.role === "AUTHOR") {
-
-                        window.location.href =
-                            "author-dashboard.html";
-
-                    }
-
-                    else {
-
-                        window.location.href =
-                            "dashboard.html";
-
-                    }
+                    data = responseText;
 
                 }
 
 
-
-                    // -------------------------------------------------
-                    // LOGIN FAILED
-                // -------------------------------------------------
-
-                else {
+                if (!response.ok) {
 
                     let errorMessage =
                         "Login failed. Please check your details.";
 
-
-                    if (typeof data === "string") {
+                    if (typeof data === "string" && data.trim()) {
 
                         errorMessage = data;
 
-                    }
-
-                    else if (data && data.message) {
+                    } else if (data && data.message) {
 
                         errorMessage = data.message;
 
-                    }
+                    } else if (data && data.error) {
 
+                        errorMessage = data.error;
+
+                    }
 
                     alert(errorMessage);
 
-
                     loginButton.disabled = false;
+                    loginButton.textContent = "Login";
 
-                    loginButton.textContent =
-                        "Login";
+                    return;
+                }
+
+
+                /*
+                 * Extract user information.
+                 */
+
+                const userData =
+                    data && typeof data === "object"
+                        ? data.user || data.data || data
+                        : {};
+
+
+                /*
+                 * Extract JWT if the backend returns it
+                 * in the JSON response.
+                 *
+                 * If the backend uses an HttpOnly cookie,
+                 * token will be null. That is acceptable,
+                 * because the browser automatically sends
+                 * the cookie with future same-origin requests.
+                 */
+
+                const token =
+                    (data && data.token) ||
+                    (data && data.accessToken) ||
+                    (data && data.access_token) ||
+                    (data && data.jwt) ||
+                    (userData && userData.token) ||
+                    (userData && userData.accessToken) ||
+                    (userData && userData.access_token) ||
+                    (userData && userData.jwt) ||
+                    null;
+
+
+                /*
+                 * Normalize the role.
+                 */
+
+                const returnedRole =
+                    String(
+                        userData.role ||
+                        data.role ||
+                        role
+                    ).toUpperCase();
+
+
+                /*
+                 * Save login information.
+                 *
+                 * Important:
+                 * The token is saved when the backend returns
+                 * a token in JSON.
+                 *
+                 * If the backend uses an HttpOnly cookie,
+                 * the cookie is handled automatically by the browser.
+                 */
+
+                const loggedInUser = {
+
+                    id:
+                        userData.id ||
+                        data.id ||
+                        null,
+
+                    name:
+                        userData.name ||
+                        userData.fullName ||
+                        data.name ||
+                        data.fullName ||
+                        email,
+
+                    email:
+                        userData.email ||
+                        data.email ||
+                        email,
+
+                    role:
+                    returnedRole,
+
+                    token:
+                    token
+
+                };
+
+
+                localStorage.setItem(
+                    "readoraUser",
+                    JSON.stringify(loggedInUser)
+                );
+
+
+                localStorage.setItem(
+                    "readoraActiveRole",
+                    returnedRole
+                );
+
+
+                /*
+                 * Save token under an additional common key
+                 * when the backend returns a JWT in JSON.
+                 */
+
+                if (token) {
+
+                    localStorage.setItem(
+                        "accessToken",
+                        token
+                    );
 
                 }
 
-            }
+
+                /*
+                 * Clear any old expired login information.
+                 */
+
+                sessionStorage.removeItem("readoraUser");
 
 
+                console.log("Login successful.");
+                console.log("Logged-in user:", loggedInUser);
+                console.log("JWT returned by server:", Boolean(token));
 
-                // -------------------------------------------------
-                // SERVER / NETWORK ERROR
-                // -------------------------------------------------
 
-            catch (error) {
+                /*
+                 * Redirect based on role.
+                 */
 
-                console.error(
-                    "Login error:",
-                    error
-                );
+                if (returnedRole === "ADMIN") {
 
+                    window.location.href =
+                        "/admin-dashboard";
+
+                } else if (returnedRole === "AUTHOR") {
+
+                    window.location.href =
+                        "/author-dashboard";
+
+                } else if (returnedRole === "USER") {
+
+                    window.location.href =
+                        "/dashboard";
+
+                } else {
+
+                    alert("Invalid user role.");
+
+                    loginButton.disabled = false;
+                    loginButton.textContent = "Login";
+
+                }
+
+            } catch (error) {
+
+                console.error("Login error:", error);
 
                 alert(
                     "Unable to connect to READORA server. " +
                     "Please make sure Spring Boot is running."
                 );
 
-
                 loginButton.disabled = false;
-
-                loginButton.textContent =
-                    "Login";
+                loginButton.textContent = "Login";
 
             }
 
-        }
-    );
+        });
+
+    });
 
 </script>
-
 
 </body>
 

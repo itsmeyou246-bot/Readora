@@ -1,0 +1,2166 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Admin Governance - READORA</title>
+
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+
+        /* =========================================================
+           YOUR EXISTING ADMIN DESIGN
+           ========================================================= */
+
+        .admin-container {
+            max-width: 1180px;
+            margin: 30px auto 60px;
+            padding: 0 24px;
+            font-family: 'Inter', sans-serif;
+            color: #201d18;
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 28px;
+            border-bottom: 1px solid #ddd4c0;
+            padding-bottom: 20px;
+        }
+
+        .admin-title h1 {
+            font-family: 'Fraunces', serif;
+            font-size: 28px;
+            font-weight: 600;
+            margin: 0 0 6px;
+            color: #173a27;
+        }
+
+        .admin-title p {
+            margin: 0;
+            color: #55503f;
+            font-size: 13.5px;
+        }
+
+        .admin-kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .kpi-card {
+            background: #fff;
+            border: 1px solid #ddd4c0;
+            border-radius: 6px;
+            padding: 18px;
+            box-shadow: 0 2px 5px rgba(32,29,24,.03);
+        }
+
+        .kpi-label {
+            font-size: 11.5px;
+            text-transform: uppercase;
+            letter-spacing: .8px;
+            color: #948d78;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        .kpi-value {
+            font-family: 'Fraunces', serif;
+            font-size: 26px;
+            font-weight: 600;
+            color: #173a27;
+        }
+
+        .admin-section {
+            background: #fff;
+            border: 1px solid #ddd4c0;
+            border-radius: 6px;
+            padding: 24px;
+            margin-bottom: 30px;
+        }
+
+        .section-header {
+            margin-bottom: 18px;
+        }
+
+        .section-header h2 {
+            font-family: 'Fraunces', serif;
+            font-size: 20px;
+            margin: 0;
+            color: #201d18;
+        }
+        .admin-notification {
+            width: 38px;
+            height: 38px;
+            padding: 0;
+            border: 1px solid #ddd4c0;
+            border-radius: 6px;
+            background: #f3eee4;
+            color: #173a27;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .profile-icon {
+            width: 38px;
+            height: 38px;
+            margin-left: 8px;
+            border: 1px solid #ddd4c0;
+            border-radius: 50%;
+            background: transparent;
+            color: #173a27;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        .admin-table th {
+            text-align: left;
+            padding: 10px 12px;
+            border-bottom: 2px solid #ece5d8;
+            color: #55503f;
+            font-weight: 600;
+            font-size: 11.5px;
+            text-transform: uppercase;
+            letter-spacing: .6px;
+        }
+
+        .admin-table td {
+            padding: 12px;
+            border-bottom: 1px solid #f0ebe1;
+            vertical-align: middle;
+        }
+
+        .role-select {
+            padding: 5px 8px;
+            border: 1px solid #ddd4c0;
+            border-radius: 3px;
+            font-size: 12px;
+            font-weight: 500;
+            background: #faf6ee;
+            color: #201d18;
+        }
+
+        .book-thumb {
+            width: 38px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 3px;
+            border: 1px solid #ddd4c0;
+        }
+
+        .btn-delete {
+            background: #fdf0f0;
+            border: 1px solid #f1c0c0;
+            color: #8b0000;
+            padding: 5px 10px;
+            border-radius: 3px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .btn-delete:hover {
+            background: #f8d7da;
+        }
+
+        .tabs-bar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd4c0;
+            padding-bottom: 10px;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            font-size: 14px;
+            font-weight: 600;
+            color: #55503f;
+            cursor: pointer;
+            padding: 8px 14px;
+            border-radius: 4px;
+        }
+
+        .tab-btn.active {
+            background: #173a27;
+            color: #faf6ee;
+        }
+
+
+        /* =========================================================
+           NEW TOP ADMIN UI
+           ONLY ADDED ABOVE YOUR ORIGINAL DESIGN
+           ========================================================= */
+
+        .admin-top-overview {
+            margin-bottom: 30px;
+        }
+
+        .admin-welcome-panel {
+            background: #fffdf8;
+            border: 1px solid #ddd4c0;
+            border-radius: 7px;
+            padding: 22px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 18px;
+        }
+
+        .admin-welcome-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .admin-welcome-icon {
+            width: 46px;
+            height: 46px;
+            border-radius: 6px;
+            background: #173a27;
+            color: #faf6ee;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .admin-welcome-text h2 {
+            font-family: 'Fraunces', serif;
+            font-size: 22px;
+            font-weight: 600;
+            color: #173a27;
+            margin: 0 0 4px;
+        }
+
+        .admin-welcome-text p {
+            margin: 0;
+            font-size: 12px;
+            color: #6d6759;
+        }
+
+        .admin-status-area {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex-shrink: 0;
+        }
+
+        .admin-status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 7px 11px;
+            border-radius: 4px;
+            background: #edf6ef;
+            border: 1px solid #cfe2d3;
+            color: #28633d;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .admin-status-badge.offline {
+            background: #fdf0f0;
+            border-color: #f1c0c0;
+            color: #8b0000;
+        }
+
+        .status-circle {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #39855a;
+        }
+
+        .admin-status-badge.offline .status-circle {
+            background: #a52a2a;
+        }
+
+        .top-action-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .top-action-btn {
+            height: 34px;
+            padding: 0 12px;
+            border: 1px solid #ddd4c0;
+            border-radius: 4px;
+            background: #fff;
+            color: #403b31;
+            font-family: 'Inter', sans-serif;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            text-decoration: none;
+            transition: .2s ease;
+        }
+
+        .top-action-btn:hover {
+            background: #f3eee4;
+            color: #173a27;
+        }
+
+        .top-action-btn.primary {
+            background: #173a27;
+            border-color: #173a27;
+            color: #faf6ee;
+        }
+
+        .top-action-btn.primary:hover {
+            background: #214b35;
+        }
+
+
+        /* =========================================================
+           ADMINISTRATIVE QUEUE
+           ========================================================= */
+
+        .admin-queue {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+
+        .queue-card {
+            background: #fff;
+            border: 1px solid #ddd4c0;
+            border-radius: 6px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            transition: .2s ease;
+        }
+
+        .queue-card:hover {
+            border-color: #c7bda7;
+            box-shadow: 0 3px 8px rgba(32,29,24,.04);
+        }
+
+        .queue-info {
+            min-width: 0;
+        }
+
+        .queue-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: .7px;
+            color: #948d78;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .queue-value {
+            font-family: 'Fraunces', serif;
+            font-size: 23px;
+            color: #173a27;
+            font-weight: 600;
+        }
+
+        .queue-description {
+            margin-top: 3px;
+            color: #77705f;
+            font-size: 10.5px;
+        }
+
+        .queue-icon {
+            width: 35px;
+            height: 35px;
+            border-radius: 5px;
+            background: #f3eee4;
+            color: #173a27;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+
+        /* =========================================================
+           QUICK SYSTEM STRIP
+           ========================================================= */
+
+        .admin-system-strip {
+            background: #fff;
+            border: 1px solid #ddd4c0;
+            border-radius: 6px;
+            padding: 12px 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .system-left {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+        }
+
+        .system-left i {
+            color: #173a27;
+            font-size: 12px;
+        }
+
+        .system-left span {
+            font-size: 11px;
+            color: #55503f;
+            font-weight: 600;
+        }
+
+        .system-meta {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .system-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 10.5px;
+            color: #77705f;
+        }
+
+        .system-meta-item strong {
+            color: #403b31;
+        }
+
+
+        /* =========================================================
+           RESPONSIVE FOR NEW TOP UI
+           ========================================================= */
+
+        @media (max-width: 950px) {
+
+            .admin-welcome-panel {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .admin-status-area {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .admin-queue {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .admin-welcome-panel {
+                padding: 17px;
+            }
+
+            .admin-welcome-left {
+                align-items: flex-start;
+            }
+
+            .admin-status-area {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .top-action-buttons {
+                width: 100%;
+            }
+
+            .top-action-btn {
+                flex: 1;
+                justify-content: center;
+            }
+
+            .admin-queue {
+                grid-template-columns: 1fr;
+            }
+
+            .admin-system-strip {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .system-meta {
+                width: 100%;
+                justify-content: space-between;
+                flex-wrap: wrap;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     YOUR EXISTING READORA HEADER
+     NOT REMOVED
+     ========================================================= -->
+
+<header th:replace="~{fragments/header :: adminHeader('dashboard')}"></header>
+
+
+<!-- =========================================================
+     MAIN ADMIN CONTENT
+     ========================================================= -->
+
+<main class="admin-container">
+
+
+    <!-- =====================================================
+         NEW TOP ADMIN UI
+         ADDED ONLY
+         YOUR ORIGINAL DESIGN IS BELOW THIS
+         ===================================================== -->
+
+    <section class="admin-top-overview">
+
+
+        <!-- =================================================
+             ADMIN WELCOME / STATUS PANEL
+             ================================================= -->
+
+        <div class="admin-welcome-panel">
+
+
+            <div class="admin-welcome-left">
+
+                <div class="admin-welcome-icon">
+
+                    <i class="fa-solid fa-shield-halved"></i>
+
+                </div>
+
+
+                <div class="admin-welcome-text">
+
+                    <h2>
+                        Welcome, Administrator
+                    </h2>
+
+                    <p id="adminWelcomeMessage">
+                        Manage READORA users, content, subscriptions and platform activity.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="admin-status-area">
+
+
+                <div
+                        id="topApiStatus"
+                        class="admin-status-badge">
+
+                    <span class="status-circle"></span>
+
+                    <span id="topApiStatusText">
+                        Checking API...
+                    </span>
+
+                </div>
+
+
+                <div class="top-action-buttons">
+
+
+                    <button
+                            type="button"
+                            class="top-action-btn"
+                            id="topRefreshButton">
+
+                        <i class="fa-solid fa-rotate"></i>
+
+                        Refresh
+
+                    </button>
+
+
+                    <button
+                            type="button"
+                            class="top-action-btn"
+                            id="topExportButton">
+
+                        <i class="fa-solid fa-file-export"></i>
+
+                        Export
+
+                    </button>
+
+
+                    <a
+                            href="/add-content"
+                            class="top-action-btn primary"
+                            id="topAddContentButton">
+
+                        <i class="fa-solid fa-plus"></i>
+
+                        Add Content
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             ADMINISTRATIVE QUEUE
+             ================================================= -->
+
+        <div class="admin-queue">
+
+
+            <!-- USERS -->
+
+            <div class="queue-card">
+
+                <div class="queue-info">
+
+                    <div class="queue-label">
+                        User Accounts
+                    </div>
+
+                    <div
+                            id="topQueueUsers"
+                            class="queue-value">
+                        0
+                    </div>
+
+                    <div class="queue-description">
+                        Registered platform users
+                    </div>
+
+                </div>
+
+
+                <div class="queue-icon">
+
+                    <i class="fa-solid fa-users"></i>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- BOOKS -->
+
+            <div class="queue-card">
+
+                <div class="queue-info">
+
+                    <div class="queue-label">
+                        Catalog
+                    </div>
+
+                    <div
+                            id="topQueueBooks"
+                            class="queue-value">
+                        0
+                    </div>
+
+                    <div class="queue-description">
+                        Works in repository
+                    </div>
+
+                </div>
+
+
+                <div class="queue-icon">
+
+                    <i class="fa-solid fa-book"></i>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- SUBSCRIPTIONS -->
+
+            <div class="queue-card">
+
+                <div class="queue-info">
+
+                    <div class="queue-label">
+                        Subscriptions
+                    </div>
+
+                    <div
+                            id="topQueueSubscriptions"
+                            class="queue-value">
+                        0
+                    </div>
+
+                    <div class="queue-description">
+                        Subscription records
+                    </div>
+
+                </div>
+
+
+                <div class="queue-icon">
+
+                    <i class="fa-solid fa-credit-card"></i>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- PURCHASES -->
+
+            <div class="queue-card">
+
+                <div class="queue-info">
+
+                    <div class="queue-label">
+                        Purchases
+                    </div>
+
+                    <div
+                            id="topQueuePurchases"
+                            class="queue-value">
+                        0
+                    </div>
+
+                    <div class="queue-description">
+                        Completed purchase records
+                    </div>
+
+                </div>
+
+
+                <div class="queue-icon">
+
+                    <i class="fa-solid fa-cart-shopping"></i>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         QUICK SYSTEM STATUS
+         ===================================================== -->
+
+    <div class="admin-system-strip">
+
+
+        <div class="system-left">
+
+            <i class="fa-solid fa-circle-check"></i>
+
+            <span>
+                READORA Platform Administration
+            </span>
+
+        </div>
+
+
+        <div class="system-meta">
+
+
+            <div class="system-meta-item">
+
+                <span>
+                    Environment:
+                </span>
+
+                <strong>
+                    Production
+                </strong>
+
+            </div>
+
+
+            <div class="system-meta-item">
+
+                <span>
+                    Authorization:
+                </span>
+
+                <strong>
+                    ADMIN
+                </strong>
+
+            </div>
+
+
+            <div class="system-meta-item">
+
+                <span>
+                    Last checked:
+                </span>
+
+                <strong id="lastChecked">
+                    —
+                </strong>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         YOUR ORIGINAL ADMIN TITLE
+         NOT REMOVED
+         ===================================================== -->
+
+    <div class="admin-header">
+
+        <div class="admin-title">
+
+            <h1>
+                Platform Administration
+            </h1>
+
+            <p>
+                System metrics, user privileges, and content moderation governance.
+            </p>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         YOUR ORIGINAL KPI GRID
+         NOT REMOVED
+         ===================================================== -->
+
+    <div class="admin-kpi-grid">
+
+
+        <div class="kpi-card">
+
+            <div class="kpi-label">
+                Registered Readers
+            </div>
+
+            <div
+                    id="statUsers"
+                    class="kpi-value">
+                0
+            </div>
+
+        </div>
+
+
+        <div class="kpi-card">
+
+            <div class="kpi-label">
+                Authors
+            </div>
+
+            <div
+                    id="statAuthors"
+                    class="kpi-value">
+                0
+            </div>
+
+        </div>
+
+
+        <div class="kpi-card">
+
+            <div class="kpi-label">
+                Catalog Books
+            </div>
+
+            <div
+                    id="statBooks"
+                    class="kpi-value">
+                0
+            </div>
+
+        </div>
+
+
+        <div class="kpi-card">
+
+            <div class="kpi-label">
+                Subscriptions
+            </div>
+
+            <div
+                    id="statSubscriptions"
+                    class="kpi-value">
+                0
+            </div>
+
+        </div>
+
+
+        <div class="kpi-card">
+
+            <div class="kpi-label">
+                Purchases
+            </div>
+
+            <div
+                    id="statPurchases"
+                    class="kpi-value">
+                0
+            </div>
+
+        </div>
+
+
+        <div class="kpi-card">
+
+            <div class="kpi-label">
+                Reviews
+            </div>
+
+            <div
+                    id="statReviews"
+                    class="kpi-value">
+                0
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         YOUR ORIGINAL TABS
+         ===================================================== -->
+
+    <div class="tabs-bar">
+
+
+        <button
+                class="tab-btn active"
+                onclick="switchAdminTab('usersTab', this)">
+
+            User Management
+
+        </button>
+
+
+        <button
+                class="tab-btn"
+                onclick="switchAdminTab('booksTab', this)">
+
+            Catalog Moderation
+
+        </button>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         YOUR ORIGINAL USERS SECTION
+         ===================================================== -->
+
+    <section
+            id="usersTab"
+            class="admin-section">
+
+
+        <div class="section-header">
+
+            <h2>
+                Reader & Creator Accounts
+            </h2>
+
+        </div>
+
+
+        <table class="admin-table">
+
+            <thead>
+
+            <tr>
+
+                <th>
+                    ID
+                </th>
+
+                <th>
+                    Name
+                </th>
+
+                <th>
+                    Email
+                </th>
+
+                <th>
+                    Role & Permissions
+                </th>
+
+                <th>
+                    Joined
+                </th>
+
+            </tr>
+
+            </thead>
+
+
+            <tbody id="adminUsersBody">
+
+            <tr>
+
+                <td
+                        colspan="5"
+                        style="text-align: center; padding: 20px;">
+
+                    Loading accounts...
+
+                </td>
+
+            </tr>
+
+            </tbody>
+
+        </table>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         YOUR ORIGINAL BOOKS SECTION
+         ===================================================== -->
+
+    <section
+            id="booksTab"
+            class="admin-section"
+            style="display: none;">
+
+
+        <div class="section-header">
+
+            <h2>
+                Catalog Content Moderation
+            </h2>
+
+        </div>
+
+
+        <table class="admin-table">
+
+            <thead>
+
+            <tr>
+
+                <th>
+                    Cover
+                </th>
+
+                <th>
+                    Title
+                </th>
+
+                <th>
+                    Author
+                </th>
+
+                <th>
+                    Category
+                </th>
+
+                <th>
+                    Price
+                </th>
+
+                <th>
+                    Rating
+                </th>
+
+                <th>
+                    Action
+                </th>
+
+            </tr>
+
+            </thead>
+
+
+            <tbody id="adminBooksBody">
+
+            <tr>
+
+                <td
+                        colspan="7"
+                        style="text-align: center; padding: 20px;">
+
+                    Loading catalog works...
+
+                </td>
+
+            </tr>
+
+            </tbody>
+
+        </table>
+
+    </section>
+
+</main>
+
+
+
+<!-- =========================================================
+     YOUR ORIGINAL FOOTER
+     ========================================================= -->
+
+<footer class="footer legacy-chrome-footer">
+
+
+    <div class="footer-inner">
+
+
+        <div class="footer-logo">
+            READORA
+        </div>
+
+
+        <div class="footer-copyright">
+            © 2026 READORA. Platform Governance.
+        </div>
+
+
+    </div>
+
+</footer>
+
+
+
+<script>
+
+
+    /* =========================================================
+       YOUR ORIGINAL TAB FUNCTION
+       ========================================================= */
+
+    function switchAdminTab(tabId, btn) {
+
+        document
+            .querySelectorAll('.tab-btn')
+            .forEach(function (b) {
+
+                b.classList.remove('active');
+
+            });
+
+
+        btn.classList.add('active');
+
+
+        document.getElementById('usersTab').style.display =
+            tabId === 'usersTab'
+                ? 'block'
+                : 'none';
+
+
+        document.getElementById('booksTab').style.display =
+            tabId === 'booksTab'
+                ? 'block'
+                : 'none';
+
+    }
+
+
+
+    /* =========================================================
+       ADMIN DASHBOARD
+       ========================================================= */
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        function () {
+
+
+            /* =====================================================
+               LOGIN CHECK
+               ===================================================== */
+
+            const user =
+                JSON.parse(
+                    localStorage.getItem("readoraUser") || "null"
+                );
+
+
+            if (!user || !user.token) {
+
+                alert(
+                    "Please log in with Administrator credentials."
+                );
+
+                window.location.href = "/login";
+
+                return;
+            }
+
+
+
+            /* =====================================================
+               API HEADERS
+               ===================================================== */
+
+            const headers = {
+
+                "Authorization":
+                    "Bearer " + user.token,
+
+                "Content-Type":
+                    "application/json"
+
+            };
+
+
+
+            /* =====================================================
+               ELEMENTS
+               ===================================================== */
+
+            const topApiStatus =
+                document.getElementById(
+                    "topApiStatus"
+                );
+
+
+            const topApiStatusText =
+                document.getElementById(
+                    "topApiStatusText"
+                );
+
+
+            const lastChecked =
+                document.getElementById(
+                    "lastChecked"
+                );
+
+
+
+            /* =====================================================
+               API STATUS
+               ===================================================== */
+
+            function setTopApiStatus(online) {
+
+                if (!topApiStatus ||
+                    !topApiStatusText) {
+                    return;
+                }
+
+
+                if (online) {
+
+                    topApiStatus.classList.remove(
+                        "offline"
+                    );
+
+                    topApiStatusText.textContent =
+                        "API Online";
+
+                } else {
+
+                    topApiStatus.classList.add(
+                        "offline"
+                    );
+
+                    topApiStatusText.textContent =
+                        "API Unavailable";
+
+                }
+
+
+                if (lastChecked) {
+
+                    lastChecked.textContent =
+                        new Date().toLocaleTimeString(
+                            [],
+                            {
+                                hour: "2-digit",
+                                minute: "2-digit"
+                            }
+                        );
+
+                }
+
+            }
+
+
+
+            /* =====================================================
+               LOAD KPI STATS
+               ===================================================== */
+
+            function loadStats() {
+
+                return fetch(
+                    "/api/admin/stats",
+                    {
+                        headers: headers
+                    }
+                )
+
+                    .then(function (r) {
+
+                        if (r.status === 403) {
+
+                            alert(
+                                "Access forbidden. This area requires ADMIN role."
+                            );
+
+                            window.location.href =
+                                "/dashboard";
+
+                            return null;
+                        }
+
+
+                        if (!r.ok) {
+
+                            setTopApiStatus(false);
+
+                            return null;
+                        }
+
+
+                        setTopApiStatus(true);
+
+                        return r.json();
+
+                    })
+
+                    .then(function (data) {
+
+                        if (!data) {
+                            return;
+                        }
+
+
+                        /* =========================================
+                           YOUR ORIGINAL KPI VALUES
+                           ========================================= */
+
+                        document.getElementById(
+                            "statUsers"
+                        ).textContent =
+                            data.totalUsers || 0;
+
+
+                        document.getElementById(
+                            "statAuthors"
+                        ).textContent =
+                            data.totalAuthors || 0;
+
+
+                        document.getElementById(
+                            "statBooks"
+                        ).textContent =
+                            data.totalBooks || 0;
+
+
+                        document.getElementById(
+                            "statSubscriptions"
+                        ).textContent =
+                            data.totalSubscriptions || 0;
+
+
+                        document.getElementById(
+                            "statPurchases"
+                        ).textContent =
+                            data.totalPurchases || 0;
+
+
+                        document.getElementById(
+                            "statReviews"
+                        ).textContent =
+                            data.totalReviews || 0;
+
+
+
+                        /* =========================================
+                           NEW TOP UI VALUES
+                           ========================================= */
+
+                        document.getElementById(
+                            "topQueueUsers"
+                        ).textContent =
+                            data.totalUsers || 0;
+
+
+                        document.getElementById(
+                            "topQueueBooks"
+                        ).textContent =
+                            data.totalBooks || 0;
+
+
+                        document.getElementById(
+                            "topQueueSubscriptions"
+                        ).textContent =
+                            data.totalSubscriptions || 0;
+
+
+                        document.getElementById(
+                            "topQueuePurchases"
+                        ).textContent =
+                            data.totalPurchases || 0;
+
+                    })
+
+                    .catch(function () {
+
+                        setTopApiStatus(false);
+
+                    });
+
+            }
+
+
+
+            /* =====================================================
+               LOAD USERS
+               ===================================================== */
+
+            function loadUsers() {
+
+                return fetch(
+                    "/api/admin/users",
+                    {
+                        headers: headers
+                    }
+                )
+
+                    .then(function (r) {
+
+                        return r.ok
+                            ? r.json()
+                            : [];
+
+                    })
+
+                    .then(function (users) {
+
+                        const tbody =
+                            document.getElementById(
+                                "adminUsersBody"
+                            );
+
+
+                        if (!users ||
+                            users.length === 0) {
+
+                            tbody.innerHTML = `
+
+                                <tr>
+
+                                    <td
+                                        colspan="5"
+                                        style="text-align:center;padding:20px;">
+
+                                        No user accounts found.
+
+                                    </td>
+
+                                </tr>
+
+                            `;
+
+                            return;
+                        }
+
+
+                        tbody.innerHTML =
+                            users.map(function (u) {
+
+                                return `
+
+                                    <tr>
+
+                                        <td>
+                                            #${u.id}
+                                        </td>
+
+                                        <td>
+                                            <strong>
+                                                ${u.name}
+                                            </strong>
+                                        </td>
+
+                                        <td>
+                                            ${u.email}
+                                        </td>
+
+                                        <td>
+
+                                            <select
+                                                class="role-select"
+                                                data-id="${u.id}">
+
+                                                <option
+                                                    value="USER"
+                                                    ${u.role === 'USER'
+                                    ? 'selected'
+                                    : ''}>
+
+                                                    Reader (USER)
+
+                                                </option>
+
+                                                <option
+                                                    value="AUTHOR"
+                                                    ${u.role === 'AUTHOR'
+                                    ? 'selected'
+                                    : ''}>
+
+                                                    Author (AUTHOR)
+
+                                                </option>
+
+                                                <option
+                                                    value="ADMIN"
+                                                    ${u.role === 'ADMIN'
+                                    ? 'selected'
+                                    : ''}>
+
+                                                    Administrator (ADMIN)
+
+                                                </option>
+
+                                            </select>
+
+                                        </td>
+
+                                        <td>
+
+                                            ${
+                                    u.createdAt
+                                        ? u.createdAt.substring(0, 10)
+                                        : 'Active'
+                                }
+
+                                        </td>
+
+                                    </tr>
+
+                                `;
+
+                            }).join("");
+
+
+                        /* =================================================
+                           ROLE CHANGE
+                           ================================================= */
+
+                        tbody
+                            .querySelectorAll(".role-select")
+                            .forEach(function (sel) {
+
+                                sel.onchange =
+                                    async function () {
+
+                                        const newRole =
+                                            sel.value;
+
+
+                                        const userId =
+                                            sel.dataset.id;
+
+
+                                        const res =
+                                            await fetch(
+                                                "/api/admin/users/"
+                                                + userId
+                                                + "/role",
+                                                {
+                                                    method: "PUT",
+                                                    headers: headers,
+                                                    body: JSON.stringify({
+                                                        role: newRole
+                                                    })
+                                                }
+                                            );
+
+
+                                        if (res.ok) {
+
+                                            alert(
+                                                "Role updated to "
+                                                + newRole
+                                            );
+
+                                        } else {
+
+                                            alert(
+                                                "Failed to update role."
+                                            );
+
+                                            loadUsers();
+
+                                        }
+
+                                    };
+
+                            });
+
+                    })
+
+                    .catch(function () {
+
+                        document.getElementById(
+                            "adminUsersBody"
+                        ).innerHTML = `
+
+                            <tr>
+
+                                <td
+                                    colspan="5"
+                                    style="text-align:center;padding:20px;">
+
+                                    Unable to load user accounts.
+
+                                </td>
+
+                            </tr>
+
+                        `;
+
+                    });
+
+            }
+
+
+
+            /* =====================================================
+               LOAD BOOKS
+               ===================================================== */
+
+            function loadBooks() {
+
+                return fetch(
+                    "/api/admin/books",
+                    {
+                        headers: headers
+                    }
+                )
+
+                    .then(function (r) {
+
+                        return r.ok
+                            ? r.json()
+                            : [];
+
+                    })
+
+                    .then(function (books) {
+
+                        const tbody =
+                            document.getElementById(
+                                "adminBooksBody"
+                            );
+
+
+                        if (!books ||
+                            books.length === 0) {
+
+                            tbody.innerHTML = `
+
+                                <tr>
+
+                                    <td
+                                        colspan="7"
+                                        style="text-align:center;padding:20px;">
+
+                                        No catalog works found.
+
+                                    </td>
+
+                                </tr>
+
+                            `;
+
+                            return;
+                        }
+
+
+                        tbody.innerHTML =
+                            books.map(function (b) {
+
+                                return `
+
+                                    <tr>
+
+                                        <td>
+
+                                            <img
+                                                src="${b.image || 'img/Book.png'}"
+                                                class="book-thumb"
+                                                alt="${b.title}">
+
+                                        </td>
+
+                                        <td>
+
+                                            <strong>
+                                                ${b.title}
+                                            </strong>
+
+                                        </td>
+
+                                        <td>
+                                            ${b.author}
+                                        </td>
+
+                                        <td>
+                                            ${b.category || 'Fiction'}
+                                        </td>
+
+                                        <td>
+
+                                            ${
+                                    b.premium
+                                        ? ('NPR ' + b.price)
+                                        : 'Free'
+                                }
+
+                                        </td>
+
+                                        <td>
+
+                                            ★ ${b.averageRating || '0.0'}
+
+                                        </td>
+
+                                        <td>
+
+                                            <button
+                                                class="btn-delete"
+                                                data-id="${b.id}">
+
+                                                <i class="fa-solid fa-trash"></i>
+
+                                                Remove
+
+                                            </button>
+
+                                        </td>
+
+                                    </tr>
+
+                                `;
+
+                            }).join("");
+
+
+                        /* =================================================
+                           DELETE BOOK
+                           ================================================= */
+
+                        tbody
+                            .querySelectorAll(".btn-delete")
+                            .forEach(function (btn) {
+
+                                btn.onclick =
+                                    async function () {
+
+                                        if (
+                                            !confirm(
+                                                "Remove this work from the platform catalog?"
+                                            )
+                                        ) {
+                                            return;
+                                        }
+
+
+                                        const res =
+                                            await fetch(
+                                                "/api/admin/books/"
+                                                + btn.dataset.id,
+                                                {
+                                                    method: "DELETE",
+                                                    headers: headers
+                                                }
+                                            );
+
+
+                                        if (res.ok) {
+
+                                            alert(
+                                                "Work removed."
+                                            );
+
+                                            loadBooks();
+
+                                            loadStats();
+
+                                        } else {
+
+                                            alert(
+                                                "Failed to remove work."
+                                            );
+
+                                        }
+
+                                    };
+
+                            });
+
+                    })
+
+                    .catch(function () {
+
+                        document.getElementById(
+                            "adminBooksBody"
+                        ).innerHTML = `
+
+                            <tr>
+
+                                <td
+                                    colspan="7"
+                                    style="text-align:center;padding:20px;">
+
+                                    Unable to load catalog works.
+
+                                </td>
+
+                            </tr>
+
+                        `;
+
+                    });
+
+            }
+
+
+
+            /* =====================================================
+               LOAD EVERYTHING
+               ===================================================== */
+
+            function loadDashboard() {
+
+                return Promise.all([
+                    loadStats(),
+                    loadUsers(),
+                    loadBooks()
+                ]);
+
+            }
+
+
+
+            /* =====================================================
+               TOP REFRESH BUTTON
+               ===================================================== */
+
+            const topRefreshButton =
+                document.getElementById(
+                    "topRefreshButton"
+                );
+
+
+            if (topRefreshButton) {
+
+                topRefreshButton.addEventListener(
+                    "click",
+                    function () {
+
+                        const icon =
+                            topRefreshButton.querySelector(
+                                "i"
+                            );
+
+
+                        icon.classList.add(
+                            "fa-spin"
+                        );
+
+
+                        loadDashboard()
+                            .finally(function () {
+
+                                setTimeout(
+                                    function () {
+
+                                        icon.classList.remove(
+                                            "fa-spin"
+                                        );
+
+                                    },
+                                    500
+                                );
+
+                            });
+
+                    }
+                );
+
+            }
+
+
+
+            /* =====================================================
+               EXPORT REPORT
+               ===================================================== */
+
+            const topExportButton =
+                document.getElementById(
+                    "topExportButton"
+                );
+
+
+            if (topExportButton) {
+
+                topExportButton.addEventListener(
+                    "click",
+                    function () {
+
+
+                        const report = {
+
+                            reportName:
+                                "READORA Admin Report",
+
+                            generatedAt:
+                                new Date().toISOString(),
+
+                            statistics: {
+
+                                registeredReaders:
+                                document.getElementById(
+                                    "statUsers"
+                                ).textContent,
+
+                                authors:
+                                document.getElementById(
+                                    "statAuthors"
+                                ).textContent,
+
+                                catalogBooks:
+                                document.getElementById(
+                                    "statBooks"
+                                ).textContent,
+
+                                subscriptions:
+                                document.getElementById(
+                                    "statSubscriptions"
+                                ).textContent,
+
+                                purchases:
+                                document.getElementById(
+                                    "statPurchases"
+                                ).textContent,
+
+                                reviews:
+                                document.getElementById(
+                                    "statReviews"
+                                ).textContent
+
+                            }
+
+                        };
+
+
+                        const blob =
+                            new Blob(
+                                [
+                                    JSON.stringify(
+                                        report,
+                                        null,
+                                        4
+                                    )
+                                ],
+                                {
+                                    type:
+                                        "application/json"
+                                }
+                            );
+
+
+                        const url =
+                            URL.createObjectURL(
+                                blob
+                            );
+
+
+                        const link =
+                            document.createElement(
+                                "a"
+                            );
+
+
+                        link.href = url;
+
+
+                        link.download =
+                            "READORA-Admin-Report-"
+                            + new Date()
+                                .toISOString()
+                                .substring(0, 10)
+                            + ".json";
+
+
+                        document.body.appendChild(
+                            link
+                        );
+
+
+                        link.click();
+
+
+                        link.remove();
+
+
+                        URL.revokeObjectURL(
+                            url
+                        );
+
+                    }
+                );
+
+            }
+
+
+
+            /* =====================================================
+               EXISTING ADMIN SEARCH
+               ===================================================== */
+
+            const searchInput =
+                document.getElementById(
+                    "adminHeaderSearch"
+                );
+
+
+            /*
+             * Your original page does not currently contain
+             * adminHeaderSearch, so this safely does nothing.
+             * This is intentionally kept compatible.
+             */
+
+            if (searchInput) {
+
+                searchInput.addEventListener(
+                    "input",
+                    function () {
+
+                        const search =
+                            searchInput.value
+                                .trim()
+                                .toLowerCase();
+
+
+                        document
+                            .querySelectorAll(
+                                "#adminUsersBody tr"
+                            )
+                            .forEach(function (row) {
+
+                                const text =
+                                    row.textContent
+                                        .toLowerCase();
+
+
+                                row.style.display =
+                                    !search ||
+                                    text.includes(search)
+                                        ? ""
+                                        : "none";
+
+                            });
+
+
+                        document
+                            .querySelectorAll(
+                                "#adminBooksBody tr"
+                            )
+                            .forEach(function (row) {
+
+                                const text =
+                                    row.textContent
+                                        .toLowerCase();
+
+
+                                row.style.display =
+                                    !search ||
+                                    text.includes(search)
+                                        ? ""
+                                        : "none";
+
+                            });
+
+                    }
+                );
+
+            }
+
+
+
+            /* =====================================================
+               INITIAL LOAD
+               ===================================================== */
+
+            loadDashboard();
+
+        }
+    );
+
+</script>
+
+
+</body>
+
+</html>

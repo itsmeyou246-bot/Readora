@@ -27,6 +27,8 @@ public class Purchase {
         this.book = book;
     }
 
+    public Long getId() { return id; }
+    public User getUser() { return user; }
     public Book getBook() { return book; }
     public Instant getPurchasedAt() { return purchasedAt; }
 }

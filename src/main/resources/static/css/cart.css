@@ -33,7 +33,6 @@ h1 { margin: 9px 0 38px; font-size: clamp(34px, 5vw, 52px); line-height: 1.1; }
 .empty-cart h2 { margin: 0 0 8px; font-size: 30px; }
 .empty-cart p { color: var(--muted); margin: 0 0 25px; }
 .empty-cart .button { display: inline-block; background: var(--green); color: var(--bg); }
-.readora-cart-link { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); font-size: 12px; letter-spacing: .7px; text-transform: uppercase; white-space: nowrap; }
 .readora-add-cart { display: block; margin-top: 12px; padding: 8px 11px; border: 1px solid #ddd4c0; border-radius: 3px; color: #2f4a3a; background: transparent; font: 500 11px/1.2 Inter, sans-serif; letter-spacing: .5px; text-transform: uppercase; cursor: pointer; }
 .readora-cart-toast { position: fixed; right: 24px; bottom: 24px; z-index: 9999; padding: 12px 16px; background: #2f4a3a; color: #faf6ee; font-size: 12px; opacity: 0; transform: translateY(8px); transition: opacity .2s, transform .2s; }
 .readora-cart-toast.show { opacity: 1; transform: translateY(0); }

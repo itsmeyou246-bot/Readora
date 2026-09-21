@@ -1,44 +1,230 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0">
+
     <title>Book Reader - READORA</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <link rel="stylesheet" th:href="@{/css/book-reader.css}">
+
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <link
+            rel="stylesheet"
+            th:href="@{/css/book-reader.css}">
+
 </head>
+
 <body th:attr="data-book-id=${bookId}">
+
 <header class="reader-topbar">
-    <a href="/library" class="library-link">← Library</a>
+
+    <a
+            href="/library"
+            class="library-link">
+
+        ← Library
+
+    </a>
+
     <div class="reader-title">
-        <strong id="bookTitle">Loading book...</strong>
-        <span id="chapterLabel">Preparing your page</span>
+
+        <strong id="bookTitle">
+            Loading book...
+        </strong>
+
+        <span id="chapterLabel">
+            Preparing your page
+        </span>
+
     </div>
+
     <div class="reader-actions">
-        <button id="bookmarkButton" type="button" aria-label="Bookmark page"><i class="fa-regular fa-bookmark"></i></button>
-        <button id="menuButton" type="button" aria-label="Reader menu"><i class="fa-solid fa-ellipsis"></i></button>
+
+        <button
+                id="bookmarkButton"
+                type="button"
+                aria-label="Bookmark page">
+
+            <i class="fa-regular fa-bookmark"></i>
+
+        </button>
+
+        <button
+                id="menuButton"
+                type="button"
+                aria-label="Reader menu">
+
+            <i class="fa-solid fa-ellipsis"></i>
+
+        </button>
+
     </div>
+
 </header>
 
+
 <main class="reader-shell">
-    <div id="readerStatus" class="reader-status">Opening your book...</div>
-    <article id="pageContent" class="page-content" hidden>
-        <p id="pageText" class="page-text"></p>
-        <figure id="editorialImage" class="editorial-image" hidden>
-            <div class="image-card"><img id="imageUrl" alt=""></div>
+
+    <!-- STATUS -->
+
+    <div
+            id="readerStatus"
+            class="reader-status">
+
+        Opening your book...
+
+    </div>
+
+
+    <!-- NORMAL BOOK PAGE READER -->
+
+    <article
+            id="pageContent"
+            class="page-content"
+            hidden>
+
+        <p
+                id="pageText"
+                class="page-text">
+        </p>
+
+        <figure
+                id="editorialImage"
+                class="editorial-image"
+                hidden>
+
+            <div class="image-card">
+
+                <img
+                        id="imageUrl"
+                        alt="">
+
+            </div>
+
             <h2 id="imageTitle"></h2>
-            <p id="imageSubtitle" class="image-subtitle"></p>
-            <p id="imageCaption" class="image-caption"></p>
-            <p id="imagePhotoCredit" class="image-credit"></p>
+
+            <p
+                    id="imageSubtitle"
+                    class="image-subtitle">
+            </p>
+
+            <p
+                    id="imageCaption"
+                    class="image-caption">
+            </p>
+
+            <p
+                    id="imagePhotoCredit"
+                    class="image-credit">
+            </p>
+
         </figure>
+
     </article>
+
+
+    <!-- AUTHOR UPLOADED PDF READER -->
+
+    <section
+            id="pdfContent"
+            hidden
+            style="
+                width:100%;
+                min-height:75vh;
+                margin:0;
+                padding:0;
+            ">
+
+        <iframe
+                id="bookPdfFrame"
+                title="Book manuscript"
+                style="
+                    width:100%;
+                    height:75vh;
+                    min-height:600px;
+                    border:0;
+                    border-radius:12px;
+                    background:#fff;
+                "
+                loading="lazy">
+        </iframe>
+
+    </section>
+
 </main>
 
+
+<!-- REVIEW SECTION — shown only when user is logged in -->
+
+<section id="reviewSection" style="display:none;">
+
+    <h3 id="reviewHeading">Rate this book</h3>
+
+    <div id="starRow" aria-label="Star rating">
+        <button type="button" class="star-btn" data-star="1" aria-label="1 star"><i class="fa-regular fa-star"></i></button>
+        <button type="button" class="star-btn" data-star="2" aria-label="2 stars"><i class="fa-regular fa-star"></i></button>
+        <button type="button" class="star-btn" data-star="3" aria-label="3 stars"><i class="fa-regular fa-star"></i></button>
+        <button type="button" class="star-btn" data-star="4" aria-label="4 stars"><i class="fa-regular fa-star"></i></button>
+        <button type="button" class="star-btn" data-star="5" aria-label="5 stars"><i class="fa-regular fa-star"></i></button>
+    </div>
+
+    <textarea
+            id="reviewComment"
+            placeholder="Share your thoughts about this book (optional)..."
+            rows="3"
+            maxlength="1000"></textarea>
+
+    <div id="reviewFeedback"></div>
+
+    <button type="button" id="submitReviewBtn">Submit Review</button>
+
+</section>
+
+
 <footer class="pagination-bar">
-    <button id="previousButton" type="button">‹ Previous</button>
-    <span>Page <strong id="pageNumber">—</strong> of <strong id="pageCount">—</strong></span>
-    <button id="nextButton" type="button">Next ›</button>
+
+    <button
+            id="previousButton"
+            type="button">
+
+        ‹ Previous
+
+    </button>
+
+    <span>
+
+        Page
+        <strong id="pageNumber">—</strong>
+
+        of
+
+        <strong id="pageCount">—</strong>
+
+    </span>
+
+    <button
+            id="nextButton"
+            type="button">
+
+        Next ›
+
+    </button>
+
 </footer>
-<script th:src="@{/js/book-reader.js}"></script>
+
+
+<script
+        th:src="@{/js/book-reader.js}">
+</script>
+
 </body>
+
 </html>

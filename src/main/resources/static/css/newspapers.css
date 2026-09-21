@@ -25,56 +25,60 @@ a {
 /* HEADER */
 
 .header {
-  border-bottom: 1px solid #ddd4c0;
-  padding: 20px 0;
+    border-bottom: 1px solid #ddd4c0;
+    padding: 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background-color: #faf6ee;
 }
 
 .header-inner {
-  max-width: 1180px;
-  margin: 0 auto;
-  padding: 0 40px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .logo {
-  font-family: 'Fraunces', serif;
-  font-size: 20px;
-  font-weight: 600;
+    font-family: 'Fraunces', serif;
+    font-size: 20px;
+    font-weight: 600;
 }
 
 .nav-links {
-  display: flex;
-  gap: 30px;
+    display: flex;
+    gap: 30px;
 }
 
 .nav-links a {
-  font-size: 13px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: #55503f;
+    font-size: 13px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #55503f;
 }
 
 .nav-links a:hover {
-  color: #201d18;
+    color: #201d18;
 }
 
 .nav-active {
-  color: #201d18;
-  border-bottom: 1px solid #201d18;
-  padding-bottom: 5px;
+    color: #201d18;
+    border-bottom: 1px solid #201d18;
+    padding-bottom: 5px;
 }
 
 .profile-icon {
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  border: 1px solid #ddd4c0;
-  text-align: center;
-  line-height: 34px;
-  cursor: pointer;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 1px solid #ddd4c0;
+    text-align: center;
+    line-height: 34px;
 }
+
 
 /* PAGE TITLE */
 

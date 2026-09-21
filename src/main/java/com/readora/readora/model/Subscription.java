@@ -1,58 +1,105 @@
 package com.readora.readora.model;
 
 import jakarta.persistence.*;
+import java.time.LocalDate;
 
 @Entity
-@Table(name = "subscriptions")
+@Table(
+        name = "subscriptions",
+        indexes = {
+                @Index(name = "idx_subscription_user", columnList = "user_id"),
+                @Index(name = "idx_subscription_status", columnList = "status")
+        }
+)
 public class Subscription {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
-    @JoinColumn(name = "user_id", nullable = false, unique = true)
-    private User user;
+    @Column(name = "user_id", nullable = false, unique = true)
+    private Long userId;
 
-    @Enumerated(EnumType.STRING)
-    private SubscriptionPlan plan;
+    @Column(nullable = false, length = 30)
+    private String plan;
 
-    private double price;
+    @Column(nullable = false, length = 20)
+    private String status;
+
+    @Column(nullable = false)
+    private LocalDate startDate;
+
+    @Column(nullable = false)
+    private LocalDate endDate;
+
+    // NEW: billing amount for this subscription (per period, in NPR)
+    @Column(nullable = false)
+    private Double amount = 0.0;
+
+    // NEW: gateway used to pay (eSewa, Khalti, Complimentary, etc.)
+    @Column(length = 40)
+    private String paymentMethod = "Not Specified";
 
     public Subscription() {
-    }
-
-    public Subscription(User user, SubscriptionPlan plan, double price) {
-        this.user = user;
-        this.plan = plan;
-        this.price = price;
     }
 
     public Long getId() {
         return id;
     }
 
-    public User getUser() {
-        return user;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
-    public SubscriptionPlan getPlan() {
+    public String getPlan() {
         return plan;
     }
 
-    public void setPlan(SubscriptionPlan plan) {
+    public void setPlan(String plan) {
         this.plan = plan;
     }
 
-    public double getPrice() {
-        return price;
+    public String getStatus() {
+        return status;
     }
 
-    public void setPrice(double price) {
-        this.price = price;
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
+    }
+
+    public Double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Double amount) {
+        this.amount = amount;
+    }
+
+    public String getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(String paymentMethod) {
+        this.paymentMethod = paymentMethod;
     }
 }

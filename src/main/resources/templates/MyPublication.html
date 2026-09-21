@@ -1,10 +1,443 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <title>Readora Studio · My Publications</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/MyPublication.css}">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
 <body>
-$END$
+
+<!-- ===== HEADER (same as Dashboard / Pipeline / Royalties) ===== -->
+
+<header th:replace="~{fragments/header :: authorHeader('publications')}"></header>
+<div class="container">
+
+    <!-- ===== SUB NAV ===== -->
+    <div class="subnav">
+        <a th:href="@{/AuthorDashboard}" class="subnav-tab">Overview</a>
+        <a th:href="@{/SubmissionandPipeline}" class="subnav-tab subnav-active">Manuscript Pipeline · 5</a>
+        <a th:href="@{/RoyalitiesandSales}" class="subnav-tab">Royalties & Earnings</a>
+        <button class="subnav-tab">Reader Reviews & Ratings</button>
+        <button class="subnav-tab">Publication Analytics</button>
+        <button class="subnav-tab">Author Profile & Bio</button>
+        <span class="subnav-spacer"></span>
+        <button class="subnav-tab">Drafts (3)</button>
+        <!-- Routes into the Create New Publication flow -->
+        <a th:href="@{/CreateNewPublication}" class="new-pub-btn">+ New Publication</a>
+    </div>
+
+    <!-- ===== PAGE TITLE ===== -->
+    <section class="page-intro">
+        <div class="breadcrumb">Author Studio / My Publications</div>
+        <div class="page-title-row">
+            <div>
+                <h1 class="page-title">My Publications</h1>
+                <p class="page-subtitle">Catalog, manage, and curate all your published books, collections, and active manuscripts.</p>
+            </div>
+            <div class="title-actions">
+                <button class="btn">Export Catalog</button>
+                <!-- Routes into the Create New Publication flow -->
+                <a th:href="@{/CreateNewPublication}" class="btn btn-dark">+ Create New Publication</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== TOP STAT CARDS ===== -->
+    <section class="card-section">
+        <div class="pub-stats-grid" id="pubStatsGrid"></div>
+    </section>
+
+    <!-- ===== SEARCH & FILTER BAR ===== -->
+    <section class="card-section">
+        <div class="filter-bar">
+            <div class="search-box">
+                <span class="search-icon"><i class="fa-solid fa-magnifying-glass"></i></span>
+                <input type="text" placeholder="Search by title, ISBN, or theme...">
+            </div>
+            <div class="filter-controls">
+                <span class="filter-label">Status:</span>
+                <select class="select-box">
+                    <option>All Statuses (6)</option>
+                </select>
+                <span class="filter-label">Category:</span>
+                <select class="select-box">
+                    <option>All Categories</option>
+                </select>
+                <button class="btn sort-btn"><i class="fa-solid fa-arrow-down-wide-short"></i> Sort: Newest</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== PUBLICATIONS TABLE ===== -->
+    <section class="card-section">
+        <div class="card table-card">
+            <table>
+                <thead>
+                <tr>
+                    <th>Book / Publication</th>
+                    <th>Category</th>
+                    <th>Language</th>
+                    <th>Price / Tier</th>
+                    <th>Status</th>
+                    <th>Reads</th>
+                    <th>Rating</th>
+                    <th>Published Date</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody id="pubRows"></tbody>
+            </table>
+
+            <div class="table-footer">
+                <span id="tableFooterNote"></span>
+                <div class="pagination">
+                    <button class="page-btn">Previous</button>
+                    <button class="page-btn active">1</button>
+                    <button class="page-btn">Next</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+    <div class="footer-inner">
+        <div>
+            <div class="footer-logo">READORA</div>
+            <div class="footer-copyright" style="margin-top:4px;">Author Studio v2.4 (Advanced Java / Spring Boot Architecture)</div>
+        </div>
+        <div class="footer-links">
+            <a href="#editorial">Editorial Guidelines</a>
+            <a th:href="@{/RoyalitiesandSales}">Author Payout Terms</a>
+            <a href="#">Developer REST APIs</a>
+            <a href="#">Support</a>
+        </div>
+    </div>
+</footer>
+
+<script>
+    // ---- Auth helpers ----
+    // JWT lives in HttpOnly cookie "readoraToken". localStorage has profile only.
+
+    function getLoggedInUser() {
+        try {
+            return JSON.parse(localStorage.getItem("readoraUser") || "null");
+        } catch (e) {
+            return null;
+        }
+    }
+
+    function isAuthorSessionPresent() {
+        var user = getLoggedInUser();
+        if (!user) {
+            return false;
+        }
+        var role = (user.role || "").toString().toUpperCase();
+        return role === "AUTHOR" || role === "ADMIN";
+    }
+
+    function getAuthHeaders() {
+        var headers = { "Content-Type": "application/json" };
+        try {
+            var user = getLoggedInUser();
+            var token = user && (user.token || user.jwt);
+            if (token) {
+                headers["Authorization"] = "Bearer " + token;
+            }
+        } catch (e) { /* ignore */ }
+        return headers;
+    }
+
+    function escapeHtml(text) {
+        if (text === null || text === undefined) return "";
+        return String(text)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+    var statusLabel = {
+        published: "Published",
+        review: "In Review",
+        draft: "Draft"
+    };
+
+    function normalizeStatus(status) {
+        var s = (status || "draft").toLowerCase();
+        if (s === "published" || s === "live") return "published";
+        if (s === "review" || s === "in_review" || s === "in-review" || s === "submitted" || s === "pending") return "review";
+        if (s === "draft" || s === "unpublished") return "draft";
+        return statusLabel[s] ? s : "draft";
+    }
+
+    function formatPrice(book) {
+        if (book.premium === false && (!book.price || book.price <= 0)) {
+            return "FREE";
+        }
+        if (book.price && book.price > 0) {
+            return "Rs. " + Number(book.price).toLocaleString();
+        }
+        return "FREE";
+    }
+
+    function formatDate(createdAt, status) {
+        var st = normalizeStatus(status);
+        if (st === "draft") return "Unpublished";
+        if (st === "review") return "Pending Review";
+        if (!createdAt) return "—";
+        try {
+            var d = new Date(createdAt);
+            if (isNaN(d.getTime())) return "—";
+            var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+            return months[d.getMonth()] + " " + String(d.getDate()).padStart(2, "0") + ", " + d.getFullYear();
+        } catch (e) {
+            return "—";
+        }
+    }
+
+    function renderStats(books) {
+        var total = books.length;
+        var published = 0;
+        var inReview = 0;
+        var drafts = 0;
+
+        for (var i = 0; i < books.length; i++) {
+            var st = normalizeStatus(books[i].status);
+            if (st === "published") published++;
+            else if (st === "review") inReview++;
+            else drafts++;
+        }
+
+        var pubStats = [
+            { icon: '<i class="fa-solid fa-book"></i>', label: "Total Works", value: String(total), note: "Cataloged in Studio", noteType: "" },
+            { icon: '<i class="fa-solid fa-check"></i>', label: "Published", value: String(published), note: "Live in Public Store", noteType: "positive" },
+            { icon: '<i class="fa-solid fa-hourglass-half"></i>', label: "In Review", value: String(inReview), note: "Editorial Committee", noteType: "" },
+            { icon: '<i class="fa-solid fa-pen"></i>', label: "Drafts", value: String(drafts), note: "Work in progress", noteType: "" }
+        ];
+
+        var pubStatsGrid = document.getElementById("pubStatsGrid");
+        pubStatsGrid.innerHTML = "";
+
+        for (var i = 0; i < pubStats.length; i++) {
+            var s = pubStats[i];
+            var card = document.createElement("div");
+            card.className = "pub-stat-card";
+            card.innerHTML =
+                '<div class="pub-stat-head">' +
+                '<span class="pub-stat-label">' + s.label + '</span>' +
+                '<span>' + s.icon + '</span>' +
+                '</div>' +
+                '<div class="pub-stat-value">' + s.value + '</div>' +
+                '<div class="pub-stat-sub ' + s.noteType + '">' + s.note + '</div>';
+            pubStatsGrid.appendChild(card);
+        }
+
+        var draftButtons = document.querySelectorAll(".subnav .subnav-tab");
+        for (var d = 0; d < draftButtons.length; d++) {
+            if (draftButtons[d].textContent && draftButtons[d].textContent.indexOf("Drafts") === 0) {
+                draftButtons[d].textContent = "Drafts (" + drafts + ")";
+            }
+        }
+    }
+
+    function renderPublications(books) {
+        var pubRows = document.getElementById("pubRows");
+        pubRows.innerHTML = "";
+
+        if (!books || books.length === 0) {
+            var empty = document.createElement("tr");
+            empty.innerHTML =
+                '<td colspan="9" style="text-align:center; padding:28px; color:#948d78;">' +
+                'No publications yet. Click <strong>+ Create New Publication</strong> to add your first manuscript.' +
+                '</td>';
+            pubRows.appendChild(empty);
+            document.getElementById("tableFooterNote").innerHTML =
+                "Showing <strong>0</strong> of <strong>0</strong> publications";
+            return;
+        }
+
+        for (var i = 0; i < books.length; i++) {
+            var b = books[i];
+            var st = normalizeStatus(b.status);
+            var title = b.title || "Untitled";
+            var pagesText = (b.pageCount ? b.pageCount + " pages" : "—");
+            if (st === "draft") pagesText += " · Work in progress";
+            else if (st === "review") pagesText += " · Submitted for review";
+
+            var coverInitials = title.split(" ").slice(0, 2).join(" ");
+            var draftCover = (st === "draft" || st === "review");
+            var coverHtml;
+            if (b.image && String(b.image).trim() !== "") {
+                coverHtml = '<img class="book-cover-sm' + (draftCover ? " draft-cover" : "") +
+                    '" src="' + escapeHtml(b.image) + '" alt="" onerror="this.outerHTML=\'<div class=\\\'book-cover-sm' +
+                    (draftCover ? " draft-cover" : "") + '\\\'>' + escapeHtml(coverInitials) + '</div>\'">';
+            } else {
+                coverHtml = '<div class="book-cover-sm' + (draftCover ? " draft-cover" : "") + '">' +
+                    escapeHtml(coverInitials) + '</div>';
+            }
+
+            var tag = "";
+            var tagType = "";
+            if (st === "draft") {
+                tag = "ESTIMATE";
+                tagType = "estimate-tag";
+            } else if (b.premium) {
+                tag = "PREMIUM";
+                tagType = "";
+            } else {
+                tag = "OPEN";
+                tagType = "open-tag";
+            }
+            var tagHtml = '<span class="tag ' + tagType + '">' + tag + '</span>';
+
+            var ratingHtml = (b.averageRating && b.averageRating > 0)
+                ? '<i class="fa-solid fa-star"></i> <span class="rating-value">' + Number(b.averageRating).toFixed(1) + '</span> <span class="rating-count">(' +
+                (b.ratingCount || 0) + ')</span>'
+                : '<span class="text-muted">—</span>';
+
+            var actionsHtml = "";
+            if (st === "draft") {
+                actionsHtml =
+                    '<div class="row-actions">' +
+                    '<button class="resume-btn" onclick="window.location.href=\'/CreateNewPublication?edit=' + b.id + '\'">Resume</button>' +
+                    '<a href="javascript:void(0)" class="danger" onclick="deletePublication(' + b.id + ', \'' +
+                    escapeHtml(title).replace(/'/g, "\\'") + '\')"><i class="fa-solid fa-trash"></i></a>' +
+                    '</div>';
+            } else if (st === "review") {
+                actionsHtml =
+                    '<div class="row-actions">' +
+                    '<a href="/book-details.html?id=' + b.id + '" title="View"><i class="fa-solid fa-clock"></i></a>' +
+                    '<a href="/CreateNewPublication?edit=' + b.id + '" title="Edit"><i class="fa-solid fa-pen-to-square"></i></a>' +
+                    '<a href="javascript:void(0)" class="danger" onclick="deletePublication(' + b.id + ', \'' +
+                    escapeHtml(title).replace(/'/g, "\\'") + '\')"><i class="fa-solid fa-trash"></i></a>' +
+                    '</div>';
+            } else {
+                actionsHtml =
+                    '<div class="row-actions">' +
+                    '<a href="/book-details.html?id=' + b.id + '" title="View"><i class="fa-solid fa-eye"></i></a>' +
+                    '<a href="/CreateNewPublication?edit=' + b.id + '" title="Edit"><i class="fa-solid fa-pen-to-square"></i></a>' +
+                    '<a href="javascript:void(0)" class="danger" onclick="deletePublication(' + b.id + ', \'' +
+                    escapeHtml(title).replace(/'/g, "\\'") + '\')"><i class="fa-solid fa-trash"></i></a>' +
+                    '</div>';
+            }
+
+            var row = document.createElement("tr");
+            row.setAttribute("data-book-id", b.id);
+            row.innerHTML =
+                '<td>' +
+                '<div class="book-row">' +
+                coverHtml +
+                '<div>' +
+                '<div class="book-row-name">' + escapeHtml(title) + '</div>' +
+                '<div class="book-row-pages">' + escapeHtml(pagesText) + '</div>' +
+                '</div>' +
+                '</div>' +
+                '</td>' +
+                '<td>' + escapeHtml(b.category || "—") + '</td>' +
+                '<td>' + escapeHtml(b.language || "—") + '</td>' +
+                '<td>' + formatPrice(b) + ' ' + tagHtml + '</td>' +
+                '<td><span class="status-pill ' + st + '"><span class="status-dot"></span>' + statusLabel[st] + '</span></td>' +
+                '<td>—</td>' +
+                '<td>' + ratingHtml + '</td>' +
+                '<td>' + formatDate(b.createdAt, st) + '</td>' +
+                '<td>' + actionsHtml + '</td>';
+
+            pubRows.appendChild(row);
+        }
+
+        document.getElementById("tableFooterNote").innerHTML =
+            "Showing <strong>1–" + books.length + "</strong> of <strong>" + books.length + "</strong> publications";
+    }
+
+    async function deletePublication(bookId, bookTitle) {
+        if (!confirm("Are you sure you want to delete this publication?")) {
+            return;
+        }
+
+        try {
+            var resp = await fetch("/api/author/books/" + bookId, {
+                method: "DELETE",
+                headers: getAuthHeaders(),
+                credentials: "same-origin"
+            });
+
+            if (resp.status === 401) {
+                alert("Please log in as an author to manage publications.");
+                window.location.href = "/login.html";
+                return;
+            }
+            if (resp.status === 403) {
+                alert("You do not have permission to delete this publication.");
+                return;
+            }
+            if (resp.status === 404) {
+                alert("Publication not found.");
+                loadPublications();
+                return;
+            }
+            if (!resp.ok) {
+                alert("Could not delete publication. Please try again.");
+                return;
+            }
+
+            loadPublications();
+        } catch (e) {
+            alert("Network error while deleting publication.");
+        }
+    }
+
+    async function loadPublications() {
+        // Cookie JWT is the real auth; localStorage only confirms author role UX.
+        if (!isAuthorSessionPresent()) {
+            document.getElementById("pubStatsGrid").innerHTML = "";
+            document.getElementById("pubRows").innerHTML =
+                '<tr><td colspan="9" style="text-align:center; padding:28px; color:#948d78;">' +
+                'Please <a href="/login.html">log in</a> with your Author account to view publications.' +
+                '</td></tr>';
+            document.getElementById("tableFooterNote").textContent = "";
+            return;
+        }
+
+        try {
+            var resp = await fetch("/api/author/books", {
+                method: "GET",
+                headers: getAuthHeaders(),
+                credentials: "same-origin"
+            });
+
+            if (resp.status === 401 || resp.status === 403) {
+                document.getElementById("pubRows").innerHTML =
+                    '<tr><td colspan="9" style="text-align:center; padding:28px; color:#948d78;">' +
+                    'Please <a href="/login.html">log in</a> with your Author account to view publications.' +
+                    '</td></tr>';
+                return;
+            }
+
+            if (!resp.ok) {
+                throw new Error("Failed to load books");
+            }
+
+            var books = await resp.json();
+            renderStats(books);
+            renderPublications(books);
+        } catch (e) {
+            console.error("Could not load publications:", e);
+            document.getElementById("pubRows").innerHTML =
+                '<tr><td colspan="9" style="text-align:center; padding:28px; color:#a33b3b;">' +
+                'Could not load publications. Please refresh and try again.' +
+                '</td></tr>';
+        }
+    }
+
+    loadPublications();
+</script>
 </body>
 </html>

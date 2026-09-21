@@ -4,80 +4,268 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
     <title>Premium Library - Readora</title>
+
+    <!-- Google Fonts -->
     <link
-        href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=Inter:wght@400;500;600&display=swap"
-        rel="stylesheet">
+            href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=Inter:wght@400;500;600&display=swap"
+            rel="stylesheet">
+
+    <!-- Existing READORA CSS -->
     <link rel="stylesheet" th:href="@{/css/book-details.css}">
 </head>
 
 <body>
 
-    <!-- HEADER -->
-    <th:block th:replace="~{fragments/chrome :: header}"></th:block>
-    <header class="header legacy-chrome-header">
-        <div class="header-inner">
-            <a th:href="@{/index}" class="logo">READORA</a>
+<!-- =========================================================
+     HEADER
+     ========================================================= -->
 
-            <nav class="nav-links">
-                <a th:href="@{/index}">Discover</a>
-                <a th:href="@{/Book}" class="nav-active">Books</a>
-                <a th:href="@{/newspapers}">Newspapers</a>
-                <a th:href="@{/magazines}">Magazines</a>
-                <a th:href="@{/read-nepal}">Read Nepal</a>
-                <a th:href="@{/library}">My Library</a>
-            </nav>
+<header th:replace="~{fragments/header :: readerHeader('books')}"></header>
 
-            <div class="profile-icon"><i class="fa-solid fa-user"></i></div>
+
+<!-- =========================================================
+     MAIN CONTENT
+     ========================================================= -->
+
+<main class="premium-page">
+
+    <!-- PAGE HEADING -->
+
+    <section class="page-heading">
+
+        <h1>
+            Premium Library
+        </h1>
+
+        <p>
+            Discover stories worth keeping.
+        </p>
+
+    </section>
+
+
+    <!-- =====================================================
+         BOOK CARD
+         ===================================================== -->
+
+    <section class="premium-book-card">
+
+        <!-- =================================================
+             BOOK INFORMATION
+             ================================================= -->
+
+        <div class="book-copy">
+
+            <span id="bookStatus"
+                  class="editor-tag">
+                Loading...
+            </span>
+
+
+            <h2 id="bookTitle">
+                Book Title
+            </h2>
+
+
+            <p id="bookAuthor"
+               class="book-author">
+                Author Name
+            </p>
+
+
+            <p id="bookDescription"
+               class="book-description">
+                Discover a story selected for curious readers
+                and thoughtful collections.
+            </p>
+
+
+            <strong id="bookPrice"
+                    class="book-price">
+                NPR 0
+            </strong>
+
+
+            <!-- =================================================
+                 MAIN ADD TO CART BUTTON
+
+                 IMPORTANT:
+                 This is the ONLY Add to Cart button on this page.
+
+                 JavaScript will automatically:
+                 - show it for PREMIUM books
+                 - hide it for FREE books
+                 ================================================= -->
+
+            <button id="addToCartBtn"
+                    class="primary-button"
+                    type="button">
+
+                <i class="fa-solid fa-cart-shopping"
+                   aria-hidden="true"></i>
+
+                Add to Cart
+
+            </button>
+
         </div>
-    </header>
 
-    <main class="premium-page">
-        <section class="page-heading">
-            <h1>Premium Library</h1>
-            <p>Discover stories worth keeping.</p>
-        </section>
 
-        <section class="premium-book-card">
-            <div class="book-copy">
-                <span class="editor-tag">Editor's Choice</span>
-                <h2 id="bookTitle">Book Title</h2>
-                <p id="bookAuthor" class="book-author">Author Name</p>
-                <p id="bookDescription" class="book-description">Discover a story selected for curious readers and thoughtful collections.</p>
-                <strong id="bookPrice" class="book-price">NPR 0</strong>
-                <button id="addToCartBtn" class="primary-button" type="button"><i class="fa-solid fa-cart-shopping" aria-hidden="true"></i> Add to Cart</button>
+        <!-- =================================================
+             APP PREVIEW
+             ================================================= -->
+
+        <div class="app-preview"
+             aria-label="READORA reading app preview">
+
+            <!-- Preview Header -->
+
+            <div class="preview-header">
+
+                <span>
+                    READORA
+                </span>
+
+                <span id="previewPremium"
+                      class="preview-premium">
+                    Premium
+                </span>
+
             </div>
 
-            <div class="app-preview" aria-label="READORA reading app preview">
-                <div class="preview-header"><span>READORA</span><span class="preview-premium">Premium</span></div>
-                <img id="bookCover" src="" alt="Book cover">
-                <h3 id="previewTitle">Book Title</h3>
-                <p id="previewAuthor">Author Name</p>
-                <div class="rating" aria-label="Five star rating">★★★★★</div>
-                <button type="button">Get Reading</button>
-                <button type="button">Add to Cart</button>
-            </div>
-        </section>
-    </main>
 
-    <footer class="footer legacy-chrome-footer">
-        <div class="footer-inner">
-            <div class="footer-logo">READORA</div>
-            <div class="footer-copyright">© 2024 Readora. Cultivating intellectual clarity.</div>
-            <div class="footer-links">
-                <a href="#">Archives</a>
-                <a href="#">Authors</a>
-                <a href="#">Terms</a>
-                <a href="#">Privacy</a>
-                <a href="#">Support</a>
+            <!-- Book Cover -->
+
+            <img id="bookCover"
+                 src=""
+                 alt="Book cover"
+                 loading="lazy">
+
+
+            <!-- Preview Title -->
+
+            <h3 id="previewTitle">
+                Book Title
+            </h3>
+
+
+            <!-- Preview Author -->
+
+            <p id="previewAuthor">
+                Author Name
+            </p>
+
+
+            <!-- Rating -->
+
+            <div class="rating"
+                 aria-label="Five star rating">
+
+                <i class="fa-solid fa-star"
+                   aria-hidden="true"></i>
+
+                <i class="fa-solid fa-star"
+                   aria-hidden="true"></i>
+
+                <i class="fa-solid fa-star"
+                   aria-hidden="true"></i>
+
+                <i class="fa-solid fa-star"
+                   aria-hidden="true"></i>
+
+                <i class="fa-solid fa-star"
+                   aria-hidden="true"></i>
+
             </div>
+
+
+            <!-- =================================================
+                 GET READING BUTTON
+
+                 This button is used for:
+                 - FREE books
+                 - PREMIUM books after purchase
+
+                 JavaScript controls the reader URL.
+                 ================================================= -->
+
+            <button id="getReadingBtn"
+                    class="preview-reading"
+                    type="button">
+
+                Get Reading
+
+            </button>
+
         </div>
-    </footer>
-    <th:block th:replace="~{fragments/chrome :: footer}"></th:block>
 
-    <script th:src="@{/js/cart-utils.js}"></script>
-    <script th:src="@{/js/book-details.js}"></script>
+    </section>
+
+</main>
+
+
+<!-- =========================================================
+     FOOTER
+     ========================================================= -->
+
+<footer class="footer legacy-chrome-footer">
+
+    <div class="footer-inner">
+
+        <div class="footer-logo">
+            READORA
+        </div>
+
+
+        <div class="footer-copyright">
+            © 2024 Readora. Cultivating intellectual clarity.
+        </div>
+
+
+        <div class="footer-links">
+
+            <a href="#">
+                Archives
+            </a>
+
+            <a href="#">
+                Authors
+            </a>
+
+            <a href="#">
+                Terms
+            </a>
+
+            <a href="#">
+                Privacy
+            </a>
+
+            <a href="#">
+                Support
+            </a>
+
+        </div>
+
+    </div>
+
+</footer>
+
+
+<!-- =========================================================
+     JAVASCRIPT
+     ========================================================= -->
+
+<!-- Cart functionality -->
+<script th:src="@{/js/cart-utils.js}"></script>
+
+<!-- Book details functionality -->
+<script th:src="@{/js/book-details.js}"></script>
 
 </body>
 
