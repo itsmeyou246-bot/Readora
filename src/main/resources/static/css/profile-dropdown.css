@@ -1,0 +1,76 @@
+/* Profile dropdown common styles */
+.reader-user-profile,
+.author-user-profile,
+.admin-user-profile {
+  position: relative;
+  display: inline-block;
+}
+
+.reader-user-profile .header-icon-btn,
+.author-user-profile .header-icon-btn,
+.admin-user-profile .header-icon-btn {
+  /* inherit existing button styles */
+}
+
+.reader-user-dropdown,
+.author-user-dropdown,
+.admin-user-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: #fff;
+  border: 1px solid #ddd4c0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  min-width: 180px;
+  z-index: 1000;
+  padding: 8px 0;
+}
+
+.reader-user-dropdown.hidden,
+.author-user-dropdown.hidden,
+.admin-user-dropdown.hidden {
+  display: none;
+}
+
+.reader-user-dropdown a,
+.reader-user-dropdown button,
+.author-user-dropdown a,
+.author-user-dropdown button,
+.admin-user-dropdown a,
+.admin-user-dropdown button {
+  width: 100%;
+  text-align: left;
+  padding: 6px 12px;
+  background: transparent;
+  border: none;
+  font-size: 13px;
+  color: #55503f;
+  cursor: pointer;
+}
+
+.reader-user-dropdown a:hover,
+.reader-user-dropdown button:hover,
+.author-user-dropdown a:hover,
+.author-user-dropdown button:hover,
+.admin-user-dropdown a:hover,
+.admin-user-dropdown button:hover {
+  background: #f5f5f5;
+}
+
+.reader-user-dropdown .reader-user-name,
+.author-user-dropdown .author-user-name,
+.admin-user-dropdown .admin-user-name {
+  font-weight: 600;
+  padding: 4px 12px;
+  color: #201d18;
+  display: block;
+}
+
+.reader-user-dropdown .reader-user-role,
+.author-user-dropdown .author-user-role,
+.admin-user-dropdown .admin-user-role {
+  font-size: 12px;
+  color: #55503f;
+  padding: 0 12px 4px;
+  display: block;
+}

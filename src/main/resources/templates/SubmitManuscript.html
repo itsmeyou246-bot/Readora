@@ -1,0 +1,2453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Readora Studio · Submit New Manuscript</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" th:href="@{/css/SubmitManuscript.css}">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+
+<!-- =========================================================
+     HEADER
+========================================================= -->
+<header th:replace="~{fragments/header :: authorHeader('submissions')}"></header>
+
+
+<div class="container">
+
+    <!-- =====================================================
+         SUB NAV
+    ====================================================== -->
+    <div class="subnav">
+
+        <a th:href="@{/AuthorDashboard}" class="subnav-tab">
+            Overview
+        </a>
+
+        <a th:href="@{/SubmissionandPipeline}"
+           class="subnav-tab subnav-active">
+            Manuscript Pipeline
+        </a>
+
+        <a th:href="@{/RoyalitiesandSales}" class="subnav-tab">
+            Royalties &amp; Earnings
+        </a>
+
+        <button class="subnav-tab" type="button">
+            Reader Reviews &amp; Ratings
+        </button>
+
+        <button class="subnav-tab" type="button">
+            Publication Analytics
+        </button>
+
+        <button class="subnav-tab" type="button">
+            Author Profile &amp; Bio
+        </button>
+
+        <span class="subnav-spacer"></span>
+
+        <a th:href="@{/MyPublication}" class="subnav-tab">
+            My Publications
+        </a>
+
+        <a th:href="@{/SubmitManuscript}" class="new-pub-btn">
+            + Submit Manuscript
+        </a>
+
+    </div>
+
+
+    <!-- =====================================================
+         PAGE INTRO
+    ====================================================== -->
+    <section class="page-intro">
+
+        <div class="breadcrumb">
+            <a th:href="@{/AuthorDashboard}">Author Studio</a>
+            /
+            <a th:href="@{/SubmissionandPipeline}">
+                Submissions &amp; Pipeline
+            </a>
+            /
+            Submit New Manuscript
+        </div>
+
+        <div class="page-title-row">
+
+            <div>
+                <h1 class="page-title">
+                    Submit Manuscript for Editorial Review
+                </h1>
+
+                <p class="page-subtitle">
+                    Provide the literary classification, upload the validated
+                    manuscript package, and affirm rights before entering the
+                    READORA editorial pipeline.
+                </p>
+            </div>
+
+            <div class="season-badge">
+                <span class="season-dot"></span>
+                Curatorial Intake Season: Open
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         FORM
+    ====================================================== -->
+    <form id="manuscriptForm">
+
+        <input type="hidden" id="editBookId" value="">
+
+        <div class="form-layout">
+
+            <!-- =================================================
+                 MAIN
+            ================================================== -->
+            <div class="form-main">
+
+                <!-- =============================================
+                     STEP 01
+                ============================================== -->
+                <div class="card">
+
+                    <div class="step-label">Step 01</div>
+
+                    <div class="step-title">
+                        Manuscript Scope &amp; Classification
+                    </div>
+
+                    <p class="field-label" style="margin-bottom:10px;">
+                        Literary Track / Submission Stream
+                    </p>
+
+                    <div class="track-row">
+
+                        <label class="track-card selected"
+                               id="trackStandard">
+
+                            <input
+                                    type="radio"
+                                    name="literaryTrack"
+                                    value="book"
+                                    checked>
+
+                            <span class="track-name">
+                                Standard Catalog
+                            </span>
+
+                            <span class="track-desc">
+                                Commercial or open digital catalog titles
+                                for general readers.
+                            </span>
+
+                        </label>
+
+
+                        <label class="track-card"
+                               id="trackAcademic">
+
+                            <input
+                                    type="radio"
+                                    name="literaryTrack"
+                                    value="academic">
+
+                            <span class="track-name">
+                                Academic &amp; Research
+                            </span>
+
+                            <span class="track-desc">
+                                Scholarly papers, dissertations, and research
+                                monographs.
+                            </span>
+
+                        </label>
+
+
+                        <label class="track-card"
+                               id="trackNepal">
+
+                            <input
+                                    type="radio"
+                                    name="literaryTrack"
+                                    value="nepal">
+
+                            <span class="track-name">
+                                Read Nepal Heritage
+                            </span>
+
+                            <span class="track-desc">
+                                Historical preservation and indigenous
+                                Nepali literature.
+                            </span>
+
+                        </label>
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label class="field-label" for="msTitle">
+                            Working Manuscript Title
+                            <span class="required">*</span>
+                        </label>
+
+                        <input
+                                type="text"
+                                id="msTitle"
+                                name="title"
+                                placeholder="e.g. Solitude at 5000 Meters"
+                                required>
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label class="field-label" for="msSubtitle">
+                            Manuscript Subtitle (Optional)
+                        </label>
+
+                        <input
+                                type="text"
+                                id="msSubtitle"
+                                name="subtitle"
+                                placeholder="Optional subtitle">
+
+                    </div>
+
+
+                    <div class="field-row">
+
+                        <div class="field">
+
+                            <label class="field-label" for="msCategory">
+                                Primary Literary Category
+                                <span class="required">*</span>
+                            </label>
+
+                            <select
+                                    id="msCategory"
+                                    name="category"
+                                    required>
+
+                                <option value="">
+                                    Select a category…
+                                </option>
+
+                                <option value="Himalayan Memoirs">
+                                    Himalayan Memoirs
+                                </option>
+
+                                <option value="Cultural Heritage">
+                                    Cultural Heritage
+                                </option>
+
+                                <option value="Philosophy">
+                                    Philosophy
+                                </option>
+
+                                <option value="Poetry">
+                                    Poetry
+                                </option>
+
+                                <option value="Nepali Literature">
+                                    Nepali Literature
+                                </option>
+
+                                <option value="Academic Research">
+                                    Academic Research
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="field">
+
+                            <label class="field-label" for="msLanguage">
+                                Primary Language
+                                <span class="required">*</span>
+                            </label>
+
+                            <select
+                                    id="msLanguage"
+                                    name="language"
+                                    required>
+
+                                <option value="English">
+                                    English
+                                </option>
+
+                                <option value="Nepali">
+                                    Nepali
+                                </option>
+
+                                <option value="Bilingual">
+                                    Bilingual
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="field-row">
+
+                        <div class="field">
+
+                            <label class="field-label" for="msWordCount">
+                                Word Count Estimate
+                            </label>
+
+                            <input
+                                    type="text"
+                                    id="msWordCount"
+                                    name="wordCount"
+                                    placeholder="e.g. 58400">
+
+                            <div class="field-hint">
+                                Used to estimate page count for the reader catalog.
+                            </div>
+
+                        </div>
+
+
+                        <div class="field">
+
+                            <label class="field-label" for="msQuarter">
+                                Target Publication Quarter
+                            </label>
+
+                            <select id="msQuarter" name="quarter">
+
+                                <option value="">
+                                    Select quarter…
+                                </option>
+
+                                <option value="Q1">
+                                    Q1 (Jan – Mar)
+                                </option>
+
+                                <option value="Q2">
+                                    Q2 (Apr – Jun)
+                                </option>
+
+                                <option value="Q3">
+                                    Q3 (Jul – Sep)
+                                </option>
+
+                                <option value="Q4">
+                                    Q4 (Oct – Dec)
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =============================================
+                     STEP 02
+                ============================================== -->
+                <div class="card">
+
+                    <div class="step-label">Step 02</div>
+
+                    <div class="step-title">
+                        Manuscript File &amp; Digital Formats
+                    </div>
+
+
+                    <div class="dropzone" id="dropzone">
+
+                        <div class="dropzone-icon">
+                            <i class="fa-solid fa-cloud-arrow-up"></i>
+                        </div>
+
+                        <div class="dropzone-text">
+                            Drag manuscript package here or click to browse
+                        </div>
+
+                        <div class="dropzone-sub">
+                            Supported: PDF/A, EPUB 3.0 (max 45MB)
+                        </div>
+
+                    </div>
+
+
+                    <input
+                            type="file"
+                            id="manuscriptFile"
+                            accept=".pdf,.epub"
+                            style="display:none;">
+
+
+                    <div
+                            class="uploaded-file"
+                            id="uploadedFileRow"
+                            style="display:none;">
+
+                        <div class="uploaded-file-icon">
+                            <i class="fa-regular fa-file-lines"></i>
+                        </div>
+
+                        <div class="uploaded-file-body">
+
+                            <div
+                                    class="uploaded-file-name"
+                                    id="uploadedFileName">
+                            </div>
+
+                            <div class="uploaded-file-meta">
+
+                                <span class="verified-check">
+                                    <i class="fa-solid fa-check"></i>
+                                    Integrity Verified
+                                </span>
+
+                                <span id="uploadedFileMeta"></span>
+
+                            </div>
+
+                        </div>
+
+                        <button
+                                type="button"
+                                class="remove-link"
+                                id="removeFileBtn">
+                            Remove
+                        </button>
+
+                    </div>
+
+
+                    <div class="attach-row">
+
+                        <span>
+                            Supplementary materials
+                            (maps, figures, appendices)
+                        </span>
+
+                        <button
+                                class="btn"
+                                type="button"
+                                id="attachSupplementBtn">
+                            Attach Files
+                        </button>
+
+                        <input
+                                type="file"
+                                id="supplementFile"
+                                multiple
+                                style="display:none;">
+
+                    </div>
+
+
+                    <div
+                            class="field-hint"
+                            id="supplementNote"
+                            style="margin-top:8px;">
+                    </div>
+
+                </div>
+
+
+                <!-- =============================================
+                     STEP 03
+                ============================================== -->
+                <div class="card">
+
+                    <div class="step-label">Step 03</div>
+
+                    <div class="step-title">
+                        Editorial Intake &amp; Peer Appraisal Preferences
+                    </div>
+
+
+                    <div class="field">
+
+                        <label class="field-label" for="msCurator">
+                            Preferred Senior Curator Desk
+                        </label>
+
+                        <select id="msCurator" name="curator">
+
+                            <option value="Himalayan Regional Studies & Memoirs">
+                                Himalayan Regional Studies &amp; Memoirs
+                                — Senior Curator Desk
+                            </option>
+
+                            <option value="Nepali Literature & Heritage">
+                                Nepali Literature &amp; Heritage
+                                — Senior Curator Desk
+                            </option>
+
+                            <option value="Academic & Research">
+                                Academic &amp; Research
+                                — Senior Curator Desk
+                            </option>
+
+                            <option value="Poetry & Philosophy">
+                                Poetry &amp; Philosophy
+                                — Senior Curator Desk
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label class="field-label" for="msLetter">
+                            Letter to the Senior Editorial Board
+                            <span class="required">*</span>
+                        </label>
+
+                        <textarea
+                                id="msLetter"
+                                name="letter"
+                                maxlength="2000"
+                                required
+                                placeholder="Introduce the manuscript, its scholarly or literary contribution, and why it belongs in READORA…"></textarea>
+
+                        <div class="field-hint">
+                            <span id="letterCount">0</span>
+                            / 2000 characters · This becomes the editorial synopsis.
+                        </div>
+
+                    </div>
+
+
+                    <div class="toggle-row">
+
+                        <div class="toggle-text">
+
+                            <strong>
+                                Request Double-Blind Peer Appraisal
+                            </strong>
+
+                            <span>
+                                Recommended for academic and heritage submissions.
+                            </span>
+
+                        </div>
+
+
+                        <label class="switch">
+
+                            <input
+                                    type="checkbox"
+                                    id="peerAppraisal"
+                                    checked>
+
+                            <span class="slider"></span>
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =============================================
+                     STEP 04
+                ============================================== -->
+                <div class="card">
+
+                    <div class="step-label">Step 04</div>
+
+                    <div class="step-title">
+                        Editorial Declarations &amp; Legal Attestation
+                    </div>
+
+
+                    <label class="check-card">
+
+                        <input
+                                type="checkbox"
+                                id="declOriginal">
+
+                        <div>
+
+                            <strong>
+                                Originality &amp; Authorship Sovereignty
+                            </strong>
+
+                            <span>
+                                I affirm this manuscript is an original work
+                                created by me and complies with the Nepal
+                                Copyright Act 2059.
+                            </span>
+
+                        </div>
+
+                    </label>
+
+
+                    <label class="check-card">
+
+                        <input
+                                type="checkbox"
+                                id="declRights">
+
+                        <div>
+
+                            <strong>
+                                Citations, Archival Rights &amp;
+                                Translation Permissions
+                            </strong>
+
+                            <span>
+                                I confirm that excerpts, illustrations,
+                                and translations have appropriate
+                                licensing clearance.
+                            </span>
+
+                        </div>
+
+                    </label>
+
+
+                    <label class="check-card">
+
+                        <input
+                                type="checkbox"
+                                id="declIntegrity">
+
+                        <div>
+
+                            <strong>
+                                Automated Synthesis &amp;
+                                Academic Integrity Scanning
+                            </strong>
+
+                            <span>
+                                I understand submissions undergo plagiarism
+                                scanning and editorial appraisal before
+                                publication.
+                            </span>
+
+                        </div>
+
+                    </label>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 SIDEBAR
+            ================================================== -->
+            <div class="form-sidebar">
+
+                <div class="card sidebar-card">
+
+                    <div class="sidebar-title">
+                        Intake Readiness
+                    </div>
+
+
+                    <div class="readiness-wrap">
+
+                        <div
+                                class="readiness-circle"
+                                id="readinessCircle">
+
+                            <div class="readiness-inner">
+
+                                <div
+                                        class="readiness-pct"
+                                        id="readinessPct">
+                                    0%
+                                </div>
+
+                                <div class="readiness-label">
+                                    Complete
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="checklist-line">
+
+                        <span>Title &amp; classification</span>
+
+                        <span
+                                class="pending-tag"
+                                id="chkTitle">
+                            PENDING
+                        </span>
+
+                    </div>
+
+
+                    <div class="checklist-line">
+
+                        <span>Manuscript file attached</span>
+
+                        <span
+                                class="pending-tag"
+                                id="chkFile">
+                            PENDING
+                        </span>
+
+                    </div>
+
+
+                    <div class="checklist-line">
+
+                        <span>Editorial letter provided</span>
+
+                        <span
+                                class="pending-tag"
+                                id="chkLetter">
+                            PENDING
+                        </span>
+
+                    </div>
+
+
+                    <div class="checklist-line">
+
+                        <span>Legal affirmations</span>
+
+                        <span
+                                class="pending-tag"
+                                id="chkLegal">
+                            PENDING
+                        </span>
+
+                    </div>
+
+
+                    <div class="checklist-line">
+
+                        <span>Final confirmation &amp; e-sign</span>
+
+                        <span
+                                class="pending-tag"
+                                id="chkFinal">
+                            PENDING SIGN-OFF
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="card sidebar-card">
+
+                    <div class="sidebar-title">
+                        Workflow Guide
+                    </div>
+
+
+                    <div class="workflow-step">
+                        <div class="workflow-num">1</div>
+                        <div>
+                            <strong>Intake Scan</strong>
+                            <span>Format &amp; integrity check</span>
+                        </div>
+                    </div>
+
+
+                    <div class="workflow-step">
+                        <div class="workflow-num">2</div>
+                        <div>
+                            <strong>Curator Appraisal</strong>
+                            <span>Senior desk qualitative review</span>
+                        </div>
+                    </div>
+
+
+                    <div class="workflow-step">
+                        <div class="workflow-num">3</div>
+                        <div>
+                            <strong>Peer Appraisal</strong>
+                            <span>Optional double-blind review</span>
+                        </div>
+                    </div>
+
+
+                    <div class="workflow-step">
+                        <div class="workflow-num">4</div>
+                        <div>
+                            <strong>Author Revisions</strong>
+                            <span>Address editorial notes</span>
+                        </div>
+                    </div>
+
+
+                    <div class="workflow-step">
+                        <div class="workflow-num">5</div>
+                        <div>
+                            <strong>Typesetting</strong>
+                            <span>Reader optimization</span>
+                        </div>
+                    </div>
+
+
+                    <div class="workflow-step">
+                        <div class="workflow-num">6</div>
+                        <div>
+                            <strong>Public Launch</strong>
+                            <span>Live in READORA catalog</span>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="advice-box">
+
+                    <h4>Editorial Advice</h4>
+
+                    <p>
+                        Review formatting standards and rights declarations
+                        before submitting to avoid intake delays.
+                    </p>
+
+                    <a
+                            th:href="@{/EditorialGuidelines}"
+                            class="btn btn-gold">
+                        Read Editorial Guidelines
+                    </a>
+
+                    <a
+                            th:href="@{/SubmissionandPipeline}"
+                            class="btn btn-outline">
+                        Back to Pipeline
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================================================
+             ACTION BAR
+        ====================================================== -->
+        <div class="action-bar">
+
+            <div class="action-bar-inner">
+
+                <div
+                        class="autosave-note"
+                        id="autosaveNote">
+                    Ready to save · changes are not stored until you click
+                    Save Draft or Submit.
+                </div>
+
+                <a
+                        th:href="@{/SubmissionandPipeline}"
+                        class="discard-link">
+                    Discard Changes
+                </a>
+
+                <button
+                        class="btn"
+                        type="button"
+                        id="saveDraftBtn">
+                    Save Draft &amp; Exit
+                </button>
+
+                <button
+                        class="btn btn-dark"
+                        type="button"
+                        id="submitBtn">
+                    Submit Manuscript for Review →
+                </button>
+
+            </div>
+
+        </div>
+
+    </form>
+
+</div>
+
+
+<!-- =========================================================
+     FOOTER
+========================================================= -->
+<footer class="footer">
+
+    <div class="footer-inner">
+
+        <div>
+
+            <div class="footer-logo">
+                READORA
+            </div>
+
+            <div
+                    class="footer-copyright"
+                    style="margin-top:4px;">
+                Author Studio v2.4
+                (Advanced Java / Spring Boot Architecture)
+            </div>
+
+        </div>
+
+
+        <div class="footer-links">
+
+            <a th:href="@{/EditorialGuidelines}">
+                Editorial Guidelines
+            </a>
+
+            <a th:href="@{/RoyalitiesandSales}">
+                Author Payout Terms
+            </a>
+
+            <a th:href="@{/SubmissionandPipeline}">
+                Submissions &amp; Pipeline
+            </a>
+
+            <a th:href="@{/}">
+                Support
+            </a>
+
+        </div>
+
+    </div>
+
+</footer>
+
+
+<script>
+    /* ============================================================
+       READORA AUTHOR — SUBMIT MANUSCRIPT
+       ============================================================ */
+
+    (function () {
+
+        "use strict";
+
+        var uploadedFileUrl = null;
+        var selectedSupplementFiles = [];
+        var currentEditId = null;
+
+
+        /* ========================================================
+           HELPERS
+        ======================================================== */
+
+        function $(id) {
+            return document.getElementById(id);
+        }
+
+
+        function getLoggedInUser() {
+
+            try {
+
+                var user =
+                    JSON.parse(
+                        localStorage.getItem("readoraUser") || "null"
+                    );
+
+                if (!user) {
+                    try {
+                        user =
+                            JSON.parse(
+                                sessionStorage.getItem("readoraUser") || "null"
+                            );
+                    } catch (e) {
+                        /* ignore */
+                    }
+                }
+
+                return user;
+
+            } catch (e) {
+
+                return null;
+
+            }
+        }
+
+
+        function getToken() {
+
+            var user = getLoggedInUser();
+
+            if (!user) return null;
+
+            return user.token ||
+                user.jwt ||
+                user.accessToken ||
+                user.access_token ||
+                null;
+        }
+
+
+        function getAuthHeaders(includeJson) {
+
+            var headers = {};
+
+            if (includeJson) {
+                headers["Content-Type"] = "application/json";
+            }
+
+            var token = getToken();
+
+            if (token) {
+                headers["Authorization"] = "Bearer " + token;
+            }
+
+            return headers;
+        }
+
+
+        function isAuthorSessionPresent() {
+
+            var user = getLoggedInUser();
+
+            if (!user) return false;
+
+            var role =
+                String(
+                    user.role ||
+                    user.roles ||
+                    ""
+                ).toUpperCase();
+
+            if (Array.isArray(user.roles)) {
+                role = user.roles
+                    .map(function (r) {
+                        return String(r).toUpperCase();
+                    })
+                    .join(",");
+            }
+
+            return role.indexOf("AUTHOR") !== -1 ||
+                role.indexOf("ADMIN") !== -1;
+        }
+
+
+        function showError(message) {
+            alert(message);
+        }
+
+
+        /* ========================================================
+           TRACK SELECTION
+        ======================================================== */
+
+        function selectTrack(radio) {
+
+            document
+                .querySelectorAll(".track-card")
+                .forEach(function (card) {
+
+                    card.classList.remove("selected");
+
+                });
+
+            var card = radio.closest(".track-card");
+
+            if (card) {
+                card.classList.add("selected");
+            }
+
+            updateReadiness();
+        }
+
+
+        document
+            .querySelectorAll('input[name="literaryTrack"]')
+            .forEach(function (radio) {
+
+                radio.addEventListener("change", function () {
+                    selectTrack(this);
+                });
+
+            });
+
+
+        /* ========================================================
+           MANUSCRIPT FILE
+        ======================================================== */
+
+        function validateManuscriptFile(file) {
+
+            if (!file) return false;
+
+            var name = String(file.name || "").toLowerCase();
+
+            var validExtension =
+                name.endsWith(".pdf") ||
+                name.endsWith(".epub");
+
+            if (!validExtension) {
+
+                showError(
+                    "Please select a PDF or EPUB manuscript."
+                );
+
+                return false;
+            }
+
+
+            var maxBytes = 45 * 1024 * 1024;
+
+            if (file.size > maxBytes) {
+
+                showError(
+                    "The manuscript file must be 45 MB or smaller."
+                );
+
+                return false;
+            }
+
+            return true;
+        }
+
+
+        function handleFileSelect(input) {
+
+            if (!input ||
+                !input.files ||
+                !input.files.length) {
+
+                return;
+            }
+
+            var file = input.files[0];
+
+            if (!validateManuscriptFile(file)) {
+
+                input.value = "";
+                return;
+
+            }
+
+            var sizeMb =
+                (file.size / (1024 * 1024))
+                    .toFixed(1) + " MB";
+
+
+            $("uploadedFileRow").style.display = "";
+
+            $("uploadedFileName").textContent =
+                file.name;
+
+            $("uploadedFileMeta").textContent =
+                sizeMb + " · Selected just now";
+
+            uploadedFileUrl = null;
+
+            updateReadiness();
+        }
+
+
+        function removeFile() {
+
+            $("uploadedFileRow").style.display =
+                "none";
+
+            $("manuscriptFile").value = "";
+
+            uploadedFileUrl = null;
+
+            updateReadiness();
+        }
+
+
+        /* ========================================================
+           DRAG & DROP
+        ======================================================== */
+
+        function setupDropzone() {
+
+            var dropzone = $("dropzone");
+
+            if (!dropzone) return;
+
+
+            dropzone.addEventListener(
+                "click",
+                function () {
+                    $("manuscriptFile").click();
+                }
+            );
+
+
+            ["dragenter", "dragover"].forEach(
+                function (eventName) {
+
+                    dropzone.addEventListener(
+                        eventName,
+                        function (event) {
+
+                            event.preventDefault();
+                            event.stopPropagation();
+
+                            dropzone.classList.add("dragover");
+
+                        }
+                    );
+
+                }
+            );
+
+
+            ["dragleave", "drop"].forEach(
+                function (eventName) {
+
+                    dropzone.addEventListener(
+                        eventName,
+                        function (event) {
+
+                            event.preventDefault();
+                            event.stopPropagation();
+
+                            dropzone.classList.remove("dragover");
+
+                        }
+                    );
+
+                }
+            );
+
+
+            dropzone.addEventListener(
+                "drop",
+                function (event) {
+
+                    var files =
+                        event.dataTransfer &&
+                        event.dataTransfer.files;
+
+                    if (!files || !files.length) {
+                        return;
+                    }
+
+                    var file = files[0];
+
+                    if (!validateManuscriptFile(file)) {
+                        return;
+                    }
+
+                    /*
+                     * DataTransfer is used so the selected file
+                     * is actually submitted later.
+                     */
+                    try {
+
+                        var dataTransfer =
+                            new DataTransfer();
+
+                        dataTransfer.items.add(file);
+
+                        $("manuscriptFile").files =
+                            dataTransfer.files;
+
+                    } catch (e) {
+                        /*
+                         * Browser may prevent assigning files.
+                         * The normal file picker still works.
+                         */
+                    }
+
+                    handleFileSelect(
+                        $("manuscriptFile")
+                    );
+
+                }
+            );
+
+        }
+
+
+        /* ========================================================
+           SUPPLEMENTARY FILES
+        ======================================================== */
+
+        function handleSupplement(input) {
+
+            selectedSupplementFiles = [];
+
+            if (!input ||
+                !input.files ||
+                !input.files.length) {
+
+                $("supplementNote").textContent = "";
+                return;
+            }
+
+
+            for (
+                var i = 0;
+                i < input.files.length;
+                i++
+            ) {
+
+                selectedSupplementFiles.push(
+                    input.files[i]
+                );
+
+            }
+
+
+            $("supplementNote").textContent =
+                selectedSupplementFiles.length +
+                " supplementary file(s) selected.";
+
+        }
+
+
+        /* ========================================================
+           READINESS
+        ======================================================== */
+
+        function setTag(id, pass, pendingLabel) {
+
+            var el = $(id);
+
+            if (!el) return;
+
+            if (pass) {
+
+                el.className = "pass-tag";
+                el.textContent = "PASS";
+
+            } else {
+
+                el.className = "pending-tag";
+                el.textContent =
+                    pendingLabel || "PENDING";
+
+            }
+
+        }
+
+
+        function updateReadiness() {
+
+            var title =
+                $("msTitle").value.trim();
+
+            var category =
+                $("msCategory").value;
+
+            var fileVisible =
+                $("uploadedFileRow").style.display !==
+                "none";
+
+            var fileName =
+                $("uploadedFileName").textContent.trim();
+
+            var fileOk =
+                (fileVisible && fileName !== "") ||
+                !!uploadedFileUrl;
+
+
+            var letterOk =
+                $("msLetter").value.trim() !== "";
+
+
+            var legalOk =
+                $("declOriginal").checked &&
+                $("declRights").checked &&
+                $("declIntegrity").checked;
+
+
+            var titleOk =
+                title !== "" &&
+                category !== "";
+
+
+            setTag(
+                "chkTitle",
+                titleOk
+            );
+
+            setTag(
+                "chkFile",
+                fileOk
+            );
+
+            setTag(
+                "chkLetter",
+                letterOk
+            );
+
+            setTag(
+                "chkLegal",
+                legalOk
+            );
+
+
+            var finalOk =
+                titleOk &&
+                letterOk &&
+                legalOk;
+
+
+            setTag(
+                "chkFinal",
+                finalOk,
+                "PENDING SIGN-OFF"
+            );
+
+
+            var checks = [
+                titleOk,
+                fileOk,
+                letterOk,
+                legalOk
+            ];
+
+
+            var done =
+                checks.filter(Boolean).length;
+
+
+            var pct =
+                Math.round(
+                    (done / checks.length) * 100
+                );
+
+
+            $("readinessPct").textContent =
+                pct + "%";
+
+
+            $("readinessCircle").style.background =
+                "conic-gradient(#2f4a3a " +
+                (pct * 3.6) +
+                "deg, #e8e0d0 0deg)";
+
+        }
+
+
+        /* ========================================================
+           PAGE COUNT
+        ======================================================== */
+
+        function estimatePages(wordCountRaw) {
+
+            var n =
+                parseInt(
+                    String(wordCountRaw || "")
+                        .replace(/[^0-9]/g, ""),
+                    10
+                );
+
+
+            if (isNaN(n) || n < 1) {
+                return 1;
+            }
+
+
+            return Math.max(
+                1,
+                Math.round(n / 250)
+            );
+
+        }
+
+
+        /* ========================================================
+           DESCRIPTION
+        ======================================================== */
+
+        function buildDescription() {
+
+            var letter =
+                $("msLetter").value.trim();
+
+            var subtitle =
+                $("msSubtitle").value.trim();
+
+            var quarter =
+                $("msQuarter").value;
+
+            var curator =
+                $("msCurator").value;
+
+            var peer =
+                $("peerAppraisal").checked
+                    ? "Yes"
+                    : "No";
+
+
+            var extra = [];
+
+
+            if (subtitle) {
+                extra.push(
+                    "Subtitle: " + subtitle
+                );
+            }
+
+
+            if (quarter) {
+                extra.push(
+                    "Target quarter: " + quarter
+                );
+            }
+
+
+            if (curator) {
+                extra.push(
+                    "Preferred curator: " + curator
+                );
+            }
+
+
+            extra.push(
+                "Double-blind peer appraisal: " +
+                peer
+            );
+
+
+            if (!extra.length) {
+                return letter;
+            }
+
+
+            return (
+                letter +
+                "\n\n---\n" +
+                extra.join("\n")
+            );
+
+        }
+
+
+        /* ========================================================
+           UPLOAD MANUSCRIPT
+        ======================================================== */
+
+        async function uploadSelectedFile(
+            fileInput,
+            folder
+        ) {
+
+            if (
+                !fileInput ||
+                !fileInput.files ||
+                !fileInput.files.length
+            ) {
+                return null;
+            }
+
+
+            var file =
+                fileInput.files[0];
+
+
+            if (!validateManuscriptFile(file)) {
+                throw new Error(
+                    "Invalid manuscript file."
+                );
+            }
+
+
+            var formData =
+                new FormData();
+
+            formData.append(
+                "file",
+                file
+            );
+
+
+            if (folder) {
+                formData.append(
+                    "folder",
+                    folder
+                );
+            }
+
+
+            var response =
+                await fetch(
+                    "/api/upload",
+                    {
+                        method: "POST",
+                        headers: getAuthHeaders(false),
+                        credentials: "same-origin",
+                        body: formData
+                    }
+                );
+
+
+            if (response.status === 401) {
+                throw new Error(
+                    "AUTH_REQUIRED"
+                );
+            }
+
+
+            if (response.status === 403) {
+                throw new Error(
+                    "UPLOAD_FORBIDDEN"
+                );
+            }
+
+
+            if (!response.ok) {
+
+                var message =
+                    "File upload failed.";
+
+                try {
+
+                    var errorData =
+                        await response.json();
+
+                    message =
+                        errorData.message ||
+                        errorData.error ||
+                        message;
+
+                } catch (e) {
+                    /* ignore */
+                }
+
+                throw new Error(message);
+            }
+
+
+            var data =
+                await response.json();
+
+
+            var url =
+                data.url ||
+                data.fileUrl ||
+                data.path ||
+                data.filePath ||
+                null;
+
+
+            if (!url) {
+
+                throw new Error(
+                    "Upload succeeded but the server did not return a file URL."
+                );
+
+            }
+
+
+            return url;
+
+        }
+
+
+        /* ========================================================
+           SAVE / SUBMIT
+        ======================================================== */
+
+        async function saveManuscript(status) {
+
+            if (!isAuthorSessionPresent()) {
+
+                showError(
+                    "Please log in as an author."
+                );
+
+                window.location.href =
+                    "/login.html";
+
+                return;
+            }
+
+
+            var title =
+                $("msTitle").value.trim();
+
+            var category =
+                $("msCategory").value;
+
+            var letter =
+                $("msLetter").value.trim();
+
+
+            if (!title) {
+
+                showError(
+                    "Manuscript title is required."
+                );
+
+                $("msTitle").focus();
+
+                return;
+            }
+
+
+            if (!category) {
+
+                showError(
+                    "Please select a literary category."
+                );
+
+                $("msCategory").focus();
+
+                return;
+            }
+
+
+            if (status === "review") {
+
+                if (!letter) {
+
+                    showError(
+                        "Please write a letter to the editorial board before submitting."
+                    );
+
+                    $("msLetter").focus();
+
+                    return;
+                }
+
+
+                if (
+                    !$("declOriginal").checked ||
+                    !$("declRights").checked ||
+                    !$("declIntegrity").checked
+                ) {
+
+                    showError(
+                        "Please affirm all editorial declarations before submitting for review."
+                    );
+
+                    return;
+                }
+
+            }
+
+
+            var selectedTrack =
+                document.querySelector(
+                    'input[name="literaryTrack"]:checked'
+                );
+
+
+            var trackValue =
+                selectedTrack
+                    ? selectedTrack.value
+                    : "book";
+
+
+            var user =
+                getLoggedInUser();
+
+
+            var saveButton =
+                $("saveDraftBtn");
+
+            var submitButton =
+                $("submitBtn");
+
+
+            try {
+
+                $("autosaveNote").textContent =
+                    "Saving manuscript…";
+
+
+                saveButton.disabled = true;
+                submitButton.disabled = true;
+
+
+                /* ----------------------------------------------
+                   Upload manuscript first if a new file exists.
+                ---------------------------------------------- */
+
+                var manuscriptInput =
+                    $("manuscriptFile");
+
+
+                if (
+                    manuscriptInput.files &&
+                    manuscriptInput.files.length
+                ) {
+
+                    uploadedFileUrl =
+                        await uploadSelectedFile(
+                            manuscriptInput,
+                            "manuscripts"
+                        );
+
+                }
+
+
+                /*
+                 * Keep the current backend-compatible Book payload.
+                 */
+                var payload = {
+
+                    title: title,
+
+                    author:
+                        user && user.name
+                            ? user.name
+                            : "",
+
+                    description:
+                        buildDescription(),
+
+                    category:
+                    category,
+
+                    language:
+                        $("msLanguage").value ||
+                        "English",
+
+                    price: 0,
+
+                    premium: false,
+
+                    pageCount:
+                        estimatePages(
+                            $("msWordCount").value
+                        ),
+
+                    image:
+                        "img/Book.png",
+
+                    filePath:
+                        uploadedFileUrl ||
+                        "sample.pdf",
+
+                    type:
+                    trackValue,
+
+                    mood:
+                        "Calm",
+
+                    status:
+                    status
+
+                };
+
+
+                var editId =
+                    $("editBookId").value;
+
+
+                var url =
+                    "/api/author/books";
+
+
+                var method =
+                    "POST";
+
+
+                if (editId) {
+
+                    url =
+                        "/api/author/books/" +
+                        encodeURIComponent(editId);
+
+                    method =
+                        "PUT";
+
+                }
+
+
+                console.log(
+                    "READORA: Saving manuscript",
+                    {
+                        method: method,
+                        url: url,
+                        status: status,
+                        payload: payload
+                    }
+                );
+
+
+                var response =
+                    await fetch(
+                        url,
+                        {
+                            method: method,
+                            headers: getAuthHeaders(true),
+                            credentials: "same-origin",
+                            body: JSON.stringify(payload)
+                        }
+                    );
+
+
+                /* ----------------------------------------------
+                   AUTH
+                ---------------------------------------------- */
+
+                if (response.status === 401) {
+
+                    showError(
+                        "Your author session has expired. Please log in again."
+                    );
+
+                    window.location.href =
+                        "/login.html";
+
+                    return;
+                }
+
+
+                if (response.status === 403) {
+
+                    showError(
+                        "You do not have permission to submit a manuscript."
+                    );
+
+                    return;
+                }
+
+
+                /* ----------------------------------------------
+                   VALIDATION ERROR
+                ---------------------------------------------- */
+
+                if (response.status === 400) {
+
+                    var badData = {};
+
+                    try {
+                        badData =
+                            await response.json();
+                    } catch (e) {
+                        /* ignore */
+                    }
+
+
+                    showError(
+                        badData.message ||
+                        badData.error ||
+                        "Please check the manuscript details."
+                    );
+
+                    return;
+                }
+
+
+                /* ----------------------------------------------
+                   NOT FOUND
+                ---------------------------------------------- */
+
+                if (response.status === 404) {
+
+                    showError(
+                        "The manuscript endpoint or requested manuscript was not found."
+                    );
+
+                    return;
+                }
+
+
+                /* ----------------------------------------------
+                   OTHER SERVER ERROR
+                ---------------------------------------------- */
+
+                if (!response.ok) {
+
+                    var serverMessage =
+                        "Unable to save manuscript. Please try again.";
+
+                    try {
+
+                        var serverData =
+                            await response.json();
+
+                        serverMessage =
+                            serverData.message ||
+                            serverData.error ||
+                            serverMessage;
+
+                    } catch (e) {
+                        /* ignore */
+                    }
+
+
+                    showError(
+                        serverMessage
+                    );
+
+                    return;
+                }
+
+
+                /* ----------------------------------------------
+                   SUCCESS
+                ---------------------------------------------- */
+
+                if (status === "draft") {
+
+                    alert(
+                        editId
+                            ? "Draft updated successfully."
+                            : "Draft saved successfully."
+                    );
+
+                } else {
+
+                    alert(
+                        editId
+                            ? "Manuscript resubmitted for editorial review."
+                            : "Manuscript submitted for editorial review."
+                    );
+
+                }
+
+
+                window.location.href =
+                    "/SubmissionandPipeline";
+
+            } catch (error) {
+
+                console.error(
+                    "READORA: Manuscript save error:",
+                    error
+                );
+
+
+                if (
+                    error.message ===
+                    "AUTH_REQUIRED"
+                ) {
+
+                    showError(
+                        "Please log in as an author."
+                    );
+
+                    window.location.href =
+                        "/login.html";
+
+                    return;
+                }
+
+
+                if (
+                    error.message ===
+                    "UPLOAD_FORBIDDEN"
+                ) {
+
+                    showError(
+                        "You do not have permission to upload manuscript files."
+                    );
+
+                    return;
+                }
+
+
+                showError(
+                    error.message ||
+                    "Network error while saving manuscript."
+                );
+
+            } finally {
+
+                saveButton.disabled = false;
+                submitButton.disabled = false;
+
+                $("autosaveNote").textContent =
+                    "Ready to save · changes are not stored until you click Save Draft or Submit.";
+
+            }
+
+        }
+
+
+        /* ========================================================
+           LOAD EXISTING BOOK FOR EDITING
+        ======================================================== */
+
+        async function loadForEdit(bookId) {
+
+            try {
+
+                $("autosaveNote").textContent =
+                    "Loading manuscript…";
+
+
+                var response =
+                    await fetch(
+                        "/api/author/books",
+                        {
+                            method: "GET",
+                            headers: getAuthHeaders(false),
+                            credentials: "same-origin"
+                        }
+                    );
+
+
+                if (response.status === 401) {
+
+                    window.location.href =
+                        "/login.html";
+
+                    return;
+
+                }
+
+
+                if (!response.ok) {
+
+                    showError(
+                        "Unable to load your manuscripts."
+                    );
+
+                    return;
+
+                }
+
+
+                var data =
+                    await response.json();
+
+
+                var books =
+                    Array.isArray(data)
+                        ? data
+                        : (
+                            Array.isArray(data.content)
+                                ? data.content
+                                : []
+                        );
+
+
+                var book =
+                    null;
+
+
+                for (
+                    var i = 0;
+                    i < books.length;
+                    i++
+                ) {
+
+                    if (
+                        String(books[i].id) ===
+                        String(bookId)
+                    ) {
+
+                        book =
+                            books[i];
+
+                        break;
+
+                    }
+
+                }
+
+
+                if (!book) {
+
+                    showError(
+                        "Manuscript not found or you do not own it."
+                    );
+
+                    window.location.href =
+                        "/SubmissionandPipeline";
+
+                    return;
+
+                }
+
+
+                currentEditId =
+                    book.id;
+
+
+                $("editBookId").value =
+                    book.id;
+
+
+                $("msTitle").value =
+                    book.title || "";
+
+
+                $("msCategory").value =
+                    book.category || "";
+
+
+                $("msLanguage").value =
+                    book.language ||
+                    "English";
+
+
+                $("msLetter").value =
+                    book.description || "";
+
+
+                $("letterCount").textContent =
+                    $("msLetter").value.length;
+
+
+                if (book.pageCount) {
+
+                    $("msWordCount").value =
+                        String(
+                            Number(book.pageCount) *
+                            250
+                        );
+
+                }
+
+
+                /* ----------------------------------------------
+                   Restore manuscript track
+                ---------------------------------------------- */
+
+                var bookType =
+                    book.type ||
+                    "book";
+
+
+                var typeRadio =
+                    document.querySelector(
+                        'input[name="literaryTrack"][value="' +
+                        bookType +
+                        '"]'
+                    );
+
+
+                if (typeRadio) {
+
+                    typeRadio.checked =
+                        true;
+
+                    selectTrack(
+                        typeRadio
+                    );
+
+                }
+
+
+                /* ----------------------------------------------
+                   Restore uploaded file
+                ---------------------------------------------- */
+
+                if (
+                    book.filePath &&
+                    book.filePath !== "sample.pdf"
+                ) {
+
+                    uploadedFileUrl =
+                        book.filePath;
+
+
+                    $("uploadedFileRow")
+                        .style.display = "";
+
+
+                    $("uploadedFileName")
+                        .textContent =
+                        book.filePath;
+
+
+                    $("uploadedFileMeta")
+                        .textContent =
+                        "Previously uploaded manuscript";
+
+                }
+
+
+                /* ----------------------------------------------
+                   Restore title
+                ---------------------------------------------- */
+
+                document
+                    .querySelector(".page-title")
+                    .textContent =
+                    "Continue Manuscript Submission";
+
+
+                updateReadiness();
+
+
+                $("autosaveNote").textContent =
+                    "Existing manuscript loaded · review your changes before saving.";
+
+            } catch (error) {
+
+                console.error(
+                    "READORA: Edit loading error:",
+                    error
+                );
+
+                $("autosaveNote").textContent =
+                    "Unable to load manuscript.";
+
+            }
+
+        }
+
+
+        /* ========================================================
+           EVENT LISTENERS
+        ======================================================== */
+
+        $("manuscriptFile")
+            .addEventListener(
+                "change",
+                function () {
+                    handleFileSelect(this);
+                }
+            );
+
+
+        $("removeFileBtn")
+            .addEventListener(
+                "click",
+                removeFile
+            );
+
+
+        $("attachSupplementBtn")
+            .addEventListener(
+                "click",
+                function () {
+
+                    $("supplementFile").click();
+
+                }
+            );
+
+
+        $("supplementFile")
+            .addEventListener(
+                "change",
+                function () {
+                    handleSupplement(this);
+                }
+            );
+
+
+        $("saveDraftBtn")
+            .addEventListener(
+                "click",
+                function () {
+                    saveManuscript("draft");
+                }
+            );
+
+
+        $("submitBtn")
+            .addEventListener(
+                "click",
+                function () {
+                    saveManuscript("review");
+                }
+            );
+
+
+        $("msTitle")
+            .addEventListener(
+                "input",
+                updateReadiness
+            );
+
+
+        $("msCategory")
+            .addEventListener(
+                "change",
+                updateReadiness
+            );
+
+
+        $("msLetter")
+            .addEventListener(
+                "input",
+                function () {
+
+                    $("letterCount").textContent =
+                        this.value.length;
+
+                    updateReadiness();
+
+                }
+            );
+
+
+        $("declOriginal")
+            .addEventListener(
+                "change",
+                updateReadiness
+            );
+
+
+        $("declRights")
+            .addEventListener(
+                "change",
+                updateReadiness
+            );
+
+
+        $("declIntegrity")
+            .addEventListener(
+                "change",
+                updateReadiness
+            );
+
+
+        $("peerAppraisal")
+            .addEventListener(
+                "change",
+                updateReadiness
+            );
+
+
+        /* ========================================================
+           INITIALIZE
+        ======================================================== */
+
+        setupDropzone();
+
+        updateReadiness();
+
+
+        var params =
+            new URLSearchParams(
+                window.location.search
+            );
+
+
+        var editId =
+            params.get("edit");
+
+
+        if (editId) {
+
+            loadForEdit(editId);
+
+        }
+
+    })();
+</script>
+
+</body>
+</html>

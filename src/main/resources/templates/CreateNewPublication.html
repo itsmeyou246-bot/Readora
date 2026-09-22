@@ -1,0 +1,3330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Readora Studio · Create New Publication</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" th:href="@{/css/CreateNewPublication.css}">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+
+<body>
+
+<!-- =========================================================
+     HEADER
+     ========================================================= -->
+
+<header th:replace="~{fragments/header :: authorHeader('publications')}"></header>
+
+
+<div class="container">
+
+    <!-- =====================================================
+         SUB NAV
+         ===================================================== -->
+
+    <div class="subnav">
+
+        <a th:href="@{/AuthorDashboard}"
+           class="subnav-tab">
+            Overview
+        </a>
+
+        <a th:href="@{/SubmissionandPipeline}"
+           class="subnav-tab subnav-active">
+            Manuscript Pipeline · 6
+        </a>
+
+        <a th:href="@{/RoyalitiesandSales}"
+           class="subnav-tab">
+            Royalties & Earnings
+        </a>
+
+        <button class="subnav-tab" type="button">
+            Reader Reviews & Ratings
+        </button>
+
+        <button class="subnav-tab" type="button">
+            Publication Analytics
+        </button>
+
+        <button class="subnav-tab" type="button">
+            Author Profile & Bio
+        </button>
+
+        <span class="subnav-spacer"></span>
+
+        <button class="subnav-tab" type="button">
+            Drafts (3)
+        </button>
+
+        <button class="new-pub-btn" type="button" disabled>
+            <i class="fa-solid fa-plus"></i>
+            New Publication
+        </button>
+
+    </div>
+
+
+    <!-- =====================================================
+         PAGE INTRO
+         ===================================================== -->
+
+    <section class="page-intro">
+
+        <div class="breadcrumb">
+
+            <a th:href="@{/MyPublication}">
+                Author Studio
+            </a>
+
+            /
+            Create New Publication
+
+        </div>
+
+
+        <div class="page-title-row">
+
+            <div>
+
+                <h1 class="page-title">
+                    Create New Publication
+                </h1>
+
+                <p class="page-subtitle">
+                    Upload your manuscript, configure editorial metadata,
+                    define access pricing, and submit for peer review.
+                </p>
+
+            </div>
+
+
+            <div class="title-actions">
+
+                <button class="btn"
+                        id="saveDraftBtn"
+                        type="submit"
+                        form="publicationForm"
+                        name="action"
+                        value="draft">
+
+                    Save as Draft
+
+                </button>
+
+
+                <button class="btn btn-dark btn-submit"
+                        id="submitReviewBtn"
+                        type="submit"
+                        form="publicationForm"
+                        name="action"
+                        value="submit">
+
+                    <i class="fa-solid fa-bolt"></i>
+
+                    Submit for Review
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         PUBLICATION FORM
+         ===================================================== -->
+
+    <form id="publicationForm"
+          action="javascript:void(0);"
+          method="post">
+
+        <input type="hidden"
+               id="editBookId"
+               value="">
+
+
+        <div class="form-layout">
+
+
+            <!-- =================================================
+                 MAIN COLUMN
+                 ================================================= -->
+
+            <div class="form-main">
+
+
+                <!-- =================================================
+                     1. BASIC INFORMATION
+                     ================================================= -->
+
+                <div class="card section-card">
+
+                    <div class="section-head">
+
+                        <div class="section-head-left">
+
+                            <div class="section-number">
+                                1
+                            </div>
+
+                            <div class="section-title">
+                                Basic Information
+                            </div>
+
+                        </div>
+
+                        <div class="section-tag">
+                            Core Literary Details
+                        </div>
+
+                    </div>
+
+
+                    <!-- BOOK TITLE -->
+
+                    <div class="field">
+
+                        <label class="field-label"
+                               for="bookTitle">
+
+                            Book Title
+                            <span class="required">*</span>
+
+                        </label>
+
+                        <input type="text"
+                               id="bookTitle"
+                               name="title"
+                               placeholder="e.g. The Mountain Path"
+                               required>
+
+                    </div>
+
+
+                    <!-- SUBTITLE -->
+
+                    <div class="field">
+
+                        <label class="field-label"
+                               for="subtitle">
+
+                            Subtitle (optional)
+
+                        </label>
+
+                        <input type="text"
+                               id="subtitle"
+                               name="subtitle"
+                               placeholder="e.g. Memoirs of Solitude in the High Himalaya">
+
+                    </div>
+
+
+                    <!-- PRIMARY AUTHOR + CATEGORY -->
+
+                    <div class="field-row">
+
+
+                        <!-- =================================================
+                             UPDATED PRIMARY AUTHOR
+                             ================================================= -->
+
+                        <div class="field field-with-badge">
+
+                            <label class="field-label"
+                                   for="primaryAuthor">
+
+                                Primary Author
+                                <span class="required">*</span>
+
+                            </label>
+
+
+                            <!--
+                                IMPORTANT:
+                                This field is intentionally NOT readonly.
+
+                                The logged-in account may be:
+                                lakshmeesapkota
+
+                                but the displayed book author can be:
+                                Debbie Mullen
+                            -->
+
+                            <input type="text"
+                                   id="primaryAuthor"
+                                   name="author"
+                                   placeholder="Enter author name"
+                                   autocomplete="name"
+                                   required>
+
+
+                            <div class="field-hint">
+                                Enter the author name that should appear to readers.
+                            </div>
+
+                        </div>
+
+
+                        <!-- CATEGORY -->
+
+                        <div class="field">
+
+                            <label class="field-label"
+                                   for="literaryCategory">
+
+                                Literary Category
+                                <span class="required">*</span>
+
+                            </label>
+
+                            <select id="literaryCategory"
+                                    name="category"
+                                    required>
+
+                                <option value="">
+                                    Select a category…
+                                </option>
+
+                                <option value="Himalayan Memoirs">
+                                    Himalayan Memoirs
+                                </option>
+
+                                <option value="Cultural Heritage">
+                                    Cultural Heritage
+                                </option>
+
+                                <option value="Philosophy">
+                                    Philosophy
+                                </option>
+
+                                <option value="Poetry">
+                                    Poetry
+                                </option>
+
+                                <option value="Nepali Literature">
+                                    Nepali Literature
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- LANGUAGE -->
+
+                    <div class="field">
+
+                        <label class="field-label"
+                               for="primaryLanguage">
+
+                            Primary Language
+                            <span class="required">*</span>
+
+                        </label>
+
+                        <select id="primaryLanguage"
+                                name="language"
+                                required>
+
+                            <option value="English" selected>
+                                English
+                            </option>
+
+                            <option value="Nepali">
+                                Nepali
+                            </option>
+
+                            <option value="Bilingual">
+                                Bilingual
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- SYNOPSIS -->
+
+                    <div class="field">
+
+                        <label class="field-label"
+                               for="synopsis">
+
+                            Synopsis & Editorial Description
+
+                            <span class="required">*</span>
+
+                            <span class="char-count">
+                                <span id="synopsisCount">0</span>
+                                / 1200 characters
+                            </span>
+
+                        </label>
+
+                        <textarea id="synopsis"
+                                  name="synopsis"
+                                  maxlength="1200"
+                                  required
+                                  placeholder="An intimate recollection of twenty-four seasons traversing the high trans-Himalayan ridges…"></textarea>
+
+                        <div class="field-hint">
+                            This abstract will be published on the digital storefront and submitted for peer review indexing.
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     2. PUBLICATION & ACCESS TIER
+                     ================================================= -->
+
+                <div class="card section-card">
+
+                    <div class="section-head">
+
+                        <div class="section-head-left">
+
+                            <div class="section-number">
+                                2
+                            </div>
+
+                            <div class="section-title">
+                                Publication & Access Tier
+                            </div>
+
+                        </div>
+
+                        <div class="section-tag">
+                            Distribution Model
+                        </div>
+
+                    </div>
+
+
+                    <p class="field-label"
+                       style="margin-bottom:14px;">
+
+                        Access Model
+
+                    </p>
+
+
+                    <div class="tier-row">
+
+
+                        <!-- FREE -->
+
+                        <label class="tier-card"
+                               id="tierFree">
+
+                            <input type="radio"
+                                   name="accessModel"
+                                   value="FREE"
+                                   style="display:none;"
+                                   onclick="selectTier(this)">
+
+                            <span class="tier-radio">
+                                <span class="tier-radio-dot"></span>
+                            </span>
+
+                            <span class="tier-body">
+
+                                <span class="tier-name-row">
+                                    FREE (Open Access)
+                                </span>
+
+                                <span class="tier-desc">
+                                    Available worldwide under Creative Commons.
+                                    Zero price gate for scholars and general public.
+                                </span>
+
+                            </span>
+
+                        </label>
+
+
+                        <!-- PREMIUM -->
+
+                        <label class="tier-card selected"
+                               id="tierPremium">
+
+                            <input type="radio"
+                                   name="accessModel"
+                                   value="PREMIUM"
+                                   checked
+                                   style="display:none;"
+                                   onclick="selectTier(this)">
+
+                            <span class="tier-radio">
+                                <span class="tier-radio-dot"></span>
+                            </span>
+
+                            <span class="tier-body">
+
+                                <span class="tier-name-row">
+
+                                    PREMIUM (Reader Purchase)
+
+                                    <span class="tier-recommended">
+                                        Recommended
+                                    </span>
+
+                                </span>
+
+                                <span class="tier-desc">
+                                    Commercial digital publication with royalties
+                                    remitted monthly via automated clearing.
+                                </span>
+
+                            </span>
+
+                        </label>
+
+                    </div>
+
+
+                    <div class="field-row three">
+
+
+                        <!-- PRICE -->
+
+                        <div class="field">
+
+                            <label class="field-label"
+                                   for="retailPrice">
+
+                                Retail Price (NPR)
+                                <span class="required">*</span>
+
+                            </label>
+
+                            <input type="text"
+                                   id="retailPrice"
+                                   name="retailPrice"
+                                   placeholder="Rs. 480">
+
+                            <div class="field-hint">
+                                Spring Boot backend sets 15% author royalty split automatically.
+                            </div>
+
+                        </div>
+
+
+                        <!-- FORMAT -->
+
+                        <div class="field">
+
+                            <label class="field-label"
+                                   for="pubFormat">
+
+                                Publication Format
+                                <span class="required">*</span>
+
+                            </label>
+
+                            <select id="pubFormat"
+                                    name="format">
+
+                                <option value="Monograph / Novel" selected>
+                                    Monograph / Novel
+                                </option>
+
+                                <option value="Short Story Collection">
+                                    Short Story Collection
+                                </option>
+
+                                <option value="Poetry Collection">
+                                    Poetry Collection
+                                </option>
+
+                                <option value="Essay Collection">
+                                    Essay Collection
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- PAGES -->
+
+                        <div class="field">
+
+                            <label class="field-label"
+                                   for="estPages">
+
+                                Estimated Pages
+                                <span class="required">*</span>
+
+                            </label>
+
+                            <input type="text"
+                                   id="estPages"
+                                   name="pages"
+                                   placeholder="480">
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     3. MANUSCRIPT UPLOAD
+                     ================================================= -->
+
+                <div class="card section-card">
+
+                    <div class="section-head">
+
+                        <div class="section-head-left">
+
+                            <div class="section-number">
+                                3
+                            </div>
+
+                            <div class="section-title">
+                                Manuscript Document Upload
+                            </div>
+
+                        </div>
+
+                        <div class="section-tag">
+                            EPUB 3.0 or PDF/A
+                        </div>
+
+                    </div>
+
+
+                    <div class="dropzone"
+                         id="dropzone"
+                         onclick="document.getElementById('manuscriptFile').click();">
+
+                        <div class="dropzone-icon">
+                            <i class="fa-solid fa-upload"></i>
+                        </div>
+
+                        <div class="dropzone-text">
+                            Click to upload or drag and drop manuscript
+                        </div>
+
+                        <div class="dropzone-sub">
+                            Supported Formats: PDF/A Standard,
+                            Validated EPUB 3.0
+                            (Maximum file size 45MB)
+                        </div>
+
+                    </div>
+
+
+                    <input type="file"
+                           id="manuscriptFile"
+                           name="manuscriptFile"
+                           accept=".pdf,.epub"
+                           style="display:none"
+                           onchange="handleFileSelect(this)">
+
+
+                    <div class="uploaded-file"
+                         id="uploadedFileRow"
+                         style="display:none;">
+
+                        <div class="uploaded-file-icon">
+                            <i class="fa-regular fa-file-lines"></i>
+                        </div>
+
+                        <div class="uploaded-file-body">
+
+                            <div class="uploaded-file-name"
+                                 id="uploadedFileName">
+                            </div>
+
+                            <div class="uploaded-file-meta">
+
+                                <span class="verified-check">
+                                    <i class="fa-solid fa-check"></i>
+                                    Verified
+                                </span>
+
+                                <span id="uploadedFileMeta"></span>
+
+                            </div>
+
+                        </div>
+
+                        <span class="remove-link"
+                              onclick="removeFile()">
+
+                            Remove
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     4. METADATA
+                     ================================================= -->
+
+                <div class="card section-card">
+
+                    <div class="section-head">
+
+                        <div class="section-head-left">
+
+                            <div class="section-number">
+                                4
+                            </div>
+
+                            <div class="section-title">
+                                Metadata & Archival Identifiers
+                            </div>
+
+                        </div>
+
+                        <div class="section-tag">
+                            Bibliographic Registry
+                        </div>
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label class="field-label"
+                               for="isbn">
+
+                            ISBN-13 Barcode / Identifier
+
+                        </label>
+
+
+                        <div style="display:flex; gap:12px; align-items:center;">
+
+                            <input type="text"
+                                   id="isbn"
+                                   name="isbn"
+                                   placeholder="978-0000-00-0000"
+                                   style="flex:1;">
+
+
+                            <label style="display:flex; align-items:center; gap:8px; font-size:12.5px; color:#55503f; white-space:nowrap;">
+
+                                <input type="checkbox"
+                                       id="assignDigitalIsbn"
+                                       name="assignDigitalIsbn">
+
+                                Assign READORA Digital ISBN
+
+                            </label>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="field-row">
+
+
+                        <div class="field">
+
+                            <label class="field-label"
+                                   for="edition">
+
+                                Edition / Release
+
+                            </label>
+
+                            <input type="text"
+                                   id="edition"
+                                   name="edition"
+                                   placeholder="First Edition, 2026">
+
+                        </div>
+
+
+                        <div class="field">
+
+                            <label class="field-label"
+                                   for="series">
+
+                                Series / Archival Volume
+
+                            </label>
+
+                            <input type="text"
+                                   id="series"
+                                   name="series"
+                                   placeholder="Himalayan Heritage Series (Vol. IV)">
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label class="field-label"
+                               for="tagInput">
+
+                            Literary Tags & Subject Indexing
+
+                        </label>
+
+
+                        <div class="tag-chip-row"
+                             id="tagChipRow">
+
+                            <input type="text"
+                                   class="tag-add"
+                                   id="tagInput"
+                                   placeholder="+ Add tag…"
+                                   onkeydown="addTag(event)">
+
+                        </div>
+
+
+                        <input type="hidden"
+                               name="tagsCsv"
+                               id="tagsCsv">
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     5. RIGHTS
+                     ================================================= -->
+
+                <div class="card section-card">
+
+                    <div class="section-head">
+
+                        <div class="section-head-left">
+
+                            <div class="section-number">
+                                5
+                            </div>
+
+                            <div class="section-title">
+                                Rights, Copyright & Declarations
+                            </div>
+
+                        </div>
+
+                        <div class="section-tag">
+                            Legal Safeguards
+                        </div>
+
+                    </div>
+
+
+                    <label class="check-row">
+
+                        <input type="checkbox"
+                               name="confirmOriginalWork"
+                               onchange="updateReadiness()">
+
+                        <span>
+                            I confirm that this manuscript is an original work
+                            created by me and complies with the
+                            <strong>Nepal Copyright Act 2059</strong>
+                            and South Asian Berne Convention protocols.
+                        </span>
+
+                    </label>
+
+
+                    <label class="check-row">
+
+                        <input type="checkbox"
+                               name="acknowledgePlagiarismScan"
+                               onchange="updateReadiness()">
+
+                        <span>
+                            I understand that all submissions undergo automated
+                            algorithmic plagiarism scanning and editorial appraisal
+                            before publication in READORA.
+                        </span>
+
+                    </label>
+
+
+                    <label class="check-row">
+
+                        <input type="checkbox"
+                               name="confirmLicensedExcerpts"
+                               onchange="updateReadiness()">
+
+                        <span>
+                            I confirm that all translated excerpts, archival
+                            illustrations, or cartographic maps have appropriate
+                            licensing clearance from original copyright holders.
+                        </span>
+
+                    </label>
+
+                </div>
+
+
+                <!-- =================================================
+                     BOTTOM ACTIONS
+                     ================================================= -->
+
+                <div class="bottom-actions">
+
+                    <button class="btn"
+                            type="submit"
+                            name="action"
+                            value="draft">
+
+                        Save Draft & Exit
+
+                    </button>
+
+
+                    <button class="btn btn-dark btn-submit"
+                            type="submit"
+                            name="action"
+                            value="submit">
+
+                        <i class="fa-solid fa-bolt"></i>
+
+                        Submit for Peer Review
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 SIDEBAR
+                 ================================================= -->
+
+            <div class="form-sidebar">
+
+
+                <!-- =================================================
+                     COVER ARTWORK
+                     ================================================= -->
+
+                <div class="card sidebar-card">
+
+                    <div class="sidebar-head">
+
+                        <div class="sidebar-title">
+                            Cover Artwork
+                        </div>
+
+                        <div class="sidebar-note">
+                            Ratio 2:3 · 300 DPI
+                        </div>
+
+                    </div>
+
+
+                    <div class="cover-preview"
+                         id="coverPreview">
+
+                        <div class="cover-eyebrow">
+                            READORA EDITORIAL
+                        </div>
+
+                        <div class="cover-star">
+                            <i class="fa-solid fa-star"></i>
+                        </div>
+
+                        <div class="cover-title"
+                             id="coverTitlePreview">
+
+                            Untitled Work
+
+                        </div>
+
+                        <div class="cover-subtitle"
+                             id="coverSubtitlePreview">
+                        </div>
+
+                        <div class="cover-author"
+                             id="coverAuthorPreview">
+                        </div>
+
+                        <div class="cover-edition">
+                            KATHMANDU EDITION
+                        </div>
+
+                    </div>
+
+
+                    <button class="btn upload-cover-btn"
+                            type="button"
+                            onclick="document.getElementById('coverFile').click();">
+
+                        <i class="fa-solid fa-upload"></i>
+
+                        Upload / Replace Cover
+
+                    </button>
+
+
+                    <input type="file"
+                           id="coverFile"
+                           name="coverFile"
+                           accept="image/*"
+                           style="display:none"
+                           onchange="handleCoverSelect(this)">
+
+
+                    <div class="cover-specs">
+                        Standard specs: 1600 × 2400 px,
+                        CMYK or sRGB, min 300 DPI.
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     READINESS
+                     ================================================= -->
+
+                <div class="card sidebar-card">
+
+                    <div class="sidebar-head">
+
+                        <div class="sidebar-title">
+                            Readiness Checklist
+                        </div>
+
+                        <div class="readiness-pct"
+                             id="readinessPct">
+                            80% Complete
+                        </div>
+
+                    </div>
+
+
+                    <div class="progress-track">
+
+                        <div class="progress-fill"
+                             id="readinessFill"
+                             style="width:80%">
+                        </div>
+
+                    </div>
+
+
+                    <div class="checklist-item">
+
+                        <span class="checklist-label">
+
+                            <span class="check-icon">
+                                <i class="fa-solid fa-check"></i>
+                            </span>
+
+                            Manuscript document attached
+
+                        </span>
+
+                        <span class="checklist-status">
+                            Done
+                        </span>
+
+                    </div>
+
+
+                    <div class="checklist-item">
+
+                        <span class="checklist-label">
+
+                            <span class="check-icon">
+                                <i class="fa-solid fa-check"></i>
+                            </span>
+
+                            Title & descriptive metadata
+
+                        </span>
+
+                        <span class="checklist-status">
+                            Done
+                        </span>
+
+                    </div>
+
+
+                    <div class="checklist-item">
+
+                        <span class="checklist-label">
+
+                            <span class="check-icon">
+                                <i class="fa-solid fa-check"></i>
+                            </span>
+
+                            Category & language specified
+
+                        </span>
+
+                        <span class="checklist-status">
+                            Done
+                        </span>
+
+                    </div>
+
+
+                    <div class="checklist-item">
+
+                        <span class="checklist-label">
+
+                            <span class="check-icon">
+                                <i class="fa-solid fa-check"></i>
+                            </span>
+
+                            High-resolution cover artwork
+
+                        </span>
+
+                        <span class="checklist-status">
+                            Done
+                        </span>
+
+                    </div>
+
+
+                    <div class="checklist-item">
+
+                        <span class="checklist-label">
+
+                            <span class="check-icon pending">
+                                <i class="fa-solid fa-exclamation"></i>
+                            </span>
+
+                            All rights & declarations affirmed
+
+                        </span>
+
+                        <span class="checklist-status pending">
+                            Pending 1
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     EDITORIAL TIMELINE
+                     ================================================= -->
+
+                <div class="timeline-note">
+
+                    <div class="timeline-icon">
+                        <i class="fa-solid fa-circle-info"></i>
+                    </div>
+
+                    <div>
+
+                        <div class="timeline-title">
+                            Editorial Review Timeline
+                        </div>
+
+                        <div class="timeline-text">
+                            Submitted manuscripts are comprehensively evaluated
+                            within <strong>5–7 business days</strong>
+                            by the Senior Literary Curator.
+                            Feedback and ISBN registration will appear in your Pipeline.
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </form>
+
+</div>
+
+
+<!-- =========================================================
+     FOOTER
+     ========================================================= -->
+
+<footer class="footer">
+
+    <div class="footer-inner">
+
+        <div>
+
+            <div class="footer-logo">
+                READORA
+            </div>
+
+            <div class="footer-copyright"
+                 style="margin-top:4px;">
+
+                Author Studio v2.4
+                (Advanced Java / Spring Boot Architecture)
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-links">
+
+            <a th:href="@{/EditorialGuidelines}">
+                Editorial Guidelines
+            </a>
+
+            <a th:href="@{/RoyalitiesandSales}">
+                Author Payout Terms
+            </a>
+
+            <a th:href="@{/}">
+                Developer REST APIs
+            </a>
+
+            <a th:href="@{/}">
+                Support
+            </a>
+
+        </div>
+
+    </div>
+
+</footer>
+
+
+<script>
+
+    (function () {
+
+        "use strict";
+
+
+        /* =========================================================
+           AUTHENTICATION
+           ========================================================= */
+
+        function getLoggedInUser() {
+
+            try {
+
+                return JSON.parse(
+                    localStorage.getItem("readoraUser") || "null"
+                );
+
+            } catch (error) {
+
+                return null;
+
+            }
+
+        }
+
+
+        function isAuthorSessionPresent() {
+
+            var user =
+                getLoggedInUser();
+
+
+            if (!user) {
+
+                return false;
+
+            }
+
+
+            var role =
+                String(
+                    user.role || ""
+                ).toUpperCase();
+
+
+            return (
+                role === "AUTHOR" ||
+                role === "ADMIN"
+            );
+
+        }
+
+
+        function getAuthHeaders(json) {
+
+            var headers = {};
+
+
+            if (json) {
+
+                headers["Content-Type"] =
+                    "application/json";
+
+            }
+
+
+            try {
+
+                var user =
+                    getLoggedInUser();
+
+
+                var token =
+                    user &&
+                    (
+                        user.token ||
+                        user.jwt
+                    );
+
+
+                if (token) {
+
+                    headers["Authorization"] =
+                        "Bearer " + token;
+
+                }
+
+            } catch (error) {
+
+                /* Ignore token errors */
+
+            }
+
+
+            return headers;
+
+        }
+
+
+        /* =========================================================
+           STATE
+           ========================================================= */
+
+        var uploadedFileUrl = null;
+
+        var uploadedCoverUrl = null;
+
+        var pendingAction = "submit";
+
+
+        /* =========================================================
+           ELEMENTS
+           ========================================================= */
+
+        var titleInput =
+            document.getElementById(
+                "bookTitle"
+            );
+
+
+        var subtitleInput =
+            document.getElementById(
+                "subtitle"
+            );
+
+
+        var authorInput =
+            document.getElementById(
+                "primaryAuthor"
+            );
+
+
+        var synopsisInput =
+            document.getElementById(
+                "synopsis"
+            );
+
+
+        var synopsisCount =
+            document.getElementById(
+                "synopsisCount"
+            );
+
+
+        /* =========================================================
+           LOGGED-IN AUTHOR ACCOUNT
+           ========================================================= */
+
+        var loggedUser =
+            getLoggedInUser();
+
+
+        /*
+         * IMPORTANT:
+         *
+         * We only use the account name as a DEFAULT.
+         *
+         * The input remains editable.
+         *
+         * Example:
+         *
+         * Account:
+         * lakshmeesapkota
+         *
+         * Display author:
+         * Debbie Mullen
+         */
+
+        if (
+            loggedUser &&
+            loggedUser.name &&
+            authorInput &&
+            !authorInput.value.trim()
+        ) {
+
+            authorInput.value =
+                loggedUser.name;
+
+        }
+
+
+        /* =========================================================
+           COVER PREVIEW
+           ========================================================= */
+
+        function refreshCover() {
+
+            var titlePreview =
+                document.getElementById(
+                    "coverTitlePreview"
+                );
+
+
+            var subtitlePreview =
+                document.getElementById(
+                    "coverSubtitlePreview"
+                );
+
+
+            var authorPreview =
+                document.getElementById(
+                    "coverAuthorPreview"
+                );
+
+
+            if (titlePreview) {
+
+                titlePreview.textContent =
+                    titleInput &&
+                    titleInput.value.trim()
+                        ? titleInput.value.trim()
+                        : "Untitled Work";
+
+            }
+
+
+            if (subtitlePreview) {
+
+                subtitlePreview.textContent =
+                    subtitleInput &&
+                    subtitleInput.value.trim()
+                        ? subtitleInput.value.trim()
+                        : "";
+
+            }
+
+
+            if (authorPreview) {
+
+                authorPreview.textContent =
+                    authorInput &&
+                    authorInput.value.trim()
+                        ? authorInput.value.trim().toUpperCase()
+                        : "";
+
+            }
+
+        }
+
+
+        if (titleInput) {
+
+            titleInput.addEventListener(
+                "input",
+                refreshCover
+            );
+
+        }
+
+
+        if (subtitleInput) {
+
+            subtitleInput.addEventListener(
+                "input",
+                refreshCover
+            );
+
+        }
+
+
+        /*
+         * IMPORTANT:
+         * Author name now updates the cover preview too.
+         */
+
+        if (authorInput) {
+
+            authorInput.addEventListener(
+                "input",
+                refreshCover
+            );
+
+        }
+
+
+        /* =========================================================
+           SYNOPSIS COUNTER
+           ========================================================= */
+
+        if (synopsisInput) {
+
+            synopsisInput.addEventListener(
+                "input",
+                function () {
+
+                    if (synopsisCount) {
+
+                        synopsisCount.textContent =
+                            synopsisInput.value.length;
+
+                    }
+
+                }
+            );
+
+
+            if (synopsisCount) {
+
+                synopsisCount.textContent =
+                    synopsisInput.value.length;
+
+            }
+
+        }
+
+
+        refreshCover();
+
+
+        /* =========================================================
+           ACCESS TIER
+           ========================================================= */
+
+        window.selectTier =
+            function (radio) {
+
+                document
+                    .querySelectorAll(
+                        ".tier-card"
+                    )
+                    .forEach(
+                        function (card) {
+
+                            card.classList.remove(
+                                "selected"
+                            );
+
+                        }
+                    );
+
+
+                if (radio) {
+
+                    var card =
+                        radio.closest(
+                            ".tier-card"
+                        );
+
+
+                    if (card) {
+
+                        card.classList.add(
+                            "selected"
+                        );
+
+                    }
+
+                }
+
+
+                updateReadiness();
+
+            };
+
+
+        /* =========================================================
+           MANUSCRIPT FILE
+           ========================================================= */
+
+        window.handleFileSelect =
+            function (input) {
+
+                if (
+                    !input ||
+                    !input.files ||
+                    !input.files[0]
+                ) {
+
+                    return;
+
+                }
+
+
+                var file =
+                    input.files[0];
+
+
+                if (
+                    file.size >
+                    45 * 1024 * 1024
+                ) {
+
+                    alert(
+                        "Maximum manuscript size is 45 MB."
+                    );
+
+
+                    input.value = "";
+
+
+                    return;
+
+                }
+
+
+                var lowerName =
+                    file.name.toLowerCase();
+
+
+                if (
+                    !lowerName.endsWith(".pdf") &&
+                    !lowerName.endsWith(".epub")
+                ) {
+
+                    alert(
+                        "Please upload a PDF or EPUB manuscript."
+                    );
+
+
+                    input.value = "";
+
+
+                    return;
+
+                }
+
+
+                var sizeMb =
+                    (
+                        file.size /
+                        (1024 * 1024)
+                    ).toFixed(1) +
+                    " MB";
+
+
+                var row =
+                    document.getElementById(
+                        "uploadedFileRow"
+                    );
+
+
+                if (row) {
+
+                    row.style.display = "";
+
+                }
+
+
+                var name =
+                    document.getElementById(
+                        "uploadedFileName"
+                    );
+
+
+                if (name) {
+
+                    name.textContent =
+                        file.name;
+
+                }
+
+
+                var meta =
+                    document.getElementById(
+                        "uploadedFileMeta"
+                    );
+
+
+                if (meta) {
+
+                    meta.textContent =
+                        sizeMb +
+                        " · Ready to upload";
+
+                }
+
+
+                uploadedFileUrl =
+                    null;
+
+
+                updateReadiness();
+
+            };
+
+
+        window.removeFile =
+            function () {
+
+                var row =
+                    document.getElementById(
+                        "uploadedFileRow"
+                    );
+
+
+                if (row) {
+
+                    row.style.display =
+                        "none";
+
+                }
+
+
+                var input =
+                    document.getElementById(
+                        "manuscriptFile"
+                    );
+
+
+                if (input) {
+
+                    input.value = "";
+
+                }
+
+
+                uploadedFileUrl =
+                    null;
+
+
+                updateReadiness();
+
+            };
+
+
+        /* =========================================================
+           COVER FILE
+           ========================================================= */
+
+        window.handleCoverSelect =
+            function (input) {
+
+                if (
+                    !input ||
+                    !input.files ||
+                    !input.files[0]
+                ) {
+
+                    return;
+
+                }
+
+
+                var file =
+                    input.files[0];
+
+
+                var reader =
+                    new FileReader();
+
+
+                reader.onload =
+                    function (event) {
+
+                        var preview =
+                            document.getElementById(
+                                "coverPreview"
+                            );
+
+
+                        if (preview) {
+
+                            preview.style.backgroundImage =
+                                "url('" +
+                                event.target.result +
+                                "')";
+
+
+                            preview.style.backgroundSize =
+                                "cover";
+
+
+                            preview.style.backgroundPosition =
+                                "center";
+
+                        }
+
+                    };
+
+
+                reader.readAsDataURL(file);
+
+
+                uploadedCoverUrl =
+                    null;
+
+
+                updateReadiness();
+
+            };
+
+
+        /* =========================================================
+           TAGS
+           ========================================================= */
+
+        window.addTag =
+            function (event) {
+
+                if (
+                    !event ||
+                    event.key !== "Enter"
+                ) {
+
+                    return;
+
+                }
+
+
+                event.preventDefault();
+
+
+                var input =
+                    event.target;
+
+
+                var value =
+                    input.value.trim();
+
+
+                if (!value) {
+
+                    return;
+
+                }
+
+
+                var chip =
+                    document.createElement(
+                        "span"
+                    );
+
+
+                chip.className =
+                    "tag-chip";
+
+
+                chip.innerHTML =
+                    "#" +
+                    escapeHtml(value) +
+                    ' <span class="chip-x" onclick="this.parentElement.remove(); syncTagsCsv();">' +
+                    '<i class="fa-solid fa-xmark"></i>' +
+                    "</span>";
+
+
+                input.parentElement.insertBefore(
+                    chip,
+                    input
+                );
+
+
+                input.value = "";
+
+
+                syncTagsCsv();
+
+            };
+
+
+        function escapeHtml(value) {
+
+            if (
+                value === null ||
+                value === undefined
+            ) {
+
+                return "";
+
+            }
+
+
+            return String(value)
+                .replace(
+                    /&/g,
+                    "&amp;"
+                )
+                .replace(
+                    /</g,
+                    "&lt;"
+                )
+                .replace(
+                    />/g,
+                    "&gt;"
+                )
+                .replace(
+                    /"/g,
+                    "&quot;"
+                )
+                .replace(
+                    /'/g,
+                    "&#039;"
+                );
+
+        }
+
+
+        window.syncTagsCsv =
+            function () {
+
+                var chips =
+                    document.querySelectorAll(
+                        "#tagChipRow .tag-chip"
+                    );
+
+
+                var tags =
+                    Array.prototype.map.call(
+                        chips,
+                        function (chip) {
+
+                            return chip.textContent
+                                .trim()
+                                .replace(
+                                    /^#/,
+                                    ""
+                                )
+                                .trim();
+
+                        }
+                    );
+
+
+                var target =
+                    document.getElementById(
+                        "tagsCsv"
+                    );
+
+
+                if (target) {
+
+                    target.value =
+                        tags.join(",");
+
+                }
+
+            };
+
+
+        /* =========================================================
+           READINESS
+           ========================================================= */
+
+        window.updateReadiness =
+            function () {
+
+                var uploadedRow =
+                    document.getElementById(
+                        "uploadedFileRow"
+                    );
+
+
+                var uploadedName =
+                    document.getElementById(
+                        "uploadedFileName"
+                    );
+
+
+                var fileVisible =
+                    uploadedRow &&
+                    uploadedRow.style.display !== "none" &&
+                    uploadedName &&
+                    uploadedName.textContent.trim() !== "";
+
+
+                var category =
+                    document.getElementById(
+                        "literaryCategory"
+                    );
+
+
+                var language =
+                    document.getElementById(
+                        "primaryLanguage"
+                    );
+
+
+                var coverInput =
+                    document.getElementById(
+                        "coverFile"
+                    );
+
+
+                var checks = [
+
+                    fileVisible ||
+                    !!uploadedFileUrl,
+
+
+                    !!(
+                        titleInput &&
+                        titleInput.value.trim() &&
+                        category &&
+                        category.value
+                    ),
+
+
+                    !!(
+                        category &&
+                        category.value &&
+                        language &&
+                        language.value
+                    ),
+
+
+                    !!uploadedCoverUrl ||
+                    !!(
+                        coverInput &&
+                        coverInput.files &&
+                        coverInput.files[0]
+                    )
+
+                ];
+
+
+                var rightsBoxes =
+                    document.querySelectorAll(
+                        ".check-row input[type='checkbox']"
+                    );
+
+
+                var rightsChecked =
+                    Array.prototype.every.call(
+                        rightsBoxes,
+                        function (box) {
+
+                            return box.checked;
+
+                        }
+                    );
+
+
+                checks.push(
+                    rightsChecked
+                );
+
+
+                var done =
+                    checks.filter(
+                        Boolean
+                    ).length;
+
+
+                var pct =
+                    Math.round(
+                        (
+                            done /
+                            checks.length
+                        ) * 100
+                    );
+
+
+                var fill =
+                    document.getElementById(
+                        "readinessFill"
+                    );
+
+
+                var percentage =
+                    document.getElementById(
+                        "readinessPct"
+                    );
+
+
+                if (fill) {
+
+                    fill.style.width =
+                        pct + "%";
+
+                }
+
+
+                if (percentage) {
+
+                    percentage.textContent =
+                        pct + "% Complete";
+
+                }
+
+            };
+
+
+        /* =========================================================
+           PRICE
+           ========================================================= */
+
+        function parsePrice(raw) {
+
+            if (!raw) {
+
+                return 0;
+
+            }
+
+
+            var cleaned =
+                String(raw)
+                    .replace(
+                        /[^0-9.]/g,
+                        ""
+                    );
+
+
+            var number =
+                parseFloat(cleaned);
+
+
+            return isNaN(number)
+                ? 0
+                : number;
+
+        }
+
+
+        /* =========================================================
+           PAGE COUNT
+           ========================================================= */
+
+        function parsePages(raw) {
+
+            if (!raw) {
+
+                return 1;
+
+            }
+
+
+            var number =
+                parseInt(
+                    String(raw)
+                        .replace(
+                            /[^0-9]/g,
+                            ""
+                        ),
+                    10
+                );
+
+
+            return (
+                isNaN(number) ||
+                number < 1
+            )
+                ? 1
+                : number;
+
+        }
+
+
+        /* =========================================================
+           FILE UPLOAD
+           ========================================================= */
+
+        async function uploadSelectedFile(
+            fileInput,
+            folder
+        ) {
+
+            if (
+                !fileInput ||
+                !fileInput.files ||
+                !fileInput.files[0]
+            ) {
+
+                return null;
+
+            }
+
+
+            var formData =
+                new FormData();
+
+
+            formData.append(
+                "file",
+                fileInput.files[0]
+            );
+
+
+            if (folder) {
+
+                formData.append(
+                    "folder",
+                    folder
+                );
+
+            }
+
+
+            var response =
+                await fetch(
+                    "/api/upload",
+                    {
+                        method: "POST",
+
+                        headers:
+                            getAuthHeaders(false),
+
+                        credentials:
+                            "same-origin",
+
+                        body:
+                        formData
+                    }
+                );
+
+
+            if (!response.ok) {
+
+                var errorText =
+                    await response.text()
+                        .catch(
+                            function () {
+                                return "";
+                            }
+                        );
+
+
+                console.error(
+                    "Upload failed:",
+                    response.status,
+                    errorText
+                );
+
+
+                throw new Error(
+                    "File upload failed."
+                );
+
+            }
+
+
+            var data =
+                await response.json();
+
+
+            return (
+                data.url ||
+                data.path ||
+                data.filePath ||
+                data.location ||
+                null
+            );
+
+        }
+
+
+        /* =========================================================
+           BUILD BOOK PAYLOAD
+           ========================================================= */
+
+        function buildBookPayload(status) {
+
+            var selectedTier =
+                document.querySelector(
+                    "input[name='accessModel']:checked"
+                );
+
+
+            var accessModel =
+                selectedTier
+                    ? selectedTier.value
+                    : "PREMIUM";
+
+
+            var premium =
+                accessModel === "PREMIUM";
+
+
+            var price =
+                premium
+                    ? parsePrice(
+                        document.getElementById(
+                            "retailPrice"
+                        ).value
+                    )
+                    : 0;
+
+
+            var pageCount =
+                parsePages(
+                    document.getElementById(
+                        "estPages"
+                    ).value
+                );
+
+
+            var category =
+                document.getElementById(
+                    "literaryCategory"
+                ).value;
+
+
+            var language =
+                document.getElementById(
+                    "primaryLanguage"
+                ).value;
+
+
+            var description =
+                synopsisInput.value.trim();
+
+
+            /*
+             * IMPORTANT:
+             *
+             * author is now the value entered
+             * into the editable Primary Author field.
+             *
+             * It is NOT forced to loggedUser.name.
+             */
+
+            var displayAuthor =
+                authorInput
+                    ? authorInput.value.trim()
+                    : "";
+
+
+            return {
+
+                title:
+                    titleInput.value.trim(),
+
+
+                author:
+                displayAuthor,
+
+
+                description:
+                description,
+
+
+                category:
+                category,
+
+
+                language:
+                language,
+
+
+                price:
+                price,
+
+
+                premium:
+                premium,
+
+
+                pageCount:
+                pageCount,
+
+
+                image:
+                    uploadedCoverUrl ||
+                    "img/Book.png",
+
+
+                filePath:
+                    uploadedFileUrl ||
+                    "sample.pdf",
+
+
+                type:
+                    "book",
+
+
+                status:
+                status
+
+            };
+
+        }
+
+
+        /* =========================================================
+           VALIDATE PUBLICATION
+           ========================================================= */
+
+        function validatePublication(
+            publishing
+        ) {
+
+            if (
+                !titleInput ||
+                !titleInput.value.trim()
+            ) {
+
+                alert(
+                    "Book title is required."
+                );
+
+
+                if (titleInput) {
+
+                    titleInput.focus();
+
+                }
+
+
+                return false;
+
+            }
+
+
+            /*
+             * PRIMARY AUTHOR VALIDATION
+             */
+
+            if (
+                !authorInput ||
+                !authorInput.value.trim()
+            ) {
+
+                alert(
+                    "Primary author name is required."
+                );
+
+
+                if (authorInput) {
+
+                    authorInput.focus();
+
+                }
+
+
+                return false;
+
+            }
+
+
+            var category =
+                document.getElementById(
+                    "literaryCategory"
+                );
+
+
+            if (
+                !category ||
+                !category.value
+            ) {
+
+                alert(
+                    "Please select a literary category."
+                );
+
+
+                return false;
+
+            }
+
+
+            if (
+                !synopsisInput ||
+                !synopsisInput.value.trim()
+            ) {
+
+                alert(
+                    "Synopsis is required."
+                );
+
+
+                if (synopsisInput) {
+
+                    synopsisInput.focus();
+
+                }
+
+
+                return false;
+
+            }
+
+
+            /*
+             * Publishing requires manuscript.
+             */
+
+            if (publishing) {
+
+                var manuscript =
+                    document.getElementById(
+                        "manuscriptFile"
+                    );
+
+
+                if (
+                    !uploadedFileUrl &&
+                    !(
+                        manuscript &&
+                        manuscript.files &&
+                        manuscript.files[0]
+                    )
+                ) {
+
+                    var editId =
+                        document.getElementById(
+                            "editBookId"
+                        ).value;
+
+
+                    if (!editId) {
+
+                        alert(
+                            "Please upload the manuscript before publishing."
+                        );
+
+
+                        return false;
+
+                    }
+
+                }
+
+
+                /*
+                 * Rights declarations.
+                 */
+
+                var rights =
+                    document.querySelectorAll(
+                        ".check-row input[type='checkbox']"
+                    );
+
+
+                for (
+                    var i = 0;
+                    i < rights.length;
+                    i++
+                ) {
+
+                    if (!rights[i].checked) {
+
+                        alert(
+                            "Please confirm all rights and declarations before publishing."
+                        );
+
+
+                        rights[i].focus();
+
+
+                        return false;
+
+                    }
+
+                }
+
+            }
+
+
+            return true;
+
+        }
+
+
+        /* =========================================================
+           SAVE PUBLICATION
+           ========================================================= */
+
+        async function savePublication(
+            status,
+            exitAfter
+        ) {
+
+            var publishing =
+                status === "PUBLISHED";
+
+
+            if (!isAuthorSessionPresent()) {
+
+                console.warn(
+                    "No AUTHOR/ADMIN user in localStorage."
+                );
+
+
+                alert(
+                    "Please log in as an author."
+                );
+
+
+                window.location.href =
+                    "/login.html";
+
+
+                return;
+
+            }
+
+
+            if (
+                !validatePublication(
+                    publishing
+                )
+            ) {
+
+                return;
+
+            }
+
+
+            syncTagsCsv();
+
+
+            try {
+
+                var manuscriptInput =
+                    document.getElementById(
+                        "manuscriptFile"
+                    );
+
+
+                var coverInput =
+                    document.getElementById(
+                        "coverFile"
+                    );
+
+
+                /*
+                 * Upload manuscript.
+                 */
+
+                if (
+                    manuscriptInput &&
+                    manuscriptInput.files &&
+                    manuscriptInput.files[0]
+                ) {
+
+                    console.log(
+                        "READORA: uploading manuscript..."
+                    );
+
+
+                    uploadedFileUrl =
+                        await uploadSelectedFile(
+                            manuscriptInput,
+                            "manuscripts"
+                        );
+
+
+                    console.log(
+                        "READORA: manuscript URL:",
+                        uploadedFileUrl
+                    );
+
+                }
+
+
+                /*
+                 * Upload cover.
+                 */
+
+                if (
+                    coverInput &&
+                    coverInput.files &&
+                    coverInput.files[0]
+                ) {
+
+                    console.log(
+                        "READORA: uploading cover..."
+                    );
+
+
+                    uploadedCoverUrl =
+                        await uploadSelectedFile(
+                            coverInput,
+                            "covers"
+                        );
+
+
+                    console.log(
+                        "READORA: cover URL:",
+                        uploadedCoverUrl
+                    );
+
+                }
+
+
+                /*
+                 * Build final book.
+                 */
+
+                var payload =
+                    buildBookPayload(
+                        status
+                    );
+
+
+                var editId =
+                    document.getElementById(
+                        "editBookId"
+                    ).value;
+
+
+                var url =
+                    "/api/author/books";
+
+
+                var method =
+                    "POST";
+
+
+                if (editId) {
+
+                    url =
+                        "/api/author/books/" +
+                        encodeURIComponent(
+                            editId
+                        );
+
+
+                    method =
+                        "PUT";
+
+                }
+
+
+                console.log(
+                    "READORA PUBLICATION:",
+                    {
+                        method: method,
+                        url: url,
+                        status: status,
+                        author: payload.author,
+                        payload: payload
+                    }
+                );
+
+
+                var response =
+                    await fetch(
+                        url,
+                        {
+                            method:
+                            method,
+
+                            headers:
+                                getAuthHeaders(true),
+
+                            credentials:
+                                "same-origin",
+
+                            body:
+                                JSON.stringify(
+                                    payload
+                                )
+                        }
+                    );
+
+
+                console.log(
+                    "READORA publication response:",
+                    response.status
+                );
+
+
+                if (
+                    response.status === 401
+                ) {
+
+                    alert(
+                        "Your author session has expired. Please log in again."
+                    );
+
+
+                    window.location.href =
+                        "/login.html";
+
+
+                    return;
+
+                }
+
+
+                if (
+                    response.status === 403
+                ) {
+
+                    alert(
+                        "You do not have permission to publish books."
+                    );
+
+
+                    return;
+
+                }
+
+
+                var responseData =
+                    await response.json()
+                        .catch(
+                            function () {
+                                return {};
+                            }
+                        );
+
+
+                if (!response.ok) {
+
+                    console.error(
+                        "READORA publication save failed:",
+                        responseData
+                    );
+
+
+                    alert(
+                        responseData.message ||
+                        responseData.error ||
+                        "Could not save the publication."
+                    );
+
+
+                    return;
+
+                }
+
+
+                /*
+                 * SUCCESS
+                 */
+
+                if (publishing) {
+
+                    alert(
+                        "Book published successfully. It is now available in the Reader."
+                    );
+
+                } else {
+
+                    alert(
+                        "Draft saved successfully."
+                    );
+
+                }
+
+
+                window.location.href =
+                    "/MyPublication";
+
+
+            } catch (error) {
+
+                console.error(
+                    "READORA publication error:",
+                    error
+                );
+
+
+                alert(
+                    error.message ||
+                    "Network error while saving publication."
+                );
+
+            }
+
+        }
+
+
+        /* =========================================================
+           ACTION BUTTONS
+           ========================================================= */
+
+        document
+            .querySelectorAll(
+                "button[name='action']"
+            )
+            .forEach(
+                function (button) {
+
+                    button.addEventListener(
+                        "click",
+                        function () {
+
+                            pendingAction =
+                                button.value ||
+                                "submit";
+
+                        }
+                    );
+
+                }
+            );
+
+
+        /* =========================================================
+           FORM SUBMIT
+           ========================================================= */
+
+        var publicationForm =
+            document.getElementById(
+                "publicationForm"
+            );
+
+
+        if (publicationForm) {
+
+            publicationForm.addEventListener(
+                "submit",
+                function (event) {
+
+                    event.preventDefault();
+
+
+                    syncTagsCsv();
+
+
+                    /*
+                     * Current READORA flow:
+                     *
+                     * Save Draft -> DRAFT
+                     *
+                     * Submit -> PUBLISHED
+                     *
+                     * Therefore a successfully submitted book
+                     * can appear in Reader immediately.
+                     */
+
+                    var status =
+                        pendingAction === "submit"
+                            ? "PUBLISHED"
+                            : "DRAFT";
+
+
+                    savePublication(
+                        status,
+                        pendingAction === "draft"
+                    );
+
+                }
+            );
+
+        }
+
+
+        /* =========================================================
+           EDIT PUBLICATION
+           ========================================================= */
+
+        async function loadBookForEdit(
+            bookId
+        ) {
+
+            try {
+
+                var response =
+                    await fetch(
+                        "/api/author/books",
+                        {
+                            method: "GET",
+
+                            headers:
+                                getAuthHeaders(false),
+
+                            credentials:
+                                "same-origin"
+                        }
+                    );
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        "Unable to load publications."
+                    );
+
+                }
+
+
+                var books =
+                    await response.json();
+
+
+                if (
+                    !Array.isArray(books)
+                ) {
+
+                    books =
+                        books.content ||
+                        books.data ||
+                        books.items ||
+                        [];
+
+                }
+
+
+                var book =
+                    null;
+
+
+                for (
+                    var i = 0;
+                    i < books.length;
+                    i++
+                ) {
+
+                    if (
+                        String(
+                            books[i].id
+                        ) ===
+                        String(bookId)
+                    ) {
+
+                        book =
+                            books[i];
+
+                        break;
+
+                    }
+
+                }
+
+
+                if (!book) {
+
+                    alert(
+                        "Publication not found or you do not own it."
+                    );
+
+
+                    window.location.href =
+                        "/MyPublication";
+
+
+                    return;
+
+                }
+
+
+                document.getElementById(
+                    "editBookId"
+                ).value =
+                    book.id;
+
+
+                titleInput.value =
+                    book.title ||
+                    "";
+
+
+                /*
+                 * IMPORTANT:
+                 *
+                 * When editing, use the book's existing
+                 * display author.
+                 *
+                 * Do NOT replace it with loggedUser.name.
+                 */
+
+                authorInput.value =
+                    book.author ||
+                    (
+                        loggedUser &&
+                        loggedUser.name
+                            ? loggedUser.name
+                            : ""
+                    );
+
+
+                synopsisInput.value =
+                    book.description ||
+                    "";
+
+
+                if (synopsisCount) {
+
+                    synopsisCount.textContent =
+                        synopsisInput.value.length;
+
+                }
+
+
+                document.getElementById(
+                    "literaryCategory"
+                ).value =
+                    book.category ||
+                    "";
+
+
+                document.getElementById(
+                    "primaryLanguage"
+                ).value =
+                    book.language ||
+                    "English";
+
+
+                document.getElementById(
+                    "estPages"
+                ).value =
+                    book.pageCount ||
+                    "";
+
+
+                document.getElementById(
+                    "retailPrice"
+                ).value =
+                    book.price
+                        ? "Rs. " + book.price
+                        : "";
+
+
+                /* =================================================
+                   TIER
+                   ================================================= */
+
+                var premium =
+                    book.premium === true ||
+                    String(
+                        book.premium
+                    ).toLowerCase() ===
+                    "true";
+
+
+                if (premium) {
+
+                    var premiumRadio =
+                        document
+                            .getElementById(
+                                "tierPremium"
+                            )
+                            .querySelector(
+                                "input"
+                            );
+
+
+                    premiumRadio.checked =
+                        true;
+
+
+                    selectTier(
+                        premiumRadio
+                    );
+
+                } else {
+
+                    var freeRadio =
+                        document
+                            .getElementById(
+                                "tierFree"
+                            )
+                            .querySelector(
+                                "input"
+                            );
+
+
+                    freeRadio.checked =
+                        true;
+
+
+                    selectTier(
+                        freeRadio
+                    );
+
+                }
+
+
+                /* =================================================
+                   EXISTING MANUSCRIPT
+                   ================================================= */
+
+                if (
+                    book.filePath
+                ) {
+
+                    uploadedFileUrl =
+                        book.filePath;
+
+
+                    var row =
+                        document.getElementById(
+                            "uploadedFileRow"
+                        );
+
+
+                    if (row) {
+
+                        row.style.display =
+                            "";
+
+                    }
+
+
+                    var fileName =
+                        document.getElementById(
+                            "uploadedFileName"
+                        );
+
+
+                    if (fileName) {
+
+                        fileName.textContent =
+                            book.filePath;
+
+                    }
+
+
+                    var fileMeta =
+                        document.getElementById(
+                            "uploadedFileMeta"
+                        );
+
+
+                    if (fileMeta) {
+
+                        fileMeta.textContent =
+                            "Previously uploaded manuscript";
+
+                    }
+
+                }
+
+
+                /* =================================================
+                   EXISTING COVER
+                   ================================================= */
+
+                if (
+                    book.image
+                ) {
+
+                    uploadedCoverUrl =
+                        book.image;
+
+
+                    var preview =
+                        document.getElementById(
+                            "coverPreview"
+                        );
+
+
+                    if (preview) {
+
+                        preview.style.backgroundImage =
+                            "url('" +
+                            book.image +
+                            "')";
+
+
+                        preview.style.backgroundSize =
+                            "cover";
+
+
+                        preview.style.backgroundPosition =
+                            "center";
+
+                    }
+
+                }
+
+
+                /* =================================================
+                   EDIT TITLE
+                   ================================================= */
+
+                var pageTitle =
+                    document.querySelector(
+                        ".page-title"
+                    );
+
+
+                if (pageTitle) {
+
+                    pageTitle.textContent =
+                        "Edit Publication";
+
+                }
+
+
+                refreshCover();
+
+                updateReadiness();
+
+
+            } catch (error) {
+
+                console.error(
+                    "READORA edit error:",
+                    error
+                );
+
+
+                alert(
+                    "Could not load publication for editing."
+                );
+
+            }
+
+        }
+
+
+        /* =========================================================
+           EDIT QUERY
+           ========================================================= */
+
+        var params =
+            new URLSearchParams(
+                window.location.search
+            );
+
+
+        var editId =
+            params.get("edit");
+
+
+        if (editId) {
+
+            loadBookForEdit(
+                editId
+            );
+
+        }
+
+
+        /* =========================================================
+           INITIALIZE
+           ========================================================= */
+
+        updateReadiness();
+
+
+    })();
+
+</script>
+
+</body>
+</html>

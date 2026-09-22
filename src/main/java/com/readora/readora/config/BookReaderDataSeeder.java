@@ -212,7 +212,7 @@ public class BookReaderDataSeeder {
             }
         });
 
-        // Book 7: Structures of Light (Hiroshi Sugimoto, Premium)
+
         books.findById(7L).ifPresent(b -> {
             if (pages.countByBookId(b.getId()) == 0) {
                 pages.saveAll(List.of(

@@ -1,0 +1,894 @@
+﻿<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+
+<!-- =========================================================
+     READER HEADER FRAGMENT
+     ========================================================= -->
+<header th:fragment="readerHeader(activeTab)" class="header legacy-chrome-header">
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+<link rel="stylesheet" th:href="@{/css/profile-dropdown.css}">
+    <div class="header-inner">
+
+        <div class="header-left-brand">
+            <a class="logo" th:href="@{/index}">
+                READORA
+            </a>
+        </div>
+
+        <nav class="nav-links desktop-nav">
+            <a th:classappend="${activeTab == 'dashboard'} ? 'nav-active'" th:href="@{/dashboard}">Dashboard</a>
+            <a th:classappend="${activeTab == 'discover'} ? 'nav-active'" th:href="@{/index}">Discover</a>
+            <a th:classappend="${activeTab == 'books'} ? 'nav-active'" th:href="@{/Book}">Books</a>
+            <a th:classappend="${activeTab == 'newspapers'} ? 'nav-active'" th:href="@{/newspapers}">Newspapers</a>
+            <a th:classappend="${activeTab == 'magazines'} ? 'nav-active'" th:href="@{/magazines}">Magazines</a>
+            <a th:classappend="${activeTab == 'read-nepal'} ? 'nav-active'" th:href="@{/read-nepal}">Read Nepal</a>
+            <a th:classappend="${activeTab == 'library'} ? 'nav-active'" th:href="@{/library}">My Library</a>
+        </nav>
+
+        <div class="header-actions">
+            <a th:href="@{/search}" class="header-icon-btn" title="Search books">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </a>
+
+            <a th:href="@{/cart}" class="header-icon-btn cart-icon-btn" title="Shopping Cart">
+                <i class="fa-solid fa-cart-shopping"></i>
+                <span class="header-badge" data-cart-count hidden>0</span>
+            </a>
+
+            <a th:href="@{/bookmarks}" class="header-icon-btn" title="Bookmarks">
+                <i class="fa-regular fa-bookmark"></i>
+            </a>
+
+            <a th:href="@{/notes}" class="header-icon-btn" title="Notes">
+                <i class="fa-regular fa-note-sticky"></i>
+            </a>
+
+            <a th:href="@{/purchase-history}" class="header-icon-btn" title="Purchase History">
+                <i class="fa-solid fa-clock-rotate-left"></i>
+            </a>
+
+            <!-- Reader User Profile Dropdown -->
+            <div class="reader-user-profile">
+                <button type="button" class="header-icon-btn reader-user-btn" title="Profile">
+                    <i class="fa-solid fa-user"></i>
+                </button>
+                <div class="reader-user-dropdown hidden">
+                    <div class="reader-user-name"></div>
+                    <div class="reader-user-role"></div>
+                    <a href="/profile" class="reader-view-profile">View Profile</a>
+                    <button type="button" class="reader-logout-btn">Logout</button>
+                </div>
+            </div>
+
+            <button type="button" class="mobile-menu-btn" aria-label="Toggle navigation menu">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+
+    </div>
+
+    <!-- MOBILE NAVIGATION DRAWER -->
+    <div class="mobile-nav-drawer" hidden>
+        <div class="mobile-drawer-header">
+            <span class="logo">READORA</span>
+            <button type="button" class="mobile-menu-close" aria-label="Close menu">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        <nav class="mobile-nav-links">
+            <a th:classappend="${activeTab == 'dashboard'} ? 'nav-active'" th:href="@{/dashboard}">
+                <i class="fa-solid fa-chart-line"></i> Dashboard
+            </a>
+            <a th:classappend="${activeTab == 'discover'} ? 'nav-active'" th:href="@{/index}">
+                <i class="fa-solid fa-compass"></i> Discover
+            </a>
+            <a th:classappend="${activeTab == 'books'} ? 'nav-active'" th:href="@{/Book}">
+                <i class="fa-solid fa-book"></i> Books
+            </a>
+            <a th:classappend="${activeTab == 'newspapers'} ? 'nav-active'" th:href="@{/newspapers}">
+                <i class="fa-solid fa-newspaper"></i> Newspapers
+            </a>
+            <a th:classappend="${activeTab == 'magazines'} ? 'nav-active'" th:href="@{/magazines}">
+                <i class="fa-solid fa-book-open"></i> Magazines
+            </a>
+            <a th:classappend="${activeTab == 'read-nepal'} ? 'nav-active'" th:href="@{/read-nepal}">
+                <i class="fa-solid fa-mountain"></i> Read Nepal
+            </a>
+            <a th:classappend="${activeTab == 'library'} ? 'nav-active'" th:href="@{/library}">
+                <i class="fa-solid fa-bookmark"></i> My Library
+            </a>
+            <hr class="drawer-divider">
+            <a th:href="@{/search}"><i class="fa-solid fa-magnifying-glass"></i> Search</a>
+            <a th:href="@{/cart}"><i class="fa-solid fa-cart-shopping"></i> Shopping Cart</a>
+            <a th:href="@{/bookmarks}"><i class="fa-regular fa-bookmark"></i> Bookmarks</a>
+            <a th:href="@{/notes}"><i class="fa-regular fa-note-sticky"></i> Notes</a>
+            <a th:href="@{/purchase-history}"><i class="fa-solid fa-clock-rotate-left"></i> Purchase History</a>
+        </nav>
+    </div>
+    <script>
+        (function() {
+            function bindHeaderEvents() {
+                var headers = document.querySelectorAll('.legacy-chrome-header');
+                headers.forEach(function(header) {
+                    if (header.dataset.headerBound) return;
+                    header.dataset.headerBound = 'true';
+                    var btn = header.querySelector('.mobile-menu-btn');
+                    var drawer = header.querySelector('.mobile-nav-drawer');
+                    var closeBtn = header.querySelector('.mobile-menu-close');
+                    if (!btn || !drawer) return;
+
+                    var backdrop = document.querySelector('.mobile-drawer-backdrop');
+                    if (!backdrop) {
+                        backdrop = document.createElement('div');
+                        backdrop.className = 'mobile-drawer-backdrop';
+                        document.body.appendChild(backdrop);
+                    }
+
+                    function openDrawer() {
+                        drawer.removeAttribute('hidden');
+                        drawer.classList.add('open');
+                        backdrop.classList.add('open');
+                        document.body.style.overflow = 'hidden';
+                    }
+
+                    function closeDrawer() {
+                        drawer.classList.remove('open');
+                        backdrop.classList.remove('open');
+                        document.body.style.overflow = '';
+                        setTimeout(function() {
+                            if (!drawer.classList.contains('open')) {
+                                drawer.setAttribute('hidden', '');
+                            }
+                        }, 250);
+                    }
+
+                    btn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        if (drawer.classList.contains('open')) {
+                            closeDrawer();
+                        } else {
+                            openDrawer();
+                        }
+                    });
+
+                    if (closeBtn) {
+                        closeBtn.addEventListener('click', function(e) {
+                            e.stopPropagation();
+                            closeDrawer();
+                        });
+                    }
+
+                    backdrop.addEventListener('click', closeDrawer);
+
+                    document.addEventListener('keydown', function(e) {
+                        if (e.key === 'Escape' && drawer.classList.contains('open')) {
+                            closeDrawer();
+                        }
+                    });
+
+                    drawer.querySelectorAll('a').forEach(function(link) {
+                        link.addEventListener('click', closeDrawer);
+                    });
+                });
+            }
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', bindHeaderEvents);
+            } else {
+                bindHeaderEvents();
+            }
+        })();
+    </script>
+</header>
+
+
+<!-- =========================================================
+     AUTHOR HEADER FRAGMENT
+     ========================================================= -->
+<header th:fragment="authorHeader(activeTab)" class="header legacy-chrome-header author-header-theme">
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+<link rel="stylesheet" th:href="@{/css/profile-dropdown.css}">
+    <div class="header-inner">
+
+        <div class="header-left-brand">
+            <a class="logo" th:href="@{/AuthorDashboard}">
+                READORA<span class="logo-sub">STUDIO</span>
+            </a>
+        </div>
+
+        <nav class="nav-links desktop-nav">
+            <a th:classappend="${activeTab == 'dashboard'} ? 'nav-active'" th:href="@{/AuthorDashboard}">Dashboard</a>
+            <a th:classappend="${activeTab == 'publications'} ? 'nav-active'" th:href="@{/MyPublication}">My Publications</a>
+            <a th:classappend="${activeTab == 'submissions'} ? 'nav-active'" th:href="@{/SubmissionandPipeline}">Submissions & Pipeline</a>
+            <a th:classappend="${activeTab == 'royalties'} ? 'nav-active'" th:href="@{/RoyalitiesandSales}">Royalties & Sales</a>
+            <a th:classappend="${activeTab == 'analytics'} ? 'nav-active'" th:href="@{/ReaderAnalytics}">Reader Analytics</a>
+            <a th:classappend="${activeTab == 'guidelines'} ? 'nav-active'" th:href="@{/EditorialGuidelines}">Editorial Guidelines</a>
+        </nav>
+
+        <div class="header-actions">
+            <a th:href="@{/SubmitManuscript}" class="btn-create-publication" title="Create New Publication">
+                <i class="fa-solid fa-plus"></i> <span>Create</span>
+            </a>
+
+            <a th:href="@{/index}" class="header-icon-btn" title="Switch to Reader View">
+                <i class="fa-solid fa-book-open"></i>
+            </a>
+
+            <!-- Author User Profile Dropdown -->
+            <div class="author-user-profile">
+                <button type="button" class="header-icon-btn author-user-btn" title="Profile">
+                    <i class="fa-solid fa-user-pen"></i>
+                    <div class="author-user-name"></div>
+                    <div class="author-user-role"></div>
+                </button>
+                <div class="author-user-dropdown hidden">
+                    <a href="/author-profile" class="author-view-profile">View Profile</a>
+                    <button type="button" class="author-logout-btn">Logout</button>
+                </div>
+            </div>
+
+            <button type="button" class="mobile-menu-btn" aria-label="Toggle navigation menu">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+
+    </div>
+
+    <!-- MOBILE NAVIGATION DRAWER -->
+    <div class="mobile-nav-drawer" hidden>
+        <div class="mobile-drawer-header">
+            <span class="logo">READORA <span class="logo-sub">STUDIO</span></span>
+            <button type="button" class="mobile-menu-close" aria-label="Close menu">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        <nav class="mobile-nav-links">
+            <a th:classappend="${activeTab == 'dashboard'} ? 'nav-active'" th:href="@{/AuthorDashboard}">
+                <i class="fa-solid fa-chart-line"></i> Dashboard
+            </a>
+            <a th:classappend="${activeTab == 'publications'} ? 'nav-active'" th:href="@{/MyPublication}">
+                <i class="fa-solid fa-book"></i> My Publications
+            </a>
+            <a th:classappend="${activeTab == 'submissions'} ? 'nav-active'" th:href="@{/SubmissionandPipeline}">
+                <i class="fa-solid fa-bars-progress"></i> Submissions & Pipeline
+            </a>
+            <a th:classappend="${activeTab == 'royalties'} ? 'nav-active'" th:href="@{/RoyalitiesandSales}">
+                <i class="fa-solid fa-coins"></i> Royalties & Sales
+            </a>
+            <a th:classappend="${activeTab == 'analytics'} ? 'nav-active'" th:href="@{/ReaderAnalytics}">
+                <i class="fa-solid fa-chart-pie"></i> Reader Analytics
+            </a>
+            <a th:classappend="${activeTab == 'guidelines'} ? 'nav-active'" th:href="@{/EditorialGuidelines}">
+                <i class="fa-solid fa-scroll"></i> Editorial Guidelines
+            </a>
+            <hr class="drawer-divider">
+            <a th:href="@{/SubmitManuscript}"><i class="fa-solid fa-plus"></i> Create Publication</a>
+            <a th:href="@{/AuthorProfile}"><i class="fa-solid fa-user-pen"></i> Author Profile</a>
+            <a th:href="@{/index}"><i class="fa-solid fa-book-open"></i> Switch to Reader View</a>
+        </nav>
+    </div>
+    <script>
+        (function() {
+            function bindHeaderEvents() {
+                var headers = document.querySelectorAll('.legacy-chrome-header');
+                headers.forEach(function(header) {
+                    if (header.dataset.headerBound) return;
+                    header.dataset.headerBound = 'true';
+                    var btn = header.querySelector('.mobile-menu-btn');
+                    var drawer = header.querySelector('.mobile-nav-drawer');
+                    var closeBtn = header.querySelector('.mobile-menu-close');
+                    if (!btn || !drawer) return;
+
+                    var backdrop = document.querySelector('.mobile-drawer-backdrop');
+                    if (!backdrop) {
+                        backdrop = document.createElement('div');
+                        backdrop.className = 'mobile-drawer-backdrop';
+                        document.body.appendChild(backdrop);
+                    }
+
+                    function openDrawer() {
+                        drawer.removeAttribute('hidden');
+                        drawer.classList.add('open');
+                        backdrop.classList.add('open');
+                        document.body.style.overflow = 'hidden';
+                    }
+
+                    function closeDrawer() {
+                        drawer.classList.remove('open');
+                        backdrop.classList.remove('open');
+                        document.body.style.overflow = '';
+                        setTimeout(function() {
+                            if (!drawer.classList.contains('open')) {
+                                drawer.setAttribute('hidden', '');
+                            }
+                        }, 250);
+                    }
+
+                    btn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        if (drawer.classList.contains('open')) {
+                            closeDrawer();
+                        } else {
+                            openDrawer();
+                        }
+                    });
+
+                    if (closeBtn) {
+                        closeBtn.addEventListener('click', function(e) {
+                            e.stopPropagation();
+                            closeDrawer();
+                        });
+                    }
+
+                    backdrop.addEventListener('click', closeDrawer);
+
+                    document.addEventListener('keydown', function(e) {
+                        if (e.key === 'Escape' && drawer.classList.contains('open')) {
+                            closeDrawer();
+                        }
+                    });
+
+                    drawer.querySelectorAll('a').forEach(function(link) {
+                        link.addEventListener('click', closeDrawer);
+                    });
+                });
+            }
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', bindHeaderEvents);
+            } else {
+                bindHeaderEvents();
+            }
+        })();
+    </script>
+</header>
+
+
+
+<!-- =========================================================
+     ADMIN HEADER FRAGMENT (Content-page exact design, fixed)
+     ========================================================= -->
+<th:block th:fragment="adminHeader(activeTab)">
+
+    <!-- Font and icon assets -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        /* =========================================================
+           READORA ADMIN FIXED HEADER - CONTENT PAGE DESIGN
+           ========================================================= */
+
+        header.header.admin-fixed-header {
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            width: 100% !important;
+            height: 64px !important;
+            background: #fcf9f8 !important;
+            border-bottom: 1px solid #e5ded9 !important;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04) !important;
+            z-index: 99999 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            box-sizing: border-box !important;
+            font-family: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+        }
+
+        .admin-fixed-header-spacer {
+            height: 64px !important;
+            width: 100% !important;
+            display: block !important;
+            flex-shrink: 0 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            background: transparent !important;
+            pointer-events: none !important;
+        }
+
+        header.header.admin-fixed-header .header-inner {
+            max-width: 1400px !important;
+            height: 100% !important;
+            margin: 0 auto !important;
+            padding: 0 28px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: flex-start !important;
+            gap: 32px !important;
+            box-sizing: border-box !important;
+        }
+
+        /* Logo Group */
+        header.header.admin-fixed-header .logo-group {
+            display: flex !important;
+            align-items: center !important;
+            gap: 10px !important;
+            text-decoration: none !important;
+            flex-shrink: 0 !important;
+        }
+
+        header.header.admin-fixed-header .logo {
+            font-family: "Playfair Display", Georgia, serif !important;
+            font-size: 19px !important;
+            font-weight: 700 !important;
+            color: #1b3022 !important;
+            letter-spacing: 0.3px !important;
+            text-decoration: none !important;
+        }
+
+        header.header.admin-fixed-header .admin-badge {
+            background: #1b3022 !important;
+            color: #ffffff !important;
+            font-family: "Plus Jakarta Sans", sans-serif !important;
+            font-size: 10px !important;
+            font-weight: 700 !important;
+            letter-spacing: 0.5px !important;
+            padding: 4px 9px !important;
+            border-radius: 5px !important;
+            text-transform: uppercase !important;
+        }
+
+        /* Nav Links */
+        header.header.admin-fixed-header .nav-links {
+            display: flex !important;
+            align-items: center !important;
+            gap: 26px !important;
+            flex: 1 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            list-style: none !important;
+        }
+
+        header.header.admin-fixed-header .nav-links a {
+            font-family: "Plus Jakarta Sans", sans-serif !important;
+            font-size: 13.5px !important;
+            color: #706b67 !important;
+            padding: 22px 0 20px !important;
+            text-decoration: none !important;
+            white-space: nowrap !important;
+            font-weight: 500 !important;
+            border-bottom: 2px solid transparent !important;
+            transition: color 0.15s ease, border-color 0.15s ease !important;
+            display: inline-block !important;
+        }
+
+        header.header.admin-fixed-header .nav-links a:hover {
+            color: #1b3022 !important;
+        }
+
+        header.header.admin-fixed-header .nav-links a.active,
+        header.header.admin-fixed-header .nav-links a.nav-active {
+            color: #1b3022 !important;
+            font-weight: 600 !important;
+            border-bottom: 2px solid #1b3022 !important;
+        }
+
+        /* Search */
+        header.header.admin-fixed-header .header-search {
+            display: flex !important;
+            align-items: center !important;
+            gap: 9px !important;
+            background: #f6f3f2 !important;
+            border: 1px solid #e5ded9 !important;
+            border-radius: 8px !important;
+            padding: 9px 14px !important;
+            width: 260px !important;
+            color: #706b67 !important;
+            font-size: 12.5px !important;
+            flex-shrink: 0 !important;
+            box-sizing: border-box !important;
+        }
+
+        header.header.admin-fixed-header .header-search i {
+            font-size: 12px !important;
+            color: #706b67 !important;
+        }
+
+        header.header.admin-fixed-header .header-search input {
+            border: none !important;
+            background: transparent !important;
+            outline: none !important;
+            width: 100% !important;
+            font-size: 12.5px !important;
+            font-family: "Plus Jakarta Sans", sans-serif !important;
+            color: #211f1d !important;
+            padding: 0 !important;
+            margin: 0 !important;
+        }
+
+        header.header.admin-fixed-header .header-search input::placeholder {
+            color: #706b67 !important;
+            opacity: 0.85 !important;
+        }
+
+        /* Header Actions */
+        header.header.admin-fixed-header .header-actions {
+            display: flex !important;
+            align-items: center !important;
+            gap: 14px !important;
+            flex-shrink: 0 !important;
+        }
+
+        header.header.admin-fixed-header .reader-view-btn {
+            display: flex !important;
+            align-items: center !important;
+            gap: 8px !important;
+            background: #f6f3f2 !important;
+            border: 1px solid #e5ded9 !important;
+            border-radius: 8px !important;
+            padding: 9px 14px !important;
+            font-size: 12.5px !important;
+            font-weight: 600 !important;
+            color: #211f1d !important;
+            white-space: nowrap !important;
+            text-decoration: none !important;
+            transition: background 0.15s ease, color 0.15s ease !important;
+        }
+
+        header.header.admin-fixed-header .reader-view-btn:hover {
+            background: #ede8e3 !important;
+            color: #1b3022 !important;
+        }
+
+        header.header.admin-fixed-header .reader-view-btn i {
+            font-size: 12px !important;
+        }
+
+        header.header.admin-fixed-header .bell {
+            position: relative !important;
+            color: #706b67 !important;
+            font-size: 15px !important;
+            cursor: pointer !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            padding: 6px !important;
+            border-radius: 6px !important;
+            transition: color 0.15s ease !important;
+        }
+
+        header.header.admin-fixed-header .bell:hover {
+            color: #1b3022 !important;
+        }
+
+        header.header.admin-fixed-header .bell .dot {
+            position: absolute !important;
+            top: 3px !important;
+            right: 3px !important;
+            width: 7px !important;
+            height: 7px !important;
+            background: #c0503f !important;
+            border-radius: 50% !important;
+        }
+
+        /* Profile Section & Dropdown */
+        header.header.admin-fixed-header .profile {
+            position: relative !important;
+            display: flex !important;
+            align-items: center !important;
+        }
+
+        header.header.admin-fixed-header .profile-avatar {
+            width: 34px !important;
+            height: 34px !important;
+            border-radius: 50% !important;
+            background: #1b3022 !important;
+            color: #ffffff !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            font-size: 12px !important;
+            font-weight: 700 !important;
+            cursor: pointer !important;
+            user-select: none !important;
+            border: none !important;
+            transition: transform 0.15s ease, box-shadow 0.15s ease !important;
+        }
+
+        header.header.admin-fixed-header .profile-avatar:hover {
+            transform: scale(1.04) !important;
+            box-shadow: 0 0 0 3px rgba(27, 48, 34, 0.18) !important;
+        }
+
+        /* Dropdown */
+        header.header.admin-fixed-header .admin-profile-dropdown {
+            display: none;
+            position: absolute !important;
+            top: calc(100% + 12px) !important;
+            right: 0 !important;
+            background: #ffffff !important;
+            border: 1px solid #e5ded9 !important;
+            border-radius: 12px !important;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12) !important;
+            min-width: 230px !important;
+            z-index: 100000 !important;
+            overflow: hidden !important;
+            animation: adminDropdownFadeIn 0.15s ease-out;
+        }
+
+        @keyframes adminDropdownFadeIn {
+            from { opacity: 0; transform: translateY(-6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        header.header.admin-fixed-header .admin-profile-dropdown.show {
+            display: block !important;
+        }
+
+        .admin-dropdown-user-header {
+            padding: 14px 18px !important;
+            background: #fcf9f8 !important;
+            border-bottom: 1px solid #f0ebe6 !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 12px !important;
+        }
+
+        .admin-dropdown-avatar-circle {
+            width: 38px !important;
+            height: 38px !important;
+            border-radius: 50% !important;
+            background: #1b3022 !important;
+            color: #ffffff !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            font-size: 14px !important;
+            font-weight: 700 !important;
+            flex-shrink: 0 !important;
+        }
+
+        .admin-dropdown-user-text {
+            line-height: 1.3 !important;
+            overflow: hidden !important;
+        }
+
+        .admin-dropdown-name {
+            font-size: 13.5px !important;
+            font-weight: 700 !important;
+            color: #1b3022 !important;
+            display: block !important;
+            white-space: nowrap !important;
+            overflow: hidden !important;
+            text-overflow: ellipsis !important;
+        }
+
+        .admin-dropdown-role {
+            font-size: 10.5px !important;
+            font-weight: 700 !important;
+            letter-spacing: 0.6px !important;
+            color: #706b67 !important;
+            text-transform: uppercase !important;
+            display: block !important;
+            margin-top: 2px !important;
+        }
+
+        .admin-dropdown-divider {
+            height: 1px !important;
+            background: #f0ebe6 !important;
+            margin: 4px 0 !important;
+        }
+
+        .admin-dropdown-item {
+            display: flex !important;
+            align-items: center !important;
+            gap: 11px !important;
+            width: 100% !important;
+            padding: 10px 18px !important;
+            font-size: 13px !important;
+            font-weight: 500 !important;
+            color: #211f1d !important;
+            background: transparent !important;
+            border: none !important;
+            text-align: left !important;
+            text-decoration: none !important;
+            cursor: pointer !important;
+            font-family: "Plus Jakarta Sans", sans-serif !important;
+            box-sizing: border-box !important;
+            transition: background 0.12s ease, color 0.12s ease !important;
+        }
+
+        .admin-dropdown-item:hover {
+            background: #f6f3f2 !important;
+            color: #1b3022 !important;
+        }
+
+        .admin-dropdown-item i {
+            width: 16px !important;
+            font-size: 13px !important;
+            color: #706b67 !important;
+            text-align: center !important;
+        }
+
+        .admin-dropdown-item.admin-logout {
+            color: #ba1a1a !important;
+        }
+
+        .admin-dropdown-item.admin-logout i {
+            color: #ba1a1a !important;
+        }
+
+        .admin-dropdown-item.admin-logout:hover {
+            background: #ffdad6 !important;
+            color: #ba1a1a !important;
+        }
+
+        @media (max-width: 1100px) {
+            header.header.admin-fixed-header .header-search { display: none !important; }
+        }
+
+        @media (max-width: 900px) {
+            header.header.admin-fixed-header .nav-links { display: none !important; }
+        }
+    </style>
+
+    <!-- FIXED ADMIN HEADER -->
+    <header class="header admin-fixed-header">
+        <div class="header-inner">
+
+            <!-- Logo -->
+            <a class="logo-group" th:href="@{/admin-dashboard}">
+                <span class="logo">READORA</span>
+                <span class="admin-badge">ADMIN</span>
+            </a>
+
+            <!-- Navigation Links -->
+            <nav class="nav-links">
+                <a th:href="@{/admin-dashboard}"
+                   th:classappend="${activeTab == 'dashboard'} ? 'active nav-active'">Dashboard</a>
+                <a th:href="@{/admin-book}"
+                   th:classappend="${activeTab == 'books'} ? 'active nav-active'">Content</a>
+                <a th:href="@{/admin-users}"
+                   th:classappend="${activeTab == 'users'} ? 'active nav-active'">Users</a>
+                <a th:href="@{/admin-authors}"
+                   th:classappend="${activeTab == 'authors'} ? 'active nav-active'">Authors</a>
+                <a th:href="@{/admin-subscriptions}"
+                   th:classappend="${activeTab == 'subscriptions'} ? 'active nav-active'">Subscriptions</a>
+                <a th:href="@{/analytics}"
+                   th:classappend="${activeTab == 'analytics'} ? 'active nav-active'">Analytics</a>
+            </nav>
+
+            <!-- Search -->
+            <div class="header-search">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="adminHeaderSearch" placeholder="Search catalog, users, records..." autocomplete="off">
+            </div>
+
+            <!-- Actions -->
+            <div class="header-actions">
+
+                <!-- Reader View Button -->
+                <a class="reader-view-btn" th:href="@{/dashboard}">
+                    <i class="fa-solid fa-book-open"></i>
+                    <span>Reader View</span>
+                </a>
+
+                <!-- Notification Bell -->
+                <span class="bell" title="Notifications">
+                    <i class="fa-solid fa-bell"></i>
+                    <span class="dot"></span>
+                </span>
+
+                <!-- Profile Dropdown Button -->
+                <div class="profile" id="adminProfileWrapper">
+                    <div class="profile-avatar" id="adminProfileAvatarBtn" role="button" tabindex="0" title="Admin Profile">
+                        <i class="fa-solid fa-user" id="adminProfileAvatarIcon"></i>
+                    </div>
+
+                    <!-- Dropdown Menu -->
+                    <div class="admin-profile-dropdown" id="adminProfileDropdown">
+                        <div class="admin-dropdown-user-header">
+                            <div class="admin-dropdown-avatar-circle" id="adminDropdownAvatarInitials">
+                                <i class="fa-solid fa-user"></i>
+                            </div>
+                            <div class="admin-dropdown-user-text">
+                                <strong class="admin-dropdown-name" id="adminDropdownUserName">Admin User</strong>
+                                <small class="admin-dropdown-role" id="adminDropdownUserRole">SUPER ADMIN</small>
+                            </div>
+                        </div>
+                        <div class="admin-dropdown-divider"></div>
+                        <a class="admin-dropdown-item" th:href="@{/admin-profile}">
+                            <i class="fa-solid fa-id-badge"></i>
+                            <span>View Profile</span>
+                        </a>
+                        <a class="admin-dropdown-item" th:href="@{/dashboard}">
+                            <i class="fa-solid fa-book-open"></i>
+                            <span>Reader View</span>
+                        </a>
+                        <div class="admin-dropdown-divider"></div>
+                        <button class="admin-dropdown-item admin-logout" id="adminDropdownLogoutBtn" type="button">
+                            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                            <span>Logout</span>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </header>
+
+    <!-- SPACER: ensures underlying page content is never hidden behind the 64px fixed header -->
+    <div class="admin-fixed-header-spacer"></div>
+
+    <!-- Script for Dynamic Profile & Dropdown -->
+    <script>
+    (function () {
+        function initAdminHeader() {
+            var avatarBtn   = document.getElementById('adminProfileAvatarBtn');
+            var dropdown    = document.getElementById('adminProfileDropdown');
+            var nameEl      = document.getElementById('adminDropdownUserName');
+            var roleEl      = document.getElementById('adminDropdownUserRole');
+            var avatarIcon  = document.getElementById('adminProfileAvatarIcon');
+            var avatarInit  = document.getElementById('adminDropdownAvatarInitials');
+            var logoutBtn   = document.getElementById('adminDropdownLogoutBtn');
+
+            // 1. Dynamic User Info from LocalStorage / Backend auth
+            try {
+                var raw = localStorage.getItem('readoraUser');
+                if (raw) {
+                    var user = JSON.parse(raw);
+                    var name = user.name || user.email || 'Admin';
+                    var role = (user.role || 'SUPER ADMIN').replace(/^ROLE_/, '').toUpperCase();
+                    if (nameEl) nameEl.textContent = name;
+                    if (roleEl) roleEl.textContent = role;
+
+                    if (name) {
+                        var parts = name.trim().split(/\s+/);
+                        var initials = parts.length >= 2
+                            ? (parts[0][0] + parts[parts.length - 1][0]).toUpperCase()
+                            : parts[0].substring(0, 2).toUpperCase();
+                        if (avatarInit) avatarInit.textContent = initials;
+                    }
+                }
+            } catch (e) {
+                console.error("Error reading admin profile:", e);
+            }
+
+            // 2. Toggle Dropdown on profile click
+            if (avatarBtn && dropdown) {
+                avatarBtn.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    dropdown.classList.toggle('show');
+                });
+            }
+
+            // 3. Close on outside click
+            document.addEventListener('click', function (e) {
+                if (dropdown && !dropdown.contains(e.target) && avatarBtn && !avatarBtn.contains(e.target)) {
+                    dropdown.classList.remove('show');
+                }
+            });
+
+            // 4. Close on Escape
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape' && dropdown) {
+                    dropdown.classList.remove('show');
+                }
+            });
+
+            // 5. Logout
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    localStorage.removeItem('readoraUser');
+                    document.cookie = 'readoraToken=; Max-Age=0; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
+                    window.location.href = '/login';
+                });
+            }
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initAdminHeader);
+        } else {
+            initAdminHeader();
+        }
+    })();
+    </script>
+</th:block>
+
+</body>
+</html>
